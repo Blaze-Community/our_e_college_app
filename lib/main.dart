@@ -23,74 +23,149 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(right: 16.0, bottom: 32),
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => Resources()));
-          },
-          label: Text('Get Started',
-              style: TextStyle(
-                  color: Color(0xffE1F5FF),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold)),
-          icon: Icon(Icons.arrow_forward_sharp),
-          backgroundColor: Colors.blue,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/splash2.jpg"), fit: BoxFit.fill),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "World's Best",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color(0xffE1F5FF),
-                    fontSize: 18,
-                    letterSpacing: 0.9,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                "Education  Resources",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 48,
-                    letterSpacing: 1.9,
-                    fontWeight: FontWeight.w700),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                "Anytime, Anywhere, Easy to Learn",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color(0xffE1F5FF),
-                    fontSize: 18,
-                    letterSpacing: 1.9,
-                    fontWeight: FontWeight.bold),
-              )
-            ],
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.teal[100],
+                    Colors.teal[400],
+                    Colors.teal,
+                    Colors.teal[800],
+                  ]),
+            ),
           ),
-        ),
+          Container(
+            height: double.infinity,
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 120.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Sign In',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Email',
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 60.0,
+                        decoration: BoxDecoration(
+                            color: Colors.teal,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 5.0,
+                                spreadRadius: 2.0,
+                              )
+                            ]),
+                        child: TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(top: 15.0),
+                              prefixIcon: Icon(
+                                Icons.email,
+                                color: Colors.white,
+                              ),
+                              hintText: 'Enter your email',
+                              hintStyle: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        'Password',
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 60.0,
+                        decoration: BoxDecoration(
+                            color: Colors.teal,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 5.0,
+                                spreadRadius: 2.0,
+                              )
+                            ]),
+                        child: TextField(
+                          obscureText: true,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(top: 15.0),
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: Colors.white,
+                            ),
+                            hintText: 'Enter your password',
+                            hintStyle: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 35.0),
+                        width: double.infinity,
+                        child: RaisedButton(
+                          elevation: 5.0,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Resources()));
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          color: Colors.white,
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                                color: Color(0xFF527DAA),
+                                letterSpacing: 1.5,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'OpenSans'),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
