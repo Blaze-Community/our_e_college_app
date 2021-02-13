@@ -4,11 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeCategoryItem extends StatefulWidget {
   Color primaryColor;
-  String primaryIcon;
+  IconData primaryIcon;
   String primaryTitle;
   Color secondaryColor;
-  String secondaryIcon;
+  IconData secondaryIcon;
   double secondaryIconHeight;
+  final Function onPressed;
 
   HomeCategoryItem(
       {this.primaryColor,
@@ -16,7 +17,8 @@ class HomeCategoryItem extends StatefulWidget {
       this.primaryTitle,
       this.secondaryColor,
       this.secondaryIcon,
-      this.secondaryIconHeight});
+      this.secondaryIconHeight,
+      this.onPressed});
 
   @override
   _HomeCategoryItemState createState() => _HomeCategoryItemState();
@@ -49,8 +51,11 @@ class _HomeCategoryItemState extends State<HomeCategoryItem> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SvgPicture.asset(widget.primaryIcon,
-                            height: 45, color: AppTheme.Colors.grayTwo),
+                        Icon(
+                          widget.secondaryIcon,
+                          size: 45,
+                          color: AppTheme.Colors.white,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
@@ -66,9 +71,11 @@ class _HomeCategoryItemState extends State<HomeCategoryItem> {
                   flex: 1,
                   child: Container(
                     alignment: Alignment.center,
-                    child: SvgPicture.asset(widget.secondaryIcon,
-                        height: widget.secondaryIconHeight,
-                        color: AppTheme.Colors.white),
+                    child: Icon(
+                      widget.secondaryIcon,
+                      size: widget.secondaryIconHeight,
+                      color: AppTheme.Colors.white,
+                    ),
                     decoration: BoxDecoration(
                         color: widget.secondaryColor,
                         borderRadius: BorderRadius.only(
