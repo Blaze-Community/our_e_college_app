@@ -84,16 +84,6 @@ flutter:
     - assets/splash.jpg
     - assets/splash2.jpg
     - assets/1.jpg
-    - assets/images/study.svg
-    - assets/images/design-tool.svg
-    - assets/images/dna.svg
-    - assets/images/flask.svg
-    - assets/images/microscope.svg
-    - assets/images/bookmark.svg
-    - assets/images/notification.svg
-    - assets/images/home.svg
-    - assets/images/controls.svg
-    - assets/images/user.svg
 
   fonts:
     - family: Nunito
