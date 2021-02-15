@@ -37,7 +37,9 @@ class _HomeCategoryItemState extends State<HomeCategoryItem> {
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            widget.onPressed();
+          },
           borderRadius: BorderRadius.circular(10),
           child: Container(
             height: 100,
