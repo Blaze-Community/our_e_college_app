@@ -214,19 +214,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 16, left: 16, right: 16),
-                      child: HomeCategoryItem(
-                        primaryColor: AppTheme.Colors.flatRed,
-                        primaryIcon: Icons.announcement,
-                        primaryTitle: "Announcement",
-                        secondaryColor: AppTheme.Colors.flatOrange,
-                        secondaryIcon: Icons.announcement,
-                        secondaryIconHeight: 30,
-                      )),
-                ),
+                Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16, left: 16, right: 16),
+                    child: HomeCategoryItem(
+                      primaryColor: AppTheme.Colors.flatRed,
+                      primaryIcon: Icons.announcement,
+                      primaryTitle: "Announcement",
+                      secondaryColor: AppTheme.Colors.flatOrange,
+                      secondaryIcon: Icons.announcement,
+                      secondaryIconHeight: 30,
+                    )),
                 Padding(
                   padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
                   child: Row(
@@ -291,19 +289,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 16, left: 16, right: 16),
-                      child: HomeCategoryItem(
-                        primaryColor: AppTheme.Colors.flatRed,
-                        primaryIcon: FontAwesomeIcons.bus,
-                        primaryTitle: "Transportation",
-                        secondaryColor: AppTheme.Colors.flatOrange,
-                        secondaryIcon: FontAwesomeIcons.bus,
-                        secondaryIconHeight: 30,
-                      )),
-                ),
+                Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16, left: 16, right: 16),
+                    child: HomeCategoryItem(
+                      primaryColor: AppTheme.Colors.flatRed,
+                      primaryIcon: FontAwesomeIcons.bus,
+                      primaryTitle: "Transportation",
+                      secondaryColor: AppTheme.Colors.flatOrange,
+                      secondaryIcon: FontAwesomeIcons.bus,
+                      secondaryIconHeight: 30,
+                    )),
                 Padding(
                     padding:
                         const EdgeInsets.only(top: 16, left: 16, right: 16),
@@ -416,18 +412,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     )),
-                Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: HomeCategoryItem(
-                        primaryColor: AppTheme.Colors.flatRed,
-                        primaryIcon: Icons.receipt,
-                        primaryTitle: "Offers",
-                        secondaryColor: AppTheme.Colors.flatOrange,
-                        secondaryIcon: Icons.receipt,
-                        secondaryIconHeight: 30,
-                      )),
-                ),
+                Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: HomeCategoryItem(
+                      primaryColor: AppTheme.Colors.flatRed,
+                      primaryIcon: Icons.receipt,
+                      primaryTitle: "Offers",
+                      secondaryColor: AppTheme.Colors.flatOrange,
+                      secondaryIcon: Icons.receipt,
+                      secondaryIconHeight: 30,
+                    )),
               ]),
             ),
           ],
