@@ -7,6 +7,7 @@ class TimeTable extends StatefulWidget {
 }
 
 class _TimeTableState extends State<TimeTable> {
+  String selected = "MONDAY";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,90 +16,135 @@ class _TimeTableState extends State<TimeTable> {
             height: double.infinity,
             child: Column(children: [
               Container(
-                  height: 35,
+                  height: 40,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
                       Container(
-                        width: 150.0,
-                        decoration:
-                            BoxDecoration(color: Colors.white, boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            blurRadius: 1.0,
-                          )
-                        ]),
-                        child: Text(
-                          "Monday",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                          width: 150.0,
+                          decoration:
+                              BoxDecoration(color: Colors.white, boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 1.0,
+                            )
+                          ]),
+                          child: ListTile(
+                            title: Text(
+                              "Monday",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: selected == "MONDAY"
+                                      ? FontWeight.bold
+                                      : null),
+                              textAlign: TextAlign.center,
+                            ),
+                            onTap: () {
+                              setState(() {
+                                selected = "MONDAY";
+                              });
+                            },
+                          )),
                       Container(
-                        width: 150.0,
-                        decoration:
-                            BoxDecoration(color: Colors.white, boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            blurRadius: 1.0,
-                          )
-                        ]),
-                        child: Text(
-                          "Tuesday",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                          width: 150.0,
+                          decoration:
+                              BoxDecoration(color: Colors.white, boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 1.0,
+                            )
+                          ]),
+                          child: ListTile(
+                            title: Text(
+                              "Tuesday",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: selected == "TUESDAY"
+                                      ? FontWeight.bold
+                                      : null),
+                              textAlign: TextAlign.center,
+                            ),
+                            onTap: () {
+                              setState(() {
+                                selected = "TUESDAY";
+                              });
+                            },
+                          )),
                       Container(
-                        width: 150.0,
-                        decoration:
-                            BoxDecoration(color: Colors.white, boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            blurRadius: 1.0,
-                          )
-                        ]),
-                        child: Text(
-                          "Wednesday",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                          width: 150.0,
+                          decoration:
+                              BoxDecoration(color: Colors.white, boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 1.0,
+                            )
+                          ]),
+                          child: ListTile(
+                            title: Text(
+                              "Wednesday",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: selected == "WEDNESDAY"
+                                      ? FontWeight.bold
+                                      : null),
+                              textAlign: TextAlign.center,
+                            ),
+                            onTap: () {
+                              setState(() {
+                                selected = "WEDNESDAY";
+                              });
+                            },
+                          )),
                       Container(
-                        width: 150.0,
-                        decoration:
-                            BoxDecoration(color: Colors.white, boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            blurRadius: 1.0,
-                          )
-                        ]),
-                        child: Text(
-                          "Thursday",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                          width: 150.0,
+                          decoration:
+                              BoxDecoration(color: Colors.white, boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 1.0,
+                            )
+                          ]),
+                          child: ListTile(
+                            title: Text(
+                              "Thursday",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: selected == "THURSDAY"
+                                      ? FontWeight.bold
+                                      : null),
+                              textAlign: TextAlign.center,
+                            ),
+                            onTap: () {
+                              setState(() {
+                                selected = "THURSDAY";
+                              });
+                            },
+                          )),
                       Container(
-                        width: 150.0,
-                        decoration:
-                            BoxDecoration(color: Colors.white, boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            blurRadius: 1.0,
-                          )
-                        ]),
-                        child: Text(
-                          "Friday",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                          width: 150.0,
+                          decoration:
+                              BoxDecoration(color: Colors.white, boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 1.0,
+                            )
+                          ]),
+                          child: ListTile(
+                            title: Text(
+                              "Friday",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: selected == "FRIDAY"
+                                      ? FontWeight.bold
+                                      : null),
+                              textAlign: TextAlign.center,
+                            ),
+                            onTap: () {
+                              setState(() {
+                                selected = "FRIDAY";
+                              });
+                            },
+                          )),
                     ],
                   )),
               TimeTableBox(
