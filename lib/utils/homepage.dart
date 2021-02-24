@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
 import 'package:our_e_college_app/components/timetable.dart';
+import 'package:our_e_college_app/components/results.dart';
+import 'package:our_e_college_app/components/assignment.dart';
 
 import 'homeCategoryItem.dart';
 
@@ -252,6 +254,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               secondaryColor: AppTheme.Colors.flatDeepPurple,
                               secondaryIcon: Icons.assessment,
                               secondaryIconHeight: 40,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Result()));
+                              },
                             )),
                       ),
                     ],
@@ -272,6 +281,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               secondaryColor: AppTheme.Colors.flatOrange,
                               secondaryIcon: Icons.assignment,
                               secondaryIconHeight: 30,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Assignment()));
+                              },
                             )),
                       ),
                       Expanded(
@@ -340,73 +356,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         secondaryIcon: FontAwesomeIcons.book,
                                         secondaryIconHeight: 40,
                                       ))),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 2.1,
-                                child: HomeCategoryItem(
-                                  primaryColor: AppTheme.Colors.flatRed,
-                                  primaryIcon: FontAwesomeIcons.cameraRetro,
-                                  primaryTitle: "Video",
-                                  secondaryColor: AppTheme.Colors.flatOrange,
-                                  secondaryIcon: FontAwesomeIcons.cameraRetro,
-                                  secondaryIconHeight: 30,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    )),
-                Padding(
-                    padding:
-                        const EdgeInsets.only(top: 16, left: 16, right: 16),
-                    child: SizedBox(
-                      height: 105,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width / 2.1,
-                                child: Padding(
-                                    padding: const EdgeInsets.only(right: 16),
-                                    child: HomeCategoryItem(
-                                      primaryColor: AppTheme.Colors.flatRed,
-                                      primaryIcon: FontAwesomeIcons.female,
-                                      primaryTitle: "Parenting Guide",
-                                      secondaryColor:
-                                          AppTheme.Colors.flatOrange,
-                                      secondaryIcon: FontAwesomeIcons.female,
-                                      secondaryIconHeight: 30,
-                                    )),
-                              ),
-                              Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.1,
-                                  child: Padding(
-                                      padding: const EdgeInsets.only(right: 16),
-                                      child: HomeCategoryItem(
-                                        primaryColor:
-                                            AppTheme.Colors.flatPurple,
-                                        primaryIcon: FontAwesomeIcons.medkit,
-                                        primaryTitle: "Health Tips",
-                                        secondaryColor:
-                                            AppTheme.Colors.flatDeepPurple,
-                                        secondaryIcon: FontAwesomeIcons.medkit,
-                                        secondaryIconHeight: 40,
-                                      ))),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 2.1,
-                                child: HomeCategoryItem(
-                                  primaryColor: AppTheme.Colors.flatRed,
-                                  primaryIcon: FontAwesomeIcons.userMd,
-                                  primaryTitle: "Vaccinations",
-                                  secondaryColor: AppTheme.Colors.flatOrange,
-                                  secondaryIcon: FontAwesomeIcons.userMd,
-                                  secondaryIconHeight: 30,
-                                ),
-                              )
                             ],
                           ),
                         ],
