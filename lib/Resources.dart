@@ -4,13 +4,16 @@ import 'package:our_e_college_app/utils/Theme.dart'as AppTheme;
 import 'package:our_e_college_app/utils/drawer.dart';
 import 'package:our_e_college_app/utils/homepage.dart';
 
-final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+//State class
+int _page = 0;
+GlobalKey _bottomNavigationKey = GlobalKey();
 
 class Resources extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
+        key: _bottomNavigationKey,
         backgroundColor: AppTheme.Colors.black,
         height: 63,
         items: <Widget>[

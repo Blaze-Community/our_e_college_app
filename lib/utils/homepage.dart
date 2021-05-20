@@ -1,6 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:our_e_college_app/components/annoucement.dart';
+import 'package:our_e_college_app/components/attendence.dart';
 import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
 import 'package:our_e_college_app/components/timetable.dart';
 import 'package:our_e_college_app/components/results.dart';
@@ -226,6 +228,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       secondaryColor: AppTheme.Colors.flatOrange,
                       secondaryIcon: Icons.announcement,
                       secondaryIconHeight: 30,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    Annoucement()));
+                      },
                     )),
                 Padding(
                   padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
@@ -237,11 +246,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.only(right: 7),
                             child: HomeCategoryItem(
                               primaryColor: AppTheme.Colors.flatRed,
-                              primaryIcon: Icons.card_travel,
-                              primaryTitle: "Holidays",
+                              primaryIcon: Icons.event_available,
+                              primaryTitle: "Attendence",
                               secondaryColor: AppTheme.Colors.flatOrange,
-                              secondaryIcon: Icons.card_travel,
+                              secondaryIcon: Icons.event_available,
                               secondaryIconHeight: 30,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Attendence()));
+                              },
                             )),
                       ),
                       Expanded(

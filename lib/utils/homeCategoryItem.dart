@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
-import 'package:flutter_svg/flutter_svg.dart';
-
 class HomeCategoryItem extends StatefulWidget {
   Color primaryColor;
   IconData primaryIcon;
