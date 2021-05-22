@@ -100,26 +100,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(
                             height: 10,
                           ),
-                          Text(
-                            "All Subjects",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 32,
-                                letterSpacing: 1.9,
-                                fontWeight: FontWeight.w700),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "IIIT N",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 32,
+                                      letterSpacing: 1.9,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),                                   
+                            ],
                           ),
                           SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            "Please select a study subject",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                color: Color(0xffE1F5FF),
-                                fontSize: 18,
-                                letterSpacing: 1.9,
-                                fontWeight: FontWeight.bold),
+                            height: 10,
                           ),
                           Container(
                             decoration: BoxDecoration(boxShadow: [
