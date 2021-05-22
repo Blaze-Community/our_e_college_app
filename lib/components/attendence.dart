@@ -22,7 +22,7 @@ class _Attendence extends State<Attendence> {
           AttendenceItem(subject:"Hindi",attend: 6,totalClasses: 10,primaryColor: Color(0xFFB71C1C),secondaryColor: HexColor("#e88a8a")),
           AttendenceItem(subject:"Maths",attend: 10,totalClasses: 10,primaryColor: Color(0xFF880E4F),secondaryColor: HexColor("#e88aa8")),
           AttendenceItem(subject:"Science",attend: 8,totalClasses: 10,primaryColor: Color(0xFFE64A19),secondaryColor: HexColor("#e8a68a")),
-          AttendenceItem(subject:"OOP",attend: 4,totalClasses: 10,primaryColor: Color(0xFFFFD600),secondaryColor: HexColor("#f5f59f")),
+          AttendenceItem(subject:"OOP",attend: 9,totalClasses: 10,primaryColor: Color(0xFFFFD600),secondaryColor: HexColor("#f5f59f")),
 
         ],
       )
