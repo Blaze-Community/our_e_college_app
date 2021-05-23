@@ -10,16 +10,20 @@ import 'package:our_e_college_app/components/assignment.dart';
 
 import 'homeCategoryItem.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomePageState createState() => _HomePageState();
 }
 
+<<<<<<< Updated upstream
 class _HomeScreenState extends State<HomeScreen> {
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
   bool isDrawerOpen = false;
+=======
+class _HomePageState extends State<HomePage> {
+>>>>>>> Stashed changes
   final _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {

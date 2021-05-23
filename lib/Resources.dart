@@ -12,6 +12,7 @@ class Resources extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< Updated upstream
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         backgroundColor: AppTheme.Colors.black,
@@ -31,6 +32,22 @@ class Resources extends StatelessWidget {
         children: [DrawerApp(), HomeScreen()],
       ),
       
+=======
+        bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: AppTheme.Colors.black,
+          height: 63,
+          items: <Widget>[
+            Icon(Icons.list, size: 30),
+            Icon(Icons.compare_arrows, size: 30),
+            Icon(Icons.add, size: 30),
+            Icon(Icons.home, size: 30),
+            Icon(Icons.person_rounded, size: 30),
+          ],
+          onTap: (index) {
+            //Handle button tap
+          },
+        ),
+>>>>>>> Stashed changes
     );
   }
 }
