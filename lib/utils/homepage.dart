@@ -9,12 +9,12 @@ import 'package:our_e_college_app/components/assignment.dart';
 
 import 'homeCategoryItem.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomePageState extends State<HomePage> {
   final _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -52,11 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    image: AssetImage(
-                      "assets/1.jpg",
-                    ),
-                  )),
+                        fit: BoxFit.fitWidth,
+                        image: AssetImage(
+                          "assets/1.jpg",
+                        ),
+                      )),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: Colors.black45,
                                   fontWeight: FontWeight.w600),
                               contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                              EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                                 borderRadius: BorderRadius.circular(12.0),
@@ -325,7 +325,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       primaryIcon: FontAwesomeIcons.book,
                                       primaryTitle: "E-Book",
                                       secondaryColor:
-                                          AppTheme.Colors.flatDeepPurple,
+                                      AppTheme.Colors.flatDeepPurple,
                                       secondaryIcon: FontAwesomeIcons.book,
                                       secondaryIconHeight: 40,
                                     ))),

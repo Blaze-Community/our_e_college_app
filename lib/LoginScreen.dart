@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:our_e_college_app/Resources.dart';
+
+import 'app.dart';
 // import 'dashboard_screen.dart';
 // import 'homepage.dart';
 
@@ -42,7 +43,7 @@ class LoginScreen extends StatelessWidget {
       onSignup: _authUser,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => Resources(),
+          builder: (context) => App(),
         ));
       },
       onRecoverPassword: _recoverPassword,
