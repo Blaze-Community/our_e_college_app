@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:our_e_college_app/Resources.dart';
 
 import 'app.dart';
 // import 'dashboard_screen.dart';

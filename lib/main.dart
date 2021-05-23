@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:our_e_college_app/Resources.dart';
 import 'package:our_e_college_app/LoginScreen.dart';
 
 void main() => runApp(MyApp());
