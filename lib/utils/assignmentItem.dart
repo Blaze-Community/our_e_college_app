@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class AssignmentItem extends StatefulWidget {
   String subject;
   String title;
-  String submissionTime;
+  // String submissionTime;
   String submissionDate;
   bool hasSubmitted;
 
   AssignmentItem(
       {this.subject,
       this.title,
-      this.submissionTime,
+      // this.submissionTime,
       this.submissionDate,
       this.hasSubmitted});
 
@@ -43,22 +43,20 @@ class _AssignmentItemState extends State<AssignmentItem> {
               Container(
                 width: MediaQuery.of(context).size.width - 60,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      widget.submissionTime,
+                      "Submission Date: ",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Colors.grey,
                       ),
                     ),
-                    RichText(
-                      text: TextSpan(
-                        text: widget.submissionDate,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                    Text(
+                      widget.submissionDate,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
@@ -103,38 +101,12 @@ class _AssignmentItemState extends State<AssignmentItem> {
                         SizedBox(
                           width: 5,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.title,
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Status: ",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Text(
-                                  (widget.hasSubmitted == true ? "Submitted" : "Not yet submitted"),
-                                  style: TextStyle(
-                                    color: (widget.hasSubmitted == true ? Colors.green : Colors.red),
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        )
+                        Text(
+                          widget.title,
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -142,9 +114,8 @@ class _AssignmentItemState extends State<AssignmentItem> {
                 OutlinedButton(
                   onPressed: () {}, 
                   child: Text(
-                    "READ MORE",
+                    "DOWNLOAD PDF",
                     style: TextStyle(
-                      // color: Colors.grey,
                       fontSize: 12,
                     ),
                   ),
