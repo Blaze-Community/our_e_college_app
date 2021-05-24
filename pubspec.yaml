@@ -32,6 +32,7 @@ dependencies:
   flutter_login: ^1.1.0
   table_calendar: ^2.2.1
   shared_preferences: ^0.5.4+5
+  marquee: ^2.1.0
 
 dev_dependencies:
   flutter_test:
