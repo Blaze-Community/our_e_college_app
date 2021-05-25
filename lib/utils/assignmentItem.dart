@@ -5,12 +5,14 @@ class AssignmentItem extends StatefulWidget {
   String title;
   // String submissionTime;
   String submissionDate;
+  String uploadDate;
   bool hasSubmitted;
 
   AssignmentItem(
       {this.subject,
       this.title,
       // this.submissionTime,
+        this.uploadDate,
       this.submissionDate,
       this.hasSubmitted});
 
@@ -43,17 +45,10 @@ class _AssignmentItemState extends State<AssignmentItem> {
               Container(
                 width: MediaQuery.of(context).size.width - 60,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "Submission Date: ",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      widget.submissionDate,
+                      widget.uploadDate,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -89,7 +84,7 @@ class _AssignmentItemState extends State<AssignmentItem> {
                       ),
                     ),
                     SizedBox(
-                      height: 15,
+                      height: 10,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,6 +104,28 @@ class _AssignmentItemState extends State<AssignmentItem> {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Submission Date: ",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          widget.submissionDate,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
                 OutlinedButton(

@@ -55,39 +55,32 @@ class Profile extends StatelessWidget {
             'BT19CSE006@iitn.com',
           ),
           SizedBox(height: 20),
-          Column(
-            children: [
-              SizedBox(height: 50),
-              Container(
-                height: 500,
-                width: MediaQuery.of(context).size.width,
-                child: ListView(
-                  children: [
-                    ProfileListItem(
-                      icon: Icons.book,
-                      text: 'Backlogs',
-                    ),
-                    ProfileListItem(
-                      icon: Icons.calendar_today_outlined,
-                      text: 'Acadmic Calendar',
-                    ),
-                    ProfileListItem(
-                      icon: Icons.settings,
-                      text: 'Settings',
-                    ),
-                    ProfileListItem(
-                      icon: Icons.star_rate,
-                      text: 'Rate us',
-                    ),
-                    ProfileListItem(
-                      icon: Icons.logout,
-                      text: 'Logout',
-                      hasNavigation: false,
-                    ),
-                  ],
+          Expanded(
+            child: ListView(
+              children: [
+                ProfileListItem(
+                  icon: Icons.book,
+                  text: 'Backlogs',
                 ),
-              )
-            ],
+                ProfileListItem(
+                  icon: Icons.calendar_today_outlined,
+                  text: 'Acadmic Calendar',
+                ),
+                ProfileListItem(
+                  icon: Icons.settings,
+                  text: 'Settings',
+                ),
+                ProfileListItem(
+                  icon: Icons.star_rate,
+                  text: 'Rate us',
+                ),
+                ProfileListItem(
+                  icon: Icons.logout,
+                  text: 'Logout',
+                  hasNavigation: false,
+                ),
+              ],
+            ),
           ),
         ],
       ),

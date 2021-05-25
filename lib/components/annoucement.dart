@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/components/announcementlist.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
@@ -18,85 +19,97 @@ class _Annoucement extends State<Annoucement> {
         title: Text('Announcements & Notices'),
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 50.0),
-        child: Container(
-            height: 600.0,
-            padding: EdgeInsets.only(bottom: 25.0),
-            child: ListView(
-              physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.only(left: 18.0, right: 22.0),
-              scrollDirection: Axis.vertical,
+        padding: EdgeInsets.only(top: 15.0),
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.only(left: 15.0, right: 15.0),
+          scrollDirection: Axis.vertical,
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    AnnouncementItem(
-                      title: 'Teacher Notices',
-                      announcement: ['welcome to our scj=hool', 'gjlshdfkh'],
-                      color: AppTheme.Colors.flatOrange,
-                      onPressed: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    AnnouncementList(
-                                      title: 'Teacher Notices',
-                                      announcement: [['gfkasfge','23:23']],
-                                    )));
-                      },
-                    ),
-                    AnnouncementItem(
-                      title: 'Student Notices',
-                      announcement: ['hgffkga', 'hgfadgfd'],
-                      color: AppTheme.Colors.flatPurple,
-                      onPressed: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                   AnnouncementList(
-                                     title: 'Student Notices',
-                                     announcement: [['gfkasfge','23:23']],
-                                   )));
-                      },
-                    )
-                  ],
+                AnnouncementItem(
+                  title: 'Teacher Notices',
+                  announcement: ['welcome to our scj=hool', 'gjlshdfkh'],
+                  color: AppTheme.Colors.flatOrange,
+                  icon: FontAwesomeIcons.scroll,
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                AnnouncementList(
+                                  title: 'Teacher Notices',
+                                  announcement: [
+                                    ['welcome to our scj=hool','2 May 2001'],
+                                    ['gjlshdfkh','4 May 2001']
+                                  ],
+                                )));
+                  },
                 ),
-                Row(
-                  children: [
-                    AnnouncementItem(
-                      title: 'Teacher Achivement',
-                      announcement: ['welcome to our scj=hool', 'gjlshdfkh'],
-                      color: AppTheme.Colors.flatDeepPurple,
-                      onPressed: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    AnnouncementList(
-                                      title: 'Teacher Achivement',
-                                      announcement: [['gfkasfge','23:23']],
-                                    )));
-                      },
-                    ),
-                    AnnouncementItem(
-                      title: 'Student Achivement',
-                      announcement: ['hgffkga', 'hgfadgfd'],
-                      color: AppTheme.Colors.flatRed,
-                      onPressed: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    AnnouncementList(
-                                      title: 'Student Achivement',
-                                      announcement: [['gfkasfge','23:23']],
-                                    )));
-                      },
-                    )
-                  ],
-                ),
+                AnnouncementItem(
+                  title: 'Student Notices',
+                  icon: FontAwesomeIcons.scroll,
+                  announcement: ['hgffkga', 'hgfadgfd'],
+                  color: AppTheme.Colors.flatPurple,
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                               AnnouncementList(
+                                 title: 'Student Notices',
+                                 announcement: [
+                                   ['hgffkga','2 May 2001'],
+                                   ['hgfadgfd','4 May 2001']
+                                 ],
+                               )));
+                  },
+                )
               ],
-            )),
+            ),
+            Row(
+              children: [
+                AnnouncementItem(
+                  title: 'Teacher Achivement',
+                  icon: FontAwesomeIcons.trophy,
+                  announcement: ['welcome to our scj=hool', 'gjlshdfkh'],
+                  color: AppTheme.Colors.flatDeepPurple,
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                AnnouncementList(
+                                  title: 'Teacher Achivement',
+                                  announcement: [
+                                    ['welcome to our scj=hool','2 May 2001'],
+                                    ['gjlshdfkh','4 May 2001']],
+                                )));
+                  },
+                ),
+                AnnouncementItem(
+                  title: 'Student Achivement',
+                  icon: FontAwesomeIcons.trophy,
+                  announcement: ['hgffkga', 'hgfadgfd'],
+                  color: AppTheme.Colors.flatRed,
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                AnnouncementList(
+                                  title: 'Student Achivement',
+                                  announcement: [
+                                    ['hgffkga','2 May 2001'],
+                                    ['hgfadgfd','4 May 2001']
+                                  ],
+                                )));
+                  },
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
