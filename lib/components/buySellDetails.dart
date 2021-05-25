@@ -20,11 +20,11 @@ class _BuySellDetailsState extends State<BuySellDetails> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            
+
             icon: Icon(Icons.arrow_back),
             color: Colors.white,
           ),
-          
+
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           title: Text(widget.itemName,
@@ -72,7 +72,7 @@ class _BuySellDetailsState extends State<BuySellDetails> {
                         height: 200.0,
                         width: 200.0))),
             Positioned(
-                top: 400.0,
+                top: 300.0,
                 left: 25.0,
                 right: 25.0,
                 child: Column(
@@ -160,116 +160,116 @@ class _BuySellDetailsState extends State<BuySellDetails> {
 
   Widget _buildContactDetails(String name, String roomNo, String contactNo) {
     return Container(
-              // height: 150,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.grey[300]),
-                  borderRadius: BorderRadius.circular(20),
-                  // color: Colors.purple[300],
-                  ),
-              // margin: EdgeInsets.only(right: 5, left: 5),
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Text(
-                    "Contact Details",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(width: 40.0, color: Colors.grey, height: 1.0),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Name: ',
-                                style: TextStyle(
-                                  // fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text(
-                                name,
-                                style: TextStyle(
-                                  // fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Room No.: ',
-                                style: TextStyle(
-                                  // fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text(
-                                roomNo,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                ),
-                              ),
-
-                            ],
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Contact No.: ',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey
-                                ),
-                              ),
-                              Text(
-                                contactNo,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                ),
-                              ),
-
-                            ],
-                          )
-                        ],
-                      ),
-                      OutlinedButton(
-                        onPressed: () {},
-
-                        child: Text(
-                          "CALL",
+      // height: 150,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.grey[300]),
+          borderRadius: BorderRadius.circular(20),
+          // color: Colors.purple[300],
+        ),
+        // margin: EdgeInsets.only(right: 5, left: 5),
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Text(
+              "Contact Details",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(width: 40.0, color: Colors.grey, height: 1.0),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Name: ',
                           style: TextStyle(
-                            fontSize: 12,
+                            // fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.grey,
                           ),
                         ),
-                      )
-                ],
-              ),
-                ],
-              )
-            );
+                        Text(
+                          name,
+                          style: TextStyle(
+                            // fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Room No.: ',
+                          style: TextStyle(
+                            // fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          roomNo,
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Contact No.: ',
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey
+                          ),
+                        ),
+                        Text(
+                          contactNo,
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+
+                      ],
+                    )
+                  ],
+                ),
+                OutlinedButton(
+                  onPressed: () {},
+
+                  child: Text(
+                    "CALL",
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        )
+    );
     // return InkWell(
     //   onTap: () {
     //     // selectCard(cardTitle);

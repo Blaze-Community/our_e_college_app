@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 
 class ResultItem extends StatefulWidget {
   String subject;
-  String title;
   // String submissionTime;
-  String submissionDate;
+  String uploadDate;
   int marks;
 
   ResultItem(
       {this.subject,
-      this.title,
-      // this.submissionTime,
-      this.submissionDate,
-      this.marks});
+        // this.submissionTime,
+        this.uploadDate,
+        this.marks});
 
   @override
   _ResultItemState createState() => _ResultItemState();
@@ -39,27 +37,17 @@ class _ResultItemState extends State<ResultItem> {
               SizedBox(
                 width: 15,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width - 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      "Exam Date: ",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.uploadDate,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
                     ),
-                    Text(
-                      widget.submissionDate,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               )
             ],
           ),
@@ -67,7 +55,7 @@ class _ResultItemState extends State<ResultItem> {
             height: 10,
           ),
           Container(
-              height: 120,
+              height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border.all(width: 1, color: Colors.grey[300]),
