@@ -107,6 +107,8 @@ class _AnnouncementItemState extends State<AnnouncementItem> {
                                       text:
                                           widget.announcement[i],
                                       style: TextStyle(color: Colors.white),
+                                      velocity: 30.0,
+                                      pauseAfterRound: Duration(seconds: 1),
                                     ),
                                   ),
                                 )
