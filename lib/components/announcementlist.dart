@@ -24,16 +24,10 @@ class _AnnouncementListState extends State<AnnouncementList> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-        body: Container(
-          height: MediaQuery.of(context).size.height - 100,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(30),
-          ),
+        body: Padding(
+          padding: const EdgeInsets.only(top:10.0),
           child: Column(
             children: [
-
               Expanded(
                 child: ListView.builder(
                   //physics: const NeverScrollableScrollPhysics(),
@@ -47,7 +41,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
         ));
   }
 
-  Container buildTaskListItem(String classSubject, String classTime) {
+  Container buildTaskListItem(String announcement, String date) {
     return Container(
       margin: EdgeInsets.only(bottom: 25),
       child: Column(
@@ -73,22 +67,13 @@ class _AnnouncementListState extends State<AnnouncementList> {
                   children: [
                     RichText(
                       text: TextSpan(
-                          text: classTime,
+                          text:date,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: " AM",
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey,
-                              ),
-                            )
-                          ]),
+                          )
+                      ),
                     ),
-
                   ],
                 ),
               )
@@ -98,43 +83,39 @@ class _AnnouncementListState extends State<AnnouncementList> {
             height: 10,
           ),
           Container(
-            height: 90,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                border: Border.all(width: 1, color: Colors.grey[300]),
-                borderRadius: BorderRadius.circular(20)),
-            margin: EdgeInsets.only(right: 10, left: 30),
-            padding: EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                  Expanded(
+              height: 90,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey[300]),
+                  borderRadius: BorderRadius.circular(20)),
+              margin: EdgeInsets.only(right: 10, left: 30),
+              padding: EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        announcement,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                  OutlinedButton(
+                    onPressed: () {},
                     child: Text(
-
-                      classSubject,
-
+                      "Read More",
                       style: TextStyle(
-
-                        fontSize: 15,
+                        fontSize: 12,
                       ),
                     ),
-                  ),
-
-                OutlinedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "READ MORE",
-                    style: TextStyle(
-                      // color: Colors.grey,
-                      fontSize: 12,
-                    ),
-                  ),
-                )
-
-              ],
-            ),
+                  )
+                ],
+              )
           )
         ],
       ),
