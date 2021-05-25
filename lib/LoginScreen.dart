@@ -47,6 +47,7 @@ class LoginScreen extends StatelessWidget {
         ));
       },
       onRecoverPassword: _recoverPassword,
+      hideSignUpButton: true,
     );
   }
 }
