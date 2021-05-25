@@ -68,7 +68,7 @@ class _TimeTableState extends State<TimeTable> {
         Positioned(
           top: 100,
           child: Container(
-            height: MediaQuery.of(context).size.height - 100,
+            height: MediaQuery.of(context).size.height - 160,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -97,6 +97,8 @@ class _TimeTableState extends State<TimeTable> {
                         buildTaskListItem("DSA", "07:00"),
                         buildTaskListItem("DPPL", "08:00"),
                         buildTaskListItem("ITW2", "09:00"),
+                        buildTaskListItem("SE", "10:00"),
+                        buildTaskListItem("SE", "10:00"),
                         buildTaskListItem("SE", "10:00"),
                       ],
                     ),
@@ -151,13 +153,6 @@ class _TimeTableState extends State<TimeTable> {
                             )
                           ]),
                     ),
-                    Text(
-                      "1 h 00 min",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    )
                   ],
                 ),
               )

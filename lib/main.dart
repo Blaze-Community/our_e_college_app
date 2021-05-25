@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:our_e_college_app/LoginScreen.dart';
+import 'package:our_e_college_app/app.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,7 +24,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LoginScreen(),
+      body: App(),
     );
   }
 }
