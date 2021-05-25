@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'College App',
       theme: ThemeData(
-          primarySwatch: Colors.deepPurple,
+          primarySwatch: Colors.deepOrange,
           textTheme: TextTheme(title: TextStyle(fontFamily: "Nunito"))),
       home: MyHomePage(),
     );

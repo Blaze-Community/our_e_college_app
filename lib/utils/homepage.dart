@@ -6,6 +6,7 @@ import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
 import 'package:our_e_college_app/components/timetable.dart';
 import 'package:our_e_college_app/components/results.dart';
 import 'package:our_e_college_app/components/assignment.dart';
+import 'package:our_e_college_app/components/buySell.dart';
 
 import 'homeCategoryItem.dart';
 
@@ -343,6 +344,13 @@ class _HomePageState extends State<HomePage> {
                     secondaryColor: AppTheme.Colors.flatOrange,
                     secondaryIcon: Icons.receipt,
                     secondaryIconHeight: 30,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  BuySell()));
+                    },
                   )),
             ]),
           ),
