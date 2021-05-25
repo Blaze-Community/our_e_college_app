@@ -48,34 +48,30 @@ class _HomePageState extends State<HomePage> {
                     width: 100,
                     child: Image.asset('iiitn.png')
                 ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Indian Institute of Information Technology, Nagpur",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20),
-                            ),
-                          ),
-                          Text(
-                            "An Institution of National Importance By An Act of Parliament",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14),
-                          ),
-                        ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Indian Institute of Information Technology, Nagpur",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20),
+                        ),
                       ),
-                    ),
-                  ],
+                      Text(
+                        "An Institution of National Importance By An Act of Parliament",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

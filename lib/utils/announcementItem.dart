@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marquee/marquee.dart';
@@ -35,28 +36,29 @@ class _AnnouncementItemState extends State<AnnouncementItem> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children:[
-                      Icon(
+                padding: EdgeInsets.only(top: 20.0, bottom: 15.0,left: 20,right:20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:[
+                    Padding(
+                      padding: const EdgeInsets.only(right:10.0),
+                      child: Icon(
                         widget.icon,
                         color: Colors.white,
                         size: 20,
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
+                    ),
+                    Flexible(
+                      child: Text(
                       widget.title,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 19.0,
                       ),
-                    ),
-                    ]
                   ),
+                    ),
+                  ]
                 ),
               ),
 
