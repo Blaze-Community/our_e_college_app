@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 
 import 'app.dart';
-// import 'dashboard_screen.dart';
-// import 'homepage.dart';
 
 const users = const {
   'bt19cse008@iiitn.ac.in': 'iitn@008',
