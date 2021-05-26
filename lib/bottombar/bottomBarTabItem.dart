@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'app.dart';
+import '../app.dart';
 import 'bottomBarScreens.dart';
 
 class TabItem {

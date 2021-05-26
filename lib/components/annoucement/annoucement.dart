@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:our_e_college_app/components/announcementlist.dart';
+import 'package:our_e_college_app/components/annoucement/announcementlist.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
-import 'package:our_e_college_app/utils/announcementItem.dart';
+import 'package:our_e_college_app/components/annoucement/announcementItem.dart';
 
 class Annoucement extends StatefulWidget {
   @override
@@ -32,16 +32,15 @@ class _Annoucement extends State<Annoucement> {
                   announcement: ['welcome to our scj=hool', 'gjlshdfkh'],
                   color: AppTheme.Colors.flatOrange,
                   icon: FontAwesomeIcons.scroll,
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                AnnouncementList(
+                            builder: (BuildContext context) => AnnouncementList(
                                   title: 'Teacher Notices',
                                   announcement: [
-                                    ['welcome to our scj=hool','2 May 2001'],
-                                    ['gjlshdfkh','4 May 2001']
+                                    ['welcome to our scj=hool', '2 May 2001'],
+                                    ['gjlshdfkh', '4 May 2001']
                                   ],
                                 )));
                   },
@@ -51,18 +50,17 @@ class _Annoucement extends State<Annoucement> {
                   icon: FontAwesomeIcons.scroll,
                   announcement: ['hgffkga', 'hgfadgfd'],
                   color: AppTheme.Colors.flatPurple,
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                               AnnouncementList(
-                                 title: 'Student Notices',
-                                 announcement: [
-                                   ['hgffkga','2 May 2001'],
-                                   ['hgfadgfd','4 May 2001']
-                                 ],
-                               )));
+                            builder: (BuildContext context) => AnnouncementList(
+                                  title: 'Student Notices',
+                                  announcement: [
+                                    ['hgffkga', '2 May 2001'],
+                                    ['hgfadgfd', '4 May 2001']
+                                  ],
+                                )));
                   },
                 )
               ],
@@ -74,16 +72,16 @@ class _Annoucement extends State<Annoucement> {
                   icon: FontAwesomeIcons.trophy,
                   announcement: ['welcome to our scj=hool', 'gjlshdfkh'],
                   color: AppTheme.Colors.flatDeepPurple,
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                AnnouncementList(
+                            builder: (BuildContext context) => AnnouncementList(
                                   title: 'Teacher Achivement',
                                   announcement: [
-                                    ['welcome to our scj=hool','2 May 2001'],
-                                    ['gjlshdfkh','4 May 2001']],
+                                    ['welcome to our scj=hool', '2 May 2001'],
+                                    ['gjlshdfkh', '4 May 2001']
+                                  ],
                                 )));
                   },
                 ),
@@ -92,16 +90,15 @@ class _Annoucement extends State<Annoucement> {
                   icon: FontAwesomeIcons.trophy,
                   announcement: ['hgffkga', 'hgfadgfd'],
                   color: AppTheme.Colors.flatRed,
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                AnnouncementList(
+                            builder: (BuildContext context) => AnnouncementList(
                                   title: 'Student Achivement',
                                   announcement: [
-                                    ['hgffkga','2 May 2001'],
-                                    ['hgfadgfd','4 May 2001']
+                                    ['hgffkga', '2 May 2001'],
+                                    ['hgfadgfd', '4 May 2001']
                                   ],
                                 )));
                   },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:our_e_college_app/components/buySellDetails.dart';
-import 'package:our_e_college_app/utils/newPostSell.dart';
+import 'package:our_e_college_app/components/buysell/buySellDetails.dart';
+import 'package:our_e_college_app/components/buysell/newPostSell.dart';
 
 class SellList extends StatefulWidget {
   @override
@@ -11,60 +11,62 @@ class _SellListState extends State<SellList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-            child: Stack(
-              children: [
-                ListView(
-                  children: <Widget>[
-                    SizedBox(height: 80.0),
-                    Container(
-                      height: MediaQuery.of(context).size.height - 185.0,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(75.0),
-                            topRight: Radius.circular(75.0),
-                            ),
-                      ),
-                      child: ListView(
-                        padding: EdgeInsets.only(left: 25.0, right: 20.0),
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.only(top: 45.0),
-                              child: Container(
-                                  height: MediaQuery.of(context).size.height - 300.0,
-                                  child: ListView(children: [
-                                    _buildListItems('plate1.png', 'M & G Book', '50.00'),
-                                    _buildListItems(
-                                        'plate1.png', 'Maths II Book', '50.00'),
-                                    _buildListItems('plate1.png', 'Calculator', '50.00'),
-                                    _buildListItems('plate1.png', 'Calculator', '50.00'),
-                                    _buildListItems('plate1.png', 'Calculator', '50.00'),
-                                    _buildListItems('plate1.png', 'Calculator', '50.00'),
-                                    _buildListItems(
-                                        'plate1.png', 'Phillips Kettle', '50.00')
-                                  ]))),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Positioned(
-                  bottom: 20,
-                  right: 30,
-
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  NewPostSell()));
-                    },
-                    child: Icon(Icons.add)
+      child: Stack(
+        children: [
+          ListView(
+            children: <Widget>[
+              SizedBox(height: 80.0),
+              Container(
+                height: MediaQuery.of(context).size.height - 185.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(75.0),
+                    topRight: Radius.circular(75.0),
                   ),
                 ),
-              ],
-            ),
+                child: ListView(
+                  padding: EdgeInsets.only(left: 25.0, right: 20.0),
+                  children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 45.0),
+                        child: Container(
+                            height: MediaQuery.of(context).size.height - 300.0,
+                            child: ListView(children: [
+                              _buildListItems(
+                                  'plate1.png', 'M & G Book', '50.00'),
+                              _buildListItems(
+                                  'plate1.png', 'Maths II Book', '50.00'),
+                              _buildListItems(
+                                  'plate1.png', 'Calculator', '50.00'),
+                              _buildListItems(
+                                  'plate1.png', 'Calculator', '50.00'),
+                              _buildListItems(
+                                  'plate1.png', 'Calculator', '50.00'),
+                              _buildListItems(
+                                  'plate1.png', 'Calculator', '50.00'),
+                              _buildListItems(
+                                  'plate1.png', 'Phillips Kettle', '50.00')
+                            ]))),
+                  ],
+                ),
+              )
+            ],
+          ),
+          Positioned(
+            bottom: 20,
+            right: 30,
+            child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => NewPostSell()));
+                },
+                child: Icon(Icons.add)),
+          ),
+        ],
+      ),
     );
   }
 
@@ -120,8 +122,7 @@ class _SellListState extends State<SellList> {
                     IconButton(
                         icon: Icon(Icons.delete),
                         color: Colors.grey,
-                        onPressed: () {
-                        })
+                        onPressed: () {})
                   ],
                 ))));
   }

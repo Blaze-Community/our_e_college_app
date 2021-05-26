@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:our_e_college_app/components/buySellDetails.dart';
+import 'package:our_e_college_app/components/buysell/buySellDetails.dart';
 
 class BuyList extends StatefulWidget {
   @override
@@ -11,7 +11,7 @@ class _BuyListState extends State<BuyList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child:  ListView(
+      child: ListView(
         children: <Widget>[
           SizedBox(height: 80.0),
           Container(
@@ -32,8 +32,7 @@ class _BuyListState extends State<BuyList> {
                         height: MediaQuery.of(context).size.height - 300.0,
                         child: ListView(children: [
                           _buildListItems('1.jpg', 'M & G Book', '50.00'),
-                          _buildListItems(
-                              '1.jpg', 'Maths II Book', '50.00'),
+                          _buildListItems('1.jpg', 'Maths II Book', '50.00'),
                           _buildListItems('1.jpg', 'Calculator', '50.00'),
                           _buildListItems('1.jpg', 'Calculator', '50.00'),
                           _buildListItems('1.jpg', 'Calculator', '50.00'),
@@ -94,8 +93,7 @@ class _BuyListState extends State<BuyList> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                                itemName,
+                            Text(itemName,
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 17.0,
@@ -104,8 +102,7 @@ class _BuyListState extends State<BuyList> {
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 15.0,
-                                    color: Colors.grey)
-                            ),
+                                    color: Colors.grey)),
                           ],
                         ),
                       ),
@@ -141,9 +138,3 @@ class _BuyListState extends State<BuyList> {
     );
   }
 }
-
-
-
-
-
-
