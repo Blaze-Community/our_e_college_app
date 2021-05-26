@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:our_e_college_app/components/attendence/attendence.dart';
 import 'package:our_e_college_app/main.dart';
 import 'package:our_e_college_app/utils/homepage.dart';
-import 'package:our_e_college_app/utils/profileSection.dart';
+import 'package:our_e_college_app/profilesection/profileSection.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({key}) : super(key: key);

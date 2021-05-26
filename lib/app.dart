@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'bottomBarScreens.dart';
-import 'bottomBarTabItem.dart';
-import 'bottomNavigation.dart';
+import 'bottombar/bottomBarScreens.dart';
+import 'bottombar/bottomBarTabItem.dart';
+import 'bottombar/bottomNavigation.dart';
 
 class App extends StatefulWidget {
   @override
@@ -53,7 +53,7 @@ class AppState extends State<App> {
     return WillPopScope(
       onWillPop: () async {
         final isFirstRouteInCurrentTab =
-        !await tabs[currentTab].key.currentState.maybePop();
+            !await tabs[currentTab].key.currentState.maybePop();
         if (isFirstRouteInCurrentTab) {
           // if not on the 'main' tab
           if (currentTab != 0) {
