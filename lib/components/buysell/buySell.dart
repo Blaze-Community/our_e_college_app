@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:our_e_college_app/utils/buyList.dart';
-import 'package:our_e_college_app/utils/sellList.dart';
+import 'package:our_e_college_app/components/buysell/buyList.dart';
+import 'package:our_e_college_app/components/buysell/sellList.dart';
 
 class BuySell extends StatefulWidget {
   @override
@@ -11,7 +11,7 @@ class _BuySellState extends State<BuySell> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2, 
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             leading: IconButton(
@@ -54,7 +54,6 @@ class _BuySellState extends State<BuySell> {
               SellList(),
             ],
           ),
-        )
-      );
+        ));
   }
 }

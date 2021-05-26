@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:our_e_college_app/components/annoucement.dart';
-import 'package:our_e_college_app/components/attendence.dart';
+import 'package:our_e_college_app/components/annoucement/annoucement.dart';
+import 'package:our_e_college_app/components/attendence/attendence.dart';
 import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
-import 'package:our_e_college_app/components/timetable.dart';
-import 'package:our_e_college_app/components/results.dart';
-import 'package:our_e_college_app/components/assignment.dart';
-import 'package:our_e_college_app/components/buySell.dart';
+import 'package:our_e_college_app/components/timetable/timetable.dart';
+import 'package:our_e_college_app/components/result/results.dart';
+import 'package:our_e_college_app/components/assignment/assignment.dart';
+import 'package:our_e_college_app/components/buysell/buySell.dart';
 
 import 'homeCategoryItem.dart';
 
@@ -20,13 +20,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[ //
+      children: <Widget>[
+        //
         Container(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height/3.5,
+          height: MediaQuery.of(context).size.height / 3.5,
           decoration: BoxDecoration(
-            // color: Colors.deepOrange,
-              borderRadius:  BorderRadius.only(
+              // color: Colors.deepOrange,
+              borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(21),
                 bottomRight: Radius.circular(21),
               ),
@@ -35,19 +36,15 @@ class _HomePageState extends State<HomePage> {
                 image: AssetImage(
                   "splash2.jpg",
                 ),
-              )
-          ),
+              )),
           child: Padding(
-            padding: const EdgeInsets.only(top:16.0),
+            padding: const EdgeInsets.only(top: 16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                    height: 100,
-                    width: 100,
-                    child: Image.asset('iiitn.png')
-                ),
+                    height: 100, width: 100, child: Image.asset('iiitn.png')),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,17 +55,13 @@ class _HomePageState extends State<HomePage> {
                         child: Text(
                           "Indian Institute of Information Technology, Nagpur",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20),
+                          style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                       ),
                       Text(
                         "An Institution of National Importance By An Act of Parliament",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14),
+                        style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ],
                   ),
@@ -132,8 +125,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                Annoucement()));
+                            builder: (BuildContext context) => Annoucement()));
                   },
                 )),
             Padding(
@@ -255,8 +247,7 @@ class _HomePageState extends State<HomePage> {
                               primaryColor: AppTheme.Colors.flatPurple,
                               primaryIcon: FontAwesomeIcons.book,
                               primaryTitle: "E-Book",
-                              secondaryColor:
-                              AppTheme.Colors.flatDeepPurple,
+                              secondaryColor: AppTheme.Colors.flatDeepPurple,
                               secondaryIcon: FontAwesomeIcons.book,
                               secondaryIconHeight: 40,
                             ))),
@@ -275,8 +266,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                BuySell()));
+                            builder: (BuildContext context) => BuySell()));
                   },
                 )),
           ]),

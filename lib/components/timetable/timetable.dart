@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:our_e_college_app/utils/timetableitems.dart';
+import 'package:our_e_college_app/components/timetable/timetableitems.dart';
 import 'package:table_calendar/table_calendar.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 

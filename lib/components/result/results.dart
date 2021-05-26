@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:our_e_college_app/utils/resultitem.dart';
+import 'package:our_e_college_app/components/result/resultitem.dart';
 
 class Result extends StatefulWidget {
   @override
@@ -8,30 +8,12 @@ class Result extends StatefulWidget {
 
 class _ResultState extends State<Result> {
   final List items = [
-    ResultItem(
-        subject: "DSA",
-        uploadDate: "28 May 2021",
-        marks: 25),
-    ResultItem(
-        subject: "DSA",
-        uploadDate: "27 May 2021",
-        marks: 25),
-    ResultItem(
-        subject: "DSA",
-        uploadDate: "26 May 2021",
-        marks: 25),
-    ResultItem(
-        subject: "DSA",
-        uploadDate: "25 May 2021",
-        marks: 25),
-    ResultItem(
-        subject: "DSA",
-        uploadDate: "24 May 2021",
-        marks: 25),
-    ResultItem(
-        subject: "DSA",
-        uploadDate: "23 May 2021",
-        marks: 25),
+    ResultItem(subject: "DSA", uploadDate: "28 May 2021", marks: 25),
+    ResultItem(subject: "DSA", uploadDate: "27 May 2021", marks: 25),
+    ResultItem(subject: "DSA", uploadDate: "26 May 2021", marks: 25),
+    ResultItem(subject: "DSA", uploadDate: "25 May 2021", marks: 25),
+    ResultItem(subject: "DSA", uploadDate: "24 May 2021", marks: 25),
+    ResultItem(subject: "DSA", uploadDate: "23 May 2021", marks: 25),
   ];
 
   @override

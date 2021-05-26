@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:table_calendar/table_calendar.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 class AnnouncementList extends StatefulWidget {
   String title;
@@ -10,30 +8,29 @@ class AnnouncementList extends StatefulWidget {
   AnnouncementList({
     this.title,
     this.announcement,
-
   });
   @override
   _AnnouncementListState createState() => _AnnouncementListState();
 }
 
 class _AnnouncementListState extends State<AnnouncementList> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
         body: Padding(
-          padding: const EdgeInsets.only(top:10.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Column(
             children: [
               Expanded(
                 child: ListView.builder(
-                  //physics: const NeverScrollableScrollPhysics(),
+                    //physics: const NeverScrollableScrollPhysics(),
                     itemCount: widget.announcement.length,
                     itemBuilder: (BuildContext ctxt, int i) {
-                      return buildTaskListItem(widget.announcement[i][0], widget.announcement[i][1]);
+                      return buildTaskListItem(
+                          widget.announcement[i][0], widget.announcement[i][1]);
                     }),
               )
             ],
@@ -67,12 +64,11 @@ class _AnnouncementListState extends State<AnnouncementList> {
                   children: [
                     RichText(
                       text: TextSpan(
-                          text:date,
+                          text: date,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
-                          )
-                      ),
+                          )),
                     ),
                   ],
                 ),
@@ -115,8 +111,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                     ),
                   )
                 ],
-              )
-          )
+              ))
         ],
       ),
     );
