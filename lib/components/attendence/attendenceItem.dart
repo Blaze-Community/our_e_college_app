@@ -46,7 +46,7 @@ class _AttendenceItemState extends State<AttendenceItem> {
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(left:26.0,top:26),
+                      padding: const EdgeInsets.only(left:18.0,top:18),
                       child: Row(
                         children: <Widget>[
                           Container(
@@ -132,7 +132,7 @@ class _AttendenceItemState extends State<AttendenceItem> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 26, right: 24, bottom: 10,top:8),
+                          left: 18, right: 24, bottom: 10,top:8),
                       child: Container(
                         height: 2,
                         decoration: BoxDecoration(
@@ -142,7 +142,7 @@ class _AttendenceItemState extends State<AttendenceItem> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left:26),
+                      padding: const EdgeInsets.only(left:18),
                       child: Text("Status: Attend next " + ((widget.totalClasses*0.75).round() - widget.attend).toString()  +" classes to get "
                           "back on track",
                           textAlign: TextAlign.start,
@@ -150,7 +150,6 @@ class _AttendenceItemState extends State<AttendenceItem> {
                               fontFamily: 'Roboto',
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
-                              letterSpacing: -0.1,
                               color: Colors.black
                           )),
                     )

@@ -10,49 +10,45 @@ class SellList extends StatefulWidget {
 class _SellListState extends State<SellList> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
+      padding: const EdgeInsets.only(top:30.0),
       child: Stack(
         children: [
-          ListView(
-            children: <Widget>[
-              SizedBox(height: 80.0),
-              Container(
-                height: MediaQuery.of(context).size.height - 185.0,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(75.0),
-                    topRight: Radius.circular(75.0),
-                  ),
-                ),
-                child: ListView(
-                  padding: EdgeInsets.only(left: 25.0, right: 20.0),
-                  children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(top: 45.0),
-                        child: Container(
-                            height: MediaQuery.of(context).size.height - 300.0,
-                            child: ListView(children: [
-                              _buildListItems(
-                                  'assets/plate1.png', 'M & G Book', '50.00'),
-                              _buildListItems(
-                                  'assets/plate1.png', 'Maths II Book', '50.00'),
-                              _buildListItems(
-                                  'assets/plate1.png', 'Calculator', '50.00'),
-                              _buildListItems(
-                                  'assets/plate1.png', 'Calculator', '50.00'),
-                              _buildListItems(
-                                  'assets/plate1.png', 'Calculator', '50.00'),
-                              _buildListItems(
-                                  'assets/plate1.png', 'Calculator', '50.00'),
-                              _buildListItems(
-                                  'assets/plate1.png', 'Phillips Kettle', '50.00'),
-                              SizedBox(height: 30)
-                            ]))),
-                  ],
-                ),
-              )
-            ],
+          Container(
+            height: MediaQuery.of(context).size.height - 185.0,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(75.0),
+                topRight: Radius.circular(75.0),
+              ),
+            ),
+            child: ListView(
+              padding: EdgeInsets.only(left: 25.0, right: 20.0),
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(top: 45.0),
+                    child: Container(
+                        height: MediaQuery.of(context).size.height - 300.0,
+                        child: ListView(children: [
+                          _buildListItems(
+                              'assets/plate1.png', 'M & G Book', '50.00'),
+                          _buildListItems(
+                              'assets/plate1.png', 'Maths II Book', '50.00'),
+                          _buildListItems(
+                              'assets/plate1.png', 'Calculator', '50.00'),
+                          _buildListItems(
+                              'assets/plate1.png', 'Calculator', '50.00'),
+                          _buildListItems(
+                              'assets/plate1.png', 'Calculator', '50.00'),
+                          _buildListItems(
+                              'assets/plate1.png', 'Calculator', '50.00'),
+                          _buildListItems(
+                              'assets/plate1.png', 'Phillips Kettle', '50.00'),
+                          SizedBox(height: 30)
+                        ]))),
+              ],
+            ),
           ),
           Positioned(
             bottom: 20,
