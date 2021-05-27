@@ -1,7 +1,23 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:our_e_college_app/profilesection/profilelistitem.dart';
+import 'package:image_picker/image_picker.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  File image;
+  final picker = ImagePicker();
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      image = File(pickedFile.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,11 +33,18 @@ class Profile extends StatelessWidget {
             child: Stack(
               children: [
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage(''),
+                InkWell(
+                  child: CircleAvatar(
+                    radius: 50,
+                    foregroundImage: image == null
+                        ? AssetImage('splash.jpg')
+                        : FileImage(image),
+                  ),
+                  onTap: () {
+                    getImage();
+                  },
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
@@ -61,22 +84,27 @@ class Profile extends StatelessWidget {
                 ProfileListItem(
                   icon: Icons.book,
                   text: 'Backlogs',
+                  onPressed: () {},
                 ),
                 ProfileListItem(
                   icon: Icons.calendar_today_outlined,
                   text: 'Acadmic Calendar',
+                  onPressed: () {},
                 ),
                 ProfileListItem(
                   icon: Icons.settings,
-                  text: 'Settings',
+                  text: 'About',
+                  onPressed: () {},
                 ),
                 ProfileListItem(
                   icon: Icons.star_rate,
-                  text: 'Rate us',
+                  text: 'Report',
+                  onPressed: () {},
                 ),
                 ProfileListItem(
                   icon: Icons.logout,
                   text: 'Logout',
+                  onPressed: () {},
                   hasNavigation: false,
                 ),
               ],
@@ -85,53 +113,5 @@ class Profile extends StatelessWidget {
         ],
       ),
     ));
-  }
-}
-
-class ProfileListItem extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final bool hasNavigation;
-
-  const ProfileListItem({
-    Key key,
-    this.icon,
-    this.text,
-    this.hasNavigation = true,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 55,
-      margin: EdgeInsets.symmetric(
-        horizontal: 40,
-      ).copyWith(
-        bottom: 20,
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white,
-      ),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            this.icon,
-            size: 25,
-          ),
-          SizedBox(width: 15),
-          Text(
-            this.text,
-          ),
-          Spacer(),
-          if (this.hasNavigation)
-            Icon(
-              Icons.arrow_forward,
-              size: 25,
-            ),
-        ],
-      ),
-    );
   }
 }
