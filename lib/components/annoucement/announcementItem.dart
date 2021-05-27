@@ -88,7 +88,7 @@ class _AnnouncementItemState extends State<AnnouncementItem> {
                     SizedBox(
                       height: 220.0,
                       child: ListView.builder(
-                          //physics: const NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: widget.announcement.length,
                           itemBuilder: (BuildContext ctxt, int i) {
                             return Row(
