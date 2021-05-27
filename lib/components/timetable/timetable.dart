@@ -72,7 +72,7 @@ class _TimeTableState extends State<TimeTable> {
             Positioned(
               top: 80,
               child: Container(
-                height: MediaQuery.of(context).size.height - 200,
+                height: MediaQuery.of(context).size.height - 220,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: Colors.white,

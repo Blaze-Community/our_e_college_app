@@ -10,10 +10,10 @@ class BuyList extends StatefulWidget {
 class _BuyListState extends State<BuyList> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
+    return Padding(
+      padding: const EdgeInsets.only(top:30.0),
+      child: Stack(
         children: <Widget>[
-          SizedBox(height: 80.0),
           Container(
             height: MediaQuery.of(context).size.height - 185.0,
             decoration: BoxDecoration(
