@@ -31,14 +31,15 @@ class _BuyListState extends State<BuyList> {
                     child: Container(
                         height: MediaQuery.of(context).size.height - 300.0,
                         child: ListView(children: [
-                          _buildListItems('1.jpg', 'M & G Book', '50.00'),
-                          _buildListItems('1.jpg', 'Maths II Book', '50.00'),
-                          _buildListItems('1.jpg', 'Calculator', '50.00'),
-                          _buildListItems('1.jpg', 'Calculator', '50.00'),
-                          _buildListItems('1.jpg', 'Calculator', '50.00'),
-                          _buildListItems('1.jpg', 'Calculator', '50.00'),
+                          _buildListItems('assets/1.jpg', 'M & G Book', '50.00'),
+                          _buildListItems('assets/1.jpg', 'Maths II Book', '50.00'),
+                          _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
+                          _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
+                          _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
+                          _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
                           _buildListItems(
-                              'plate1.png', 'Phillips Kettle', '50.00')
+                              'assets/plate1.png', 'Phillips Kettle', '50.00'),
+                          SizedBox(height: 30)
                         ]))),
               ],
             ),
