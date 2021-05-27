@@ -119,11 +119,13 @@ class ProfileListItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final bool hasNavigation;
+  final Function onPressed;
 
   const ProfileListItem({
     Key key,
     this.icon,
     this.text,
+    this.onPressed,
     this.hasNavigation = true,
   }) : super(key: key);
 
