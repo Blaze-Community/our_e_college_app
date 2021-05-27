@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:our_e_college_app/components/announcementlist.dart';
+import 'package:our_e_college_app/components/annoucement/announcementlist.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
-import 'package:our_e_college_app/utils/announcementItem.dart';
+import 'package:our_e_college_app/components/annoucement/announcementItem.dart';
 
 class Annoucement extends StatefulWidget {
   @override

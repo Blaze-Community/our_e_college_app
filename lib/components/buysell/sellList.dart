@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:our_e_college_app/components/buySellDetails.dart';
+import 'package:our_e_college_app/components/buysell/buySellDetails.dart';
+import 'package:our_e_college_app/components/buysell/newPostSell.dart';
 
-class BuyList extends StatefulWidget {
+class SellList extends StatefulWidget {
   @override
-  _BuyListState createState() => _BuyListState();
+  _SellListState createState() => _SellListState();
 }
 
-class _BuyListState extends State<BuyList> {
+class _SellListState extends State<SellList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child:  ListView(
+      child: Stack(
+        children: [
+          ListView(
             children: <Widget>[
               SizedBox(height: 80.0),
               Container(
@@ -18,9 +21,9 @@ class _BuyListState extends State<BuyList> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(75.0),
-                      topRight: Radius.circular(75.0),
-                      ),
+                    topLeft: Radius.circular(75.0),
+                    topRight: Radius.circular(75.0),
+                  ),
                 ),
                 child: ListView(
                   padding: EdgeInsets.only(left: 25.0, right: 20.0),
@@ -30,31 +33,50 @@ class _BuyListState extends State<BuyList> {
                         child: Container(
                             height: MediaQuery.of(context).size.height - 300.0,
                             child: ListView(children: [
-                              _buildListItems('plate1.png', 'M & G Book', '50.00'),
                               _buildListItems(
-                                  'plate1.png', 'Maths II Book', '50.00'),
-                              _buildListItems('plate1.png', 'Calculator', '50.00'),
-                              _buildListItems('plate1.png', 'Calculator', '50.00'),
-                              _buildListItems('plate1.png', 'Calculator', '50.00'),
-                              _buildListItems('plate1.png', 'Calculator', '50.00'),
+                                  'assets/plate1.png', 'M & G Book', '50.00'),
                               _buildListItems(
-                                  'plate1.png', 'Phillips Kettle', '50.00')
+                                  'assets/plate1.png', 'Maths II Book', '50.00'),
+                              _buildListItems(
+                                  'assets/plate1.png', 'Calculator', '50.00'),
+                              _buildListItems(
+                                  'assets/plate1.png', 'Calculator', '50.00'),
+                              _buildListItems(
+                                  'assets/plate1.png', 'Calculator', '50.00'),
+                              _buildListItems(
+                                  'assets/plate1.png', 'Calculator', '50.00'),
+                              _buildListItems(
+                                  'assets/plate1.png', 'Phillips Kettle', '50.00'),
+                              SizedBox(height: 30)
                             ]))),
                   ],
                 ),
               )
             ],
           ),
+          Positioned(
+            bottom: 20,
+            right: 30,
+            child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => NewPostSell()));
+                },
+                child: Icon(Icons.add)),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildListItems(String imgPath, String itemName, String itemPrice) {
+  Widget _buildListItems(String imgPath, String itemName, String price) {
     return Container(
         width: double.infinity,
         decoration: BoxDecoration(
             border: Border.all(width: 1, color: Colors.grey[300]),
-            borderRadius: BorderRadius.circular(20),
-            ),
+            borderRadius: BorderRadius.circular(20)),
         margin: EdgeInsets.only(bottom: 10.0),
         padding: EdgeInsets.all(20),
         child: Padding(
@@ -65,22 +87,22 @@ class _BuyListState extends State<BuyList> {
                       builder: (context) => BuySellDetails(
                           heroTag: imgPath,
                           itemName: itemName,
-                          itemPrice: itemPrice)));
+                          itemPrice: price)));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
                         child: Row(children: [
-                      // Hero(
-                      //   tag: imgPath,
-                      //   child: Image(
-                      //     image: AssetImage(imgPath),
-                      //     fit: BoxFit.cover,
-                      //     height: 30.0,
-                      //     width: 30.0
-                      //   )
-                      // ),
+                      Hero(
+                        tag: imgPath,
+                        child: Image(
+                          image: AssetImage(imgPath),
+                          fit: BoxFit.cover,
+                          height: 30.0,
+                          width: 30.0
+                        )
+                      ),
                       SizedBox(width: 10.0),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +113,7 @@ class _BuyListState extends State<BuyList> {
                                     fontSize: 17.0,
                                     fontWeight: FontWeight.bold)),
                             SizedBox(height: 10.0),
-                            Text('Rs. ' + itemPrice,
+                            Text('Rs. ' + price,
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 15.0,
@@ -99,11 +121,9 @@ class _BuyListState extends State<BuyList> {
                           ])
                     ])),
                     IconButton(
-                        icon: Icon(Icons.favorite_border),
+                        icon: Icon(Icons.delete),
                         color: Colors.grey,
-                        onPressed: () {
-                          
-                        })
+                        onPressed: () {})
                   ],
                 ))));
   }
