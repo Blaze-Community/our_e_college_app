@@ -27,22 +27,19 @@ class TimeTableItems extends StatelessWidget {
               SizedBox(
                 width: 15,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width - 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: this.time,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: this.time,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               )
             ],
           ),

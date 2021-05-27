@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ResultItem extends StatefulWidget {
   String subject;
@@ -114,11 +115,19 @@ class _ResultItemState extends State<ResultItem> {
                   ),
                   OutlinedButton(
                     onPressed: () {},
-                    child: Text(
-                      "DOWNLOAD MARKSHEET",
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
+                    child: Row(
+                      children: [
+                        Icon(FontAwesomeIcons.download,
+                            size: 12),
+                        SizedBox(width: 10),
+                        Text(
+                          "MARKSHEET",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 ],
