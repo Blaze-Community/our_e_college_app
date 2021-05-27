@@ -75,41 +75,37 @@ class _AnnouncementItemState extends State<AnnouncementItem> {
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Latest Updates',style: TextStyle(color: Colors.white),),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8.0, left: 15.0, right: 5.0),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 220.0,
-                    child: ListView.builder(
-                        //physics: const NeverScrollableScrollPhysics(),
-                        itemCount: widget.announcement.length,
-                        itemBuilder: (BuildContext ctxt, int i) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Icon(
-                                FontAwesomeIcons.checkCircle,
-                                color: Colors.white,
-                                size: 14.0,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                              ),
-                              Flexible(
-                                child: Container(
-                                  height: 30,
-                                  child: Marquee(
-                                    text:
-                                        widget.announcement[i],
-                                    style: TextStyle(color: Colors.white),
-                                    velocity: 30.0,
-                                    pauseAfterRound: Duration(seconds: 1),
+              Padding(
+                padding: EdgeInsets.only(top: 8.0, left: 15.0, right: 5.0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 220.0,
+                      child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: widget.announcement.length,
+                          itemBuilder: (BuildContext ctxt, int i) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(
+                                  FontAwesomeIcons.checkCircle,
+                                  color: Colors.white,
+                                  size: 14.0,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 5.0),
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    height: 30,
+                                    child: Marquee(
+                                      text:
+                                          widget.announcement[i],
+                                      style: TextStyle(color: Colors.white),
+                                      velocity: 30.0,
+                                      pauseAfterRound: Duration(seconds: 1),
+                                    ),
                                   ),
                                 ),
                               )
