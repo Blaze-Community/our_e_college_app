@@ -33,7 +33,7 @@ dependencies:
   table_calendar: ^2.2.1
   marquee: ^2.1.0
   image_picker: ^0.7.5+3
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:our_e_college_app/profilesection/profilelistitem.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
@@ -32,7 +33,7 @@ class _ProfileState extends State<Profile> {
             child: Stack(
               children: [
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 InkWell(
                   child: CircleAvatar(
@@ -83,22 +84,27 @@ class _ProfileState extends State<Profile> {
                 ProfileListItem(
                   icon: Icons.book,
                   text: 'Backlogs',
+                  onPressed: () {},
                 ),
                 ProfileListItem(
                   icon: Icons.calendar_today_outlined,
                   text: 'Acadmic Calendar',
+                  onPressed: () {},
                 ),
                 ProfileListItem(
                   icon: Icons.settings,
-                  text: 'Settings',
+                  text: 'About',
+                  onPressed: () {},
                 ),
                 ProfileListItem(
                   icon: Icons.star_rate,
-                  text: 'Rate us',
+                  text: 'Report',
+                  onPressed: () {},
                 ),
                 ProfileListItem(
                   icon: Icons.logout,
                   text: 'Logout',
+                  onPressed: () {},
                   hasNavigation: false,
                 ),
               ],
@@ -109,7 +115,6 @@ class _ProfileState extends State<Profile> {
     ));
   }
 }
-
 class ProfileListItem extends StatelessWidget {
   final IconData icon;
   final String text;
