@@ -1,7 +1,22 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  File image;
+  final picker = ImagePicker();
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      image = File(pickedFile.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,9 +34,16 @@ class Profile extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage(''),
+                InkWell(
+                  child: CircleAvatar(
+                    radius: 50,
+                    foregroundImage: image == null
+                        ? AssetImage('splash.jpg')
+                        : FileImage(image),
+                  ),
+                  onTap: () {
+                    getImage();
+                  },
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
