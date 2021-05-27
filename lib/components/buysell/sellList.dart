@@ -34,19 +34,20 @@ class _SellListState extends State<SellList> {
                             height: MediaQuery.of(context).size.height - 300.0,
                             child: ListView(children: [
                               _buildListItems(
-                                  'plate1.png', 'M & G Book', '50.00'),
+                                  'assets/plate1.png', 'M & G Book', '50.00'),
                               _buildListItems(
-                                  'plate1.png', 'Maths II Book', '50.00'),
+                                  'assets/plate1.png', 'Maths II Book', '50.00'),
                               _buildListItems(
-                                  'plate1.png', 'Calculator', '50.00'),
+                                  'assets/plate1.png', 'Calculator', '50.00'),
                               _buildListItems(
-                                  'plate1.png', 'Calculator', '50.00'),
+                                  'assets/plate1.png', 'Calculator', '50.00'),
                               _buildListItems(
-                                  'plate1.png', 'Calculator', '50.00'),
+                                  'assets/plate1.png', 'Calculator', '50.00'),
                               _buildListItems(
-                                  'plate1.png', 'Calculator', '50.00'),
+                                  'assets/plate1.png', 'Calculator', '50.00'),
                               _buildListItems(
-                                  'plate1.png', 'Phillips Kettle', '50.00')
+                                  'assets/plate1.png', 'Phillips Kettle', '50.00'),
+                              SizedBox(height: 30)
                             ]))),
                   ],
                 ),
@@ -93,15 +94,15 @@ class _SellListState extends State<SellList> {
                   children: <Widget>[
                     Container(
                         child: Row(children: [
-                      // Hero(
-                      //   tag: imgPath,
-                      //   child: Image(
-                      //     image: AssetImage(imgPath),
-                      //     fit: BoxFit.cover,
-                      //     height: 30.0,
-                      //     width: 30.0
-                      //   )
-                      // ),
+                      Hero(
+                        tag: imgPath,
+                        child: Image(
+                          image: AssetImage(imgPath),
+                          fit: BoxFit.cover,
+                          height: 30.0,
+                          width: 30.0
+                        )
+                      ),
                       SizedBox(width: 10.0),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
