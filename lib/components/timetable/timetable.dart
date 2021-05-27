@@ -26,7 +26,7 @@ class _TimeTableState extends State<TimeTable> {
         body: Stack(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               alignment: Alignment.topCenter,
               color: Color(0xFFF0F0F0),
               height: MediaQuery.of(context).size.height,
@@ -70,9 +70,9 @@ class _TimeTableState extends State<TimeTable> {
               ),
             ),
             Positioned(
-              top: 100,
+              top: 80,
               child: Container(
-                height: MediaQuery.of(context).size.height - 220,
+                height: MediaQuery.of(context).size.height - 200,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: Colors.white,
