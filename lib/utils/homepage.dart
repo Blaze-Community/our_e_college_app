@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/components/annoucement/annoucement.dart';
 import 'package:our_e_college_app/components/attendence/attendence.dart';
+import 'package:our_e_college_app/components/ebooks/ebooks.dart';
+import 'package:our_e_college_app/components/exam/exam.dart';
+import 'package:our_e_college_app/components/fees/fees.dart';
+import 'package:our_e_college_app/components/transport/transport.dart';
 import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
 import 'package:our_e_college_app/components/timetable/timetable.dart';
 import 'package:our_e_college_app/components/result/results.dart';
@@ -44,7 +48,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                    height: 100, width: 100, child: Image.asset('assets/iiitn.png')),
+                    height: 100, width: 100, child: Image.asset('iiitn.png')),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -208,6 +212,13 @@ class _HomePageState extends State<HomePage> {
                           secondaryColor: AppTheme.Colors.flatDeepPurple,
                           secondaryIcon: Icons.attach_money,
                           secondaryIconHeight: 40,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    Fees()));
+                          },
                         )),
                   ),
                 ],
@@ -222,6 +233,13 @@ class _HomePageState extends State<HomePage> {
                   secondaryColor: AppTheme.Colors.flatOrange,
                   secondaryIcon: FontAwesomeIcons.bus,
                   secondaryIconHeight: 30,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                Transport()));
+                  },
                 )),
             Padding(
                 padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
@@ -238,6 +256,13 @@ class _HomePageState extends State<HomePage> {
                             secondaryColor: AppTheme.Colors.flatOrange,
                             secondaryIcon: Icons.assistant_photo,
                             secondaryIconHeight: 30,
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          Exam()));
+                            },
                           )),
                     ),
                     Expanded(
@@ -250,6 +275,13 @@ class _HomePageState extends State<HomePage> {
                               secondaryColor: AppTheme.Colors.flatDeepPurple,
                               secondaryIcon: FontAwesomeIcons.book,
                               secondaryIconHeight: 40,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Ebooks()));
+                              },
                             ))),
                   ],
                 )),

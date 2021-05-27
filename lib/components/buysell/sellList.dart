@@ -34,19 +34,19 @@ class _SellListState extends State<SellList> {
                             height: MediaQuery.of(context).size.height - 300.0,
                             child: ListView(children: [
                               _buildListItems(
-                                  'assets/plate1.png', 'M & G Book', '50.00'),
+                                  'plate1.png', 'M & G Book', '50.00'),
                               _buildListItems(
-                                  'assets/plate1.png', 'Maths II Book', '50.00'),
+                                  'plate1.png', 'Maths II Book', '50.00'),
                               _buildListItems(
-                                  'assets/plate1.png', 'Calculator', '50.00'),
+                                  'plate1.png', 'Calculator', '50.00'),
                               _buildListItems(
-                                  'assets/plate1.png', 'Calculator', '50.00'),
+                                  'plate1.png', 'Calculator', '50.00'),
                               _buildListItems(
-                                  'assets/plate1.png', 'Calculator', '50.00'),
+                                  'plate1.png', 'Calculator', '50.00'),
                               _buildListItems(
-                                  'assets/plate1.png', 'Calculator', '50.00'),
+                                  'plate1.png', 'Calculator', '50.00'),
                               _buildListItems(
-                                  'assets/plate1.png', 'Phillips Kettle', '50.00'),
+                                  'plate1.png', 'Phillips Kettle', '50.00'),
                               SizedBox(height: 30)
                             ]))),
                   ],
