@@ -20,11 +20,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        //
         Container(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height / 3.5,
+          height: 250,
           decoration: BoxDecoration(
               // color: Colors.deepOrange,
               borderRadius: BorderRadius.only(
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
         Expanded(
           child: ListView(children: [
             Padding(
-              padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+              padding: const EdgeInsets.only(left: 16, right: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

@@ -15,7 +15,6 @@ class _SellListState extends State<SellList> {
       child: Stack(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height - 185.0,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -23,32 +22,29 @@ class _SellListState extends State<SellList> {
                 topRight: Radius.circular(75.0),
               ),
             ),
-            child: ListView(
-              padding: EdgeInsets.only(left: 25.0, right: 20.0),
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.only(top: 45.0),
-                    child: Container(
-                        height: MediaQuery.of(context).size.height - 300.0,
-                        child: ListView(children: [
-                          _buildListItems(
-                              'assets/plate1.png', 'M & G Book', '50.00'),
-                          _buildListItems(
-                              'assets/plate1.png', 'Maths II Book', '50.00'),
-                          _buildListItems(
-                              'assets/plate1.png', 'Calculator', '50.00'),
-                          _buildListItems(
-                              'assets/plate1.png', 'Calculator', '50.00'),
-                          _buildListItems(
-                              'assets/plate1.png', 'Calculator', '50.00'),
-                          _buildListItems(
-                              'assets/plate1.png', 'Calculator', '50.00'),
-                          _buildListItems(
-                              'assets/plate1.png', 'Phillips Kettle', '50.00'),
-                          SizedBox(height: 30)
-                        ]))),
-              ],
-            ),
+            child: Padding(
+                padding: EdgeInsets.only(top: 45.0),
+                child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal:20.0),
+                      child: ListView(children: [
+                        _buildListItems(
+                            'assets/plate1.png', 'M & G Book', '50.00'),
+                        _buildListItems(
+                            'assets/plate1.png', 'Maths II Book', '50.00'),
+                        _buildListItems(
+                            'assets/plate1.png', 'Calculator', '50.00'),
+                        _buildListItems(
+                            'assets/plate1.png', 'Calculator', '50.00'),
+                        _buildListItems(
+                            'assets/plate1.png', 'Calculator', '50.00'),
+                        _buildListItems(
+                            'assets/plate1.png', 'Calculator', '50.00'),
+                        _buildListItems(
+                            'assets/plate1.png', 'Phillips Kettle', '50.00'),
+                        SizedBox(height: 30)
+                      ]),
+                    ))),
           ),
           Positioned(
             bottom: 20,

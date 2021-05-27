@@ -36,6 +36,7 @@ class _NewPostSellState extends State<NewPostSell> {
           ],
         ),
         body: Container(
+          height: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -46,149 +47,147 @@ class _NewPostSellState extends State<NewPostSell> {
           child: Padding(
             padding: const EdgeInsets.only(top:45.0),
             child: Container(
-              child: ListView(
-                padding: EdgeInsets.only(left: 25.0, right: 20.0),
-                children: <Widget>[
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Text('Item Details',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16.0,
-                              color: Colors.grey)),
-                        SizedBox(height: 5),
-                        Container(height: 1.0, color: Colors.deepOrange, width: 50.0),
-                        SizedBox(height: 20),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(10,2,10,2),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.deepPurple)
-                          ),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Item Name",
-                            ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Text('Item Details',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16.0,
+                            color: Colors.grey)),
+                      SizedBox(height: 5),
+                      Container(height: 1.0, color: Colors.deepOrange, width: 50.0),
+                      SizedBox(height: 20),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(10,2,10,2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.deepPurple)
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: "Item Name",
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(10,2,10,2),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.deepPurple)
-                          ),
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Price",
-                            ),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(10,2,10,2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.deepPurple)
+                        ),
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: "Price",
                           ),
                         ),
-                        SizedBox(height: 20),
-                        OutlinedButton(
-                          onPressed: () {},
+                      ),
+                      SizedBox(height: 20),
+                      OutlinedButton(
+                        onPressed: () {},
 
-                          child: Padding(
-                            padding: EdgeInsets.all(15),
+                        child: Padding(
+                          padding: EdgeInsets.all(15),
 
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.upload, size: 25),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    "Upload Image",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                    ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.upload, size: 25),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Upload Image",
+                                  style: TextStyle(
+                                    fontSize: 15,
                                   ),
-                                ],
-                              ),
-                          )
-                        ),
-                        SizedBox(height: 40),
-                        Text('Contact Details',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16.0,
-                              color: Colors.grey)),
-                        SizedBox(height: 5),
-                        Container(height: 1.0, color: Colors.deepOrange, width: 50.0),
-                        SizedBox(height: 20),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(10,2,10,2),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.deepPurple)
-                          ),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Name",
+                                ),
+                              ],
                             ),
+                        )
+                      ),
+                      SizedBox(height: 40),
+                      Text('Contact Details',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16.0,
+                            color: Colors.grey)),
+                      SizedBox(height: 5),
+                      Container(height: 1.0, color: Colors.deepOrange, width: 50.0),
+                      SizedBox(height: 20),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(10,2,10,2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.deepPurple)
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: "Name",
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(10,2,10,2),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.deepPurple)
-                          ),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Room No.",
-                            ),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(10,2,10,2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.deepPurple)
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: "Room No.",
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(10,2,10,2),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.deepPurple)
-                          ),
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Contact No.",
-                            ),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(10,2,10,2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.deepPurple)
+                        ),
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: "Contact No.",
                           ),
                         ),
-                        SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Padding(
-                            padding: EdgeInsets.all(15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.publish, size: 25),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    "Submit",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                    ),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Padding(
+                          padding: EdgeInsets.all(15),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.publish, size: 25),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Submit",
+                                  style: TextStyle(
+                                    fontSize: 15,
                                   ),
-                                ],
-                              ),
-                          )
-                        ),
-                        SizedBox(height: 30)
-                      ],
-                    )
+                                ),
+                              ],
+                            ),
+                        )
+                      ),
+                      SizedBox(height: 30)
+                    ],
+                  )
 
-                  ),
-                ],
+                ),
               ),
             ),
           ),
