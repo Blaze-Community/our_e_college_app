@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                    height: 100, width: 100, child: Image.asset('iiitn.png')),
+                    height: 100, width: 100, child: Image.asset('assets/iiitn.png')),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
