@@ -1,57 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ProfileListItem extends StatelessWidget {
+class ProfileListItems extends StatelessWidget {
   final IconData icon;
   final String text;
   final bool hasNavigation;
   final Function onPressed;
 
-  const ProfileListItem({
-    Key key,
+  const ProfileListItems({
     this.icon,
     this.text,
-    this.hasNavigation = true,
     this.onPressed,
+    this.hasNavigation = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 55,
-      margin: EdgeInsets.symmetric(
-        horizontal: 40,
-      ).copyWith(
-        bottom: 20,
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white,
-      ),
-      child: InkWell(
-          onTap: () {
-            this.onPressed();
-          },
-          child: Container(
-              child: Row(
-            children: <Widget>[
+    return InkWell(
+      onTap: () {
+        this.onPressed();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+        child: Row(
+          children: [
+            Icon(
+              this.icon,
+              size: 25,
+            ),
+            SizedBox(width: 15),
+            Text(
+              this.text,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              ),
+            ),
+            Spacer(),
+            if (this.hasNavigation)
               Icon(
-                this.icon,
-                size: 25,
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
               ),
-              SizedBox(width: 15),
-              Text(
-                this.text,
-              ),
-              Spacer(),
-              if (this.hasNavigation)
-                Icon(
-                  Icons.arrow_forward,
-                  size: 25,
-                ),
-            ],
-          ))),
+          ],
+        ),
+      ),
     );
   }
 }
