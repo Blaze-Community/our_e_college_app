@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AssignmentItem extends StatefulWidget {
   String subject;
@@ -42,20 +43,17 @@ class _AssignmentItemState extends State<AssignmentItem> {
               SizedBox(
                 width: 15,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width - 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.uploadDate,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.uploadDate,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               )
             ],
           ),
@@ -129,12 +127,20 @@ class _AssignmentItemState extends State<AssignmentItem> {
                   ],
                 ),
                 OutlinedButton(
-                  onPressed: () {}, 
-                  child: Text(
-                    "DOWNLOAD PDF",
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
+                  onPressed: () {},
+                  child: Row(
+                    children: [
+                      Icon(FontAwesomeIcons.download,
+                      size: 12),
+                      SizedBox(width: 10),
+                      Text(
+                        "PDF",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 )
               ],

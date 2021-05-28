@@ -10,41 +10,34 @@ class BuyList extends StatefulWidget {
 class _BuyListState extends State<BuyList> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
-        children: <Widget>[
-          SizedBox(height: 80.0),
-          Container(
-            height: MediaQuery.of(context).size.height - 185.0,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(75.0),
-                topRight: Radius.circular(75.0),
-              ),
-            ),
-            child: ListView(
-              padding: EdgeInsets.only(left: 25.0, right: 20.0),
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.only(top: 45.0),
-                    child: Container(
-                        height: MediaQuery.of(context).size.height - 300.0,
-                        child: ListView(children: [
-                          _buildListItems('assets/1.jpg', 'M & G Book', '50.00'),
-                          _buildListItems('assets/1.jpg', 'Maths II Book', '50.00'),
-                          _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
-                          _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
-                          _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
-                          _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
-                          _buildListItems(
-                              'assets/plate1.png', 'Phillips Kettle', '50.00'),
-                          SizedBox(height: 30)
-                        ]))),
-              ],
-            ),
-          )
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(top:30.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(75.0),
+            topRight: Radius.circular(75.0),
+          ),
+        ),
+        child: Padding(
+            padding: EdgeInsets.only(top: 45.0),
+            child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: ListView(
+                      children: [
+                    _buildListItems('assets/1.jpg', 'M & G Book', '50.00'),
+                    _buildListItems('assets/1.jpg', 'Maths II Book', '50.00'),
+                    _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
+                    _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
+                    _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
+                    _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
+                    _buildListItems(
+                        'assets/plate1.png', 'Phillips Kettle', '50.00'),
+                    SizedBox(height: 30)
+                  ]),
+                ))),
       ),
     );
   }
