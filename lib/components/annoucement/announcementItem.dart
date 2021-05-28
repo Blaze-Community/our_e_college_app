@@ -60,7 +60,6 @@ class _AnnouncementItemState extends State<AnnouncementItem> {
                 ]
               ),
             ),
-
             Padding(
               padding: EdgeInsets.only(top: 5.0),
               child: Row(
@@ -74,7 +73,7 @@ class _AnnouncementItemState extends State<AnnouncementItem> {
                     ),
                   ),
                 ],
-              ),
+              )
             ),
             Padding(
               padding: EdgeInsets.only(top: 8.0, left: 15.0, right: 5.0),
@@ -115,10 +114,10 @@ class _AnnouncementItemState extends State<AnnouncementItem> {
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            )
+          ]
+        )
+      )
+        );
   }
 }

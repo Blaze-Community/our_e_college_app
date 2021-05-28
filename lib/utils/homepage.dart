@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/components/annoucement/annoucement.dart';
 import 'package:our_e_college_app/components/attendence/attendence.dart';
-import 'package:our_e_college_app/components/e-card/ebooks.dart';
 import 'package:our_e_college_app/components/ebooks/ebooks.dart';
 import 'package:our_e_college_app/components/exam/exam.dart';
 import 'package:our_e_college_app/components/fees/fees.dart';
@@ -92,13 +91,6 @@ class _HomePageState extends State<HomePage> {
                           secondaryColor: AppTheme.Colors.flatOrange,
                           secondaryIcon: Icons.perm_contact_calendar,
                           secondaryIconHeight: 30,
-                          onPressed: (){
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        Ecard()));
-                          },
                         )),
                   ),
                   Expanded(
