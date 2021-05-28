@@ -1,7 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:our_e_college_app/profilesection/editprofile.dart';
+import 'package:our_e_college_app/profilesection/profilephoto.dart';
 import 'package:our_e_college_app/profilesection/profilelistitem.dart';
-import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -9,158 +9,136 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  File image;
-  final picker = ImagePicker();
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      image = File(pickedFile.path);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0,
+        ),
         body: Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          Container(
-            height: 100,
-            width: 100,
-            margin: EdgeInsets.only(top: 30),
-            child: Stack(
-              children: [
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              Container(
+                height: 100,
+                width: 100,
+                margin: EdgeInsets.only(top: 30),
+                child: Stack(
+                  children: [
+                    SizedBox(
+                      height: 30,
+                    ),
+                    CircleAvatar(
+                      radius: 50,
+                      foregroundImage: image == null
+                          ? AssetImage('splash.jpg')
+                          : FileImage(image),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Harsh Shrivastava',
+              ),
+              SizedBox(height: 5),
+              Text(
+                'BT19CSE006@iitn.com',
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                  child: Column(children: [
+                Row(children: [
+                  SizedBox(width: 20),
+                  Text(
+                    "Settings",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+                  )
+                ]),
                 SizedBox(
-                  height: 30,
+                  height: 38,
                 ),
-                InkWell(
-                  child: CircleAvatar(
-                    radius: 50,
-                    foregroundImage: image == null
-                        ? AssetImage('splash.jpg')
-                        : FileImage(image),
-                  ),
-                  onTap: () {
-                    getImage();
-                  },
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    height: 25,
-                    width: 25,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      shape: BoxShape.circle,
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 15,
                     ),
-                    child: Center(
-                      heightFactor: 15,
-                      widthFactor: 15,
-                      child: Icon(
-                        Icons.person_search,
-                        color: Colors.black,
-                        size: 15,
-                      ),
+                    Icon(
+                      Icons.person,
+                      color: Colors.orange,
                     ),
-                  ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      "Account",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          SizedBox(height: 20),
-          Text(
-            'Harsh Shrivastava',
-          ),
-          SizedBox(height: 5),
-          Text(
-            'BT19CSE006@iitn.com',
-          ),
-          SizedBox(height: 20),
-          Expanded(
-            child: ListView(
-              children: [
-                ProfileListItem(
-                  icon: Icons.book,
-                  text: 'Backlogs',
-                  onPressed: () {},
+                Divider(
+                  height: 15,
+                  thickness: 2,
                 ),
-                ProfileListItem(
-                  icon: Icons.calendar_today_outlined,
-                  text: 'Acadmic Calendar',
-                  onPressed: () {},
+                SizedBox(
+                  height: 10,
                 ),
-                ProfileListItem(
-                  icon: Icons.settings,
-                  text: 'About',
-                  onPressed: () {},
-                ),
-                ProfileListItem(
-                  icon: Icons.star_rate,
-                  text: 'Report',
-                  onPressed: () {},
-                ),
-                ProfileListItem(
-                  icon: Icons.logout,
-                  text: 'Logout',
-                  onPressed: () {},
-                  hasNavigation: false,
-                ),
-              ],
-            ),
+                Expanded(
+                    child: ListView(
+                  children: [
+                    ProfileListItems(
+                      icon: Icons.edit,
+                      text: 'Edit Profile',
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    EditProfile()));
+                      },
+                    ),
+                    ProfileListItems(
+                      icon: Icons.password,
+                      text: 'Change Password',
+                      onPressed: () {},
+                    ),
+                    ProfileListItems(
+                      icon: Icons.book,
+                      text: 'Backlogs',
+                      onPressed: () {},
+                    ),
+                    ProfileListItems(
+                      icon: Icons.calendar_today,
+                      text: 'Acadmic Calendar',
+                      onPressed: () {},
+                    ),
+                    ProfileListItems(
+                      icon: Icons.notifications,
+                      text: 'Notification',
+                      onPressed: () {},
+                    ),
+                    ProfileListItems(
+                      icon: Icons.security,
+                      text: 'About Us',
+                      onPressed: () {},
+                    ),
+                    ProfileListItems(
+                      icon: Icons.logout,
+                      text: 'Logout',
+                      onPressed: () {},
+                      hasNavigation: false,
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                  ],
+                ))
+              ])),
+            ],
           ),
-        ],
-      ),
-    ));
-  }
-}
-class ProfileListItem extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final bool hasNavigation;
-  final Function onPressed;
-
-  const ProfileListItem({
-    Key key,
-    this.icon,
-    this.text,
-    this.onPressed,
-    this.hasNavigation = true,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 55,
-      margin: EdgeInsets.symmetric(
-        horizontal: 40,
-      ).copyWith(
-        bottom: 20,
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white,
-      ),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            this.icon,
-            size: 25,
-          ),
-          SizedBox(width: 15),
-          Text(
-            this.text,
-          ),
-          Spacer(),
-          if (this.hasNavigation)
-            Icon(
-              Icons.arrow_forward,
-              size: 25,
-            ),
-        ],
-      ),
-    );
+        ));
   }
 }
