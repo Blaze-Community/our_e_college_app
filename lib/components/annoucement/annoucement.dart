@@ -64,7 +64,7 @@ class _Annoucement extends State<Annoucement> {
               },
             ),
             AnnouncementItem(
-              title: 'Teacher Achivement',
+              title: 'Teacher Achievement',
               icon: FontAwesomeIcons.trophy,
               announcement: ['welcome to our scj=hool', 'gjlshdfkh'],
               color: AppTheme.Colors.flatDeepPurple,
@@ -74,7 +74,7 @@ class _Annoucement extends State<Annoucement> {
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
                             AnnouncementList(
-                              title: 'Teacher Achivement',
+                              title: 'Teacher Achievement',
                               announcement: [
                                 ['welcome to our scj=hool','2 May 2001'],
                                 ['gjlshdfkh','4 May 2001']],
@@ -82,7 +82,7 @@ class _Annoucement extends State<Annoucement> {
               },
             ),
             AnnouncementItem(
-              title: 'Student \n Achievements',
+              title: 'Student Achievements',
               icon: FontAwesomeIcons.trophy,
               announcement: ['hgffkga', 'hgfadgfd'],
               color: AppTheme.Colors.flatRed,
