@@ -1,1 +1,1 @@
-String user = "Teacher";
+String user = "";
