@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:our_e_college_app/LoginScreen.dart';
 import 'package:our_e_college_app/profilesection/editprofile.dart';
 import 'package:our_e_college_app/profilesection/profilephoto.dart';
 import 'package:our_e_college_app/profilesection/profilelistitem.dart';
@@ -95,9 +97,8 @@ class _ProfileState extends State<Profile> {
                     ProfileListItems(
                       icon: Icons.logout,
                       text: 'Logout',
-                      onPressed: () {},
-                      hasNavigation: false,
-                    ),
+                      onPressed: () {
+                      }),
                     SizedBox(
                       height: 40,
                     ),
