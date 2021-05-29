@@ -30,7 +30,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: App(),
+      body: LoginScreen(),
     );
   }
 }

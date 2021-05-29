@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-
+import 'global.dart' as global;
 import 'app.dart';
 
 const users = const {
-  'bt19cse008@iiitn.ac.in': 'iitn@008',
+  'test1@gmail.com': '123',
   'test@gmail.com': '123'
 };
 
@@ -13,6 +13,11 @@ class LoginScreen extends StatelessWidget {
 
   Future<String> _authUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
+    if(data.name == "test1@gmail.com"){
+      global.user = "Teacher";
+    }else{
+      global.user = "Student";
+    }
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(data.name)) {
         return 'Username does not exist';

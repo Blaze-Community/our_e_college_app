@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/admin/components/assignment/adminAssignment.dart';
+import 'package:our_e_college_app/admin/components/attendence/adminAttendence.dart';
+import 'package:our_e_college_app/admin/components/result/adminResult.dart';
 import 'package:our_e_college_app/components/annoucement/annoucement.dart';
 import 'package:our_e_college_app/components/attendence/attendence.dart';
 import 'package:our_e_college_app/components/ebooks/ebooks.dart';
 import 'package:our_e_college_app/components/exam/exam.dart';
 import 'package:our_e_college_app/components/fees/fees.dart';
 import 'package:our_e_college_app/components/transport/transport.dart';
+import 'package:our_e_college_app/global.dart' as Global;
 import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
 import 'package:our_e_college_app/components/timetable/timetable.dart';
 import 'package:our_e_college_app/components/result/results.dart';
@@ -152,8 +155,16 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        Attendence()));
+                                    builder: (BuildContext context){
+                                      if(Global.user == "Student"){
+                                        return Attendence() ;
+                                      }
+                                      else{
+                                        return AdminAttendence();
+                                      }
+                                    }
+                                )
+                            );
                           },
                         )),
                   ),
@@ -171,8 +182,15 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        Result()));
+                                    builder: (BuildContext context){
+                                        if(Global.user == "Student"){
+                                          return Result() ;
+                                        }
+                                        else{
+                                          return AdminResult();
+                                        }
+                            })
+                            );
                           },
                         )),
                   ),
@@ -198,8 +216,16 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        Assignment()));
+                                    builder: (BuildContext context){
+                                      if(Global.user == "Student"){
+                                        return Assignment() ;
+                                      }
+                                      else{
+                                       return AdminAssignment();
+                                      }
+                                    }
+                                )
+                            );
                           },
                         )),
                   ),
@@ -239,7 +265,7 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                AdminAssignment()));
+                                Transport()));
                   },
                 )),
             Padding(
