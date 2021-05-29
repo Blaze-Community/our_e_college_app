@@ -76,7 +76,6 @@ class _NewAssignmentState extends State<NewAssignment> {
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.deepPurple)),
                   child: TextField(
-                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText: "Title",
