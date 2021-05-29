@@ -76,7 +76,7 @@ class _EditProfileState extends State<EditProfile> {
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: image == null
-                                  ? AssetImage('splash.jpg')
+                                  ? AssetImage('assets/splash.jpg')
                                   : FileImage(image),
                             )),
                       ),
