@@ -50,39 +50,6 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 20),
               Expanded(
                   child: Column(children: [
-                Row(children: [
-                  SizedBox(width: 20),
-                  Text(
-                    "Settings",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-                  )
-                ]),
-                SizedBox(
-                  height: 38,
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Icon(
-                      Icons.person,
-                      color: Colors.orange,
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      "Account",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Divider(
-                  height: 15,
-                  thickness: 2,
-                ),
                 SizedBox(
                   height: 10,
                 ),
