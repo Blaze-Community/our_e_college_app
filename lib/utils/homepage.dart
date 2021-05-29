@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:our_e_college_app/admin/components/assignment/adminAssignment.dart';
 import 'package:our_e_college_app/components/annoucement/annoucement.dart';
 import 'package:our_e_college_app/components/attendence/attendence.dart';
 import 'package:our_e_college_app/components/ebooks/ebooks.dart';
@@ -238,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                Transport()));
+                                AdminAssignment()));
                   },
                 )),
             Padding(
