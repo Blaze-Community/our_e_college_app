@@ -16,36 +16,41 @@ class ProfileListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        this.onPressed();
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-        child: Row(
-          children: [
-            Icon(
-              this.icon,
-              size: 25,
-            ),
-            SizedBox(width: 15),
-            Text(
-              this.text,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[600],
-              ),
-            ),
-            Spacer(),
-            if (this.hasNavigation)
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-              ),
-          ],
-        ),
+    return Container(
+      height: 55,
+      margin: EdgeInsets.symmetric(
+        horizontal: 40,
+      ).copyWith(
+        bottom: 20,
       ),
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.white,
+      ),
+      child: InkWell(
+          onTap: () {
+            this.onPressed();
+          },
+          child: Container(
+              child: Row(
+            children: <Widget>[
+              Icon(
+                this.icon,
+                size: 25,
+              ),
+              SizedBox(width: 15),
+              Text(
+                this.text,
+              ),
+              Spacer(),
+              if (this.hasNavigation)
+                Icon(
+                  Icons.arrow_forward,
+                  size: 25,
+                ),
+            ],
+          ))),
     );
   }
 }
