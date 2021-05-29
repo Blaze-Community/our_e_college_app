@@ -46,6 +46,7 @@ class _AdminAssignmentState extends State<AdminAssignment> {
         submissionDate: "23 May 2021",
         uploadDate: "21 May 2021",
         hasSubmitted: true),
+    SizedBox(height: 40)
   ];
 
   @override
