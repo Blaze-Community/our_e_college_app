@@ -36,6 +36,7 @@ dependencies:
   date_field: ^2.0.1
   firebase_core: ^1.2.0
   firebase_auth: ^1.2.0
+  shared_preferences: ^2.0.6
 
 dev_dependencies:
   flutter_test:

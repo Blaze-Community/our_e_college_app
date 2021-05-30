@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/LoginScreen.dart';
 import 'package:our_e_college_app/profilesection/editprofile.dart';
-import 'package:our_e_college_app/profilesection/profilephoto.dart';
+import 'package:our_e_college_app/profilesection/profilephoto.dart'
+    as ProfilePhoto;
 import 'package:our_e_college_app/profilesection/profilelistitem.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app.dart';
 
@@ -36,9 +38,9 @@ class _ProfileState extends State<Profile> {
                     ),
                     CircleAvatar(
                       radius: 50,
-                      foregroundImage: image == null
+                      foregroundImage: ProfilePhoto.image == null
                           ? AssetImage('splash.jpg')
-                          : FileImage(image),
+                          : FileImage(ProfilePhoto.image),
                     ),
                   ],
                 ),
@@ -97,15 +99,19 @@ class _ProfileState extends State<Profile> {
                       onPressed: () {},
                     ),
                     ProfileListItems(
-                      icon: Icons.logout,
-                      text: 'Logout',
-                      onPressed: () async {
-                        await FirebaseAuth.instance.signOut();
-                        Navigator.pushReplacement(
-                            ContextKeeper.buildContext, MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                LoginScreen()));
-                      }),
+                        icon: Icons.logout,
+                        text: 'Logout',
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                          final SharedPreferences sharedPreferences =
+                              await SharedPreferences.getInstance();
+                          sharedPreferences.remove('email');
+                          Navigator.pushReplacement(
+                              ContextKeeper.buildContext,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      LoginScreen()));
+                        }),
                     SizedBox(
                       height: 40,
                     ),
