@@ -24,7 +24,12 @@ class AppState extends State<App> {
       page: ProfileScreen(),
     ),
   ];
-
+  @override
+  void initState() {
+    super.initState();
+    ContextKeeper().init(context);
+    currentTab = 0;
+  }
   AppState() {
     // indexing is necessary for proper funcationality
     // of determining which tab is active
@@ -83,5 +88,12 @@ class AppState extends State<App> {
         ),
       ),
     );
+  }
+}
+class ContextKeeper {
+  static BuildContext buildContext;
+
+  void init(BuildContext context) {
+    buildContext = context;
   }
 }

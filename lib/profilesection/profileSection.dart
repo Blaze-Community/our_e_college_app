@@ -5,6 +5,8 @@ import 'package:our_e_college_app/profilesection/editprofile.dart';
 import 'package:our_e_college_app/profilesection/profilephoto.dart';
 import 'package:our_e_college_app/profilesection/profilelistitem.dart';
 
+import '../app.dart';
+
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -97,7 +99,12 @@ class _ProfileState extends State<Profile> {
                     ProfileListItems(
                       icon: Icons.logout,
                       text: 'Logout',
-                      onPressed: () {
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.pushReplacement(
+                            ContextKeeper.buildContext, MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                LoginScreen()));
                       }),
                     SizedBox(
                       height: 40,
