@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/LoginScreen.dart';
-import 'package:our_e_college_app/profilesection/editprofile.dart';
+import 'package:our_e_college_app/profilesection/ProfileListItems/changepassword.dart';
+import 'package:our_e_college_app/profilesection/ProfileListItems/editprofile.dart';
 import 'package:our_e_college_app/profilesection/profilephoto.dart'
     as ProfilePhoto;
 import 'package:our_e_college_app/profilesection/profilelistitem.dart';
@@ -76,7 +77,13 @@ class _ProfileState extends State<Profile> {
                     ProfileListItems(
                       icon: Icons.password,
                       text: 'Change Password',
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    ChangePassword()));
+                      },
                     ),
                     ProfileListItems(
                       icon: Icons.book,
