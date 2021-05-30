@@ -4,7 +4,6 @@ import 'package:flutter_login/flutter_login.dart';
 import 'global.dart' as global;
 import 'app.dart';
 
-
 class LoginScreen extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
