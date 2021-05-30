@@ -5,6 +5,7 @@ import 'package:our_e_college_app/admin/components/attendence/adminAttendence.da
 import 'package:our_e_college_app/admin/components/result/adminResult.dart';
 import 'package:our_e_college_app/components/annoucement/annoucement.dart';
 import 'package:our_e_college_app/components/attendence/attendence.dart';
+import 'package:our_e_college_app/components/e-card/e_card.dart';
 import 'package:our_e_college_app/components/ebooks/ebooks.dart';
 import 'package:our_e_college_app/components/exam/exam.dart';
 import 'package:our_e_college_app/components/fees/fees.dart';
@@ -95,6 +96,13 @@ class _HomePageState extends State<HomePage> {
                           secondaryColor: AppTheme.Colors.flatOrange,
                           secondaryIcon: Icons.perm_contact_calendar,
                           secondaryIconHeight: 30,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Ecard()));
+                          },
                         )),
                   ),
                   Expanded(
