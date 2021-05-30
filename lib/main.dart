@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:our_e_college_app/LoginScreen.dart';
 import 'package:our_e_college_app/app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+String finalEmail;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -29,11 +31,31 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    getValidationData();
+    super.initState();
+  }
+
+  Future getValidationData() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    var hasLoggedIn = sharedPreferences.getString('email');
+    setState(() {
+      finalEmail = hasLoggedIn;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LoginScreen(),
+      body: finalEmail == null ? LoginScreen() : App(),
     );
   }
 }
