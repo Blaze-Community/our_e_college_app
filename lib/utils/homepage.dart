@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:our_e_college_app/admin/components/assignment/adminAssignment.dart';
-import 'package:our_e_college_app/admin/components/attendence/adminAttendence.dart';
-import 'package:our_e_college_app/admin/components/result/adminResult.dart';
+import 'package:our_e_college_app/Teacher/assignment/adminAssignment.dart';
+import 'package:our_e_college_app/Teacher/attendence/adminAttendence.dart';
+import 'package:our_e_college_app/Teacher/result/adminResult.dart';
 import 'package:our_e_college_app/components/annoucement/annoucement.dart';
 import 'package:our_e_college_app/components/attendence/attendence.dart';
 import 'package:our_e_college_app/components/e-card/e_card.dart';
@@ -53,7 +53,9 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                    height: 100, width: 100, child: Image.asset('assets/iiitn.png')),
+                    height: 100,
+                    width: 100,
+                    child: Image.asset('assets/iiitn.png')),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,19 +162,14 @@ class _HomePageState extends State<HomePage> {
                           secondaryIcon: Icons.event_available,
                           secondaryIconHeight: 30,
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context){
-                                      if(Global.user == "Student"){
-                                        return Attendence() ;
-                                      }
-                                      else{
-                                        return AdminAttendence();
-                                      }
-                                    }
-                                )
-                            );
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              if (Global.user == "Student") {
+                                return Attendence();
+                              } else {
+                                return AdminAttendence();
+                              }
+                            }));
                           },
                         )),
                   ),
@@ -187,18 +184,14 @@ class _HomePageState extends State<HomePage> {
                           secondaryIcon: Icons.assessment,
                           secondaryIconHeight: 40,
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context){
-                                        if(Global.user == "Student"){
-                                          return Result() ;
-                                        }
-                                        else{
-                                          return AdminResult();
-                                        }
-                            })
-                            );
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              if (Global.user == "Student") {
+                                return Result();
+                              } else {
+                                return AdminResult();
+                              }
+                            }));
                           },
                         )),
                   ),
@@ -221,19 +214,14 @@ class _HomePageState extends State<HomePage> {
                           secondaryIcon: Icons.assignment,
                           secondaryIconHeight: 30,
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context){
-                                      if(Global.user == "Student"){
-                                        return Assignment() ;
-                                      }
-                                      else{
-                                       return AdminAssignment();
-                                      }
-                                    }
-                                )
-                            );
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              if (Global.user == "Student") {
+                                return Assignment();
+                              } else {
+                                return AdminAssignment();
+                              }
+                            }));
                           },
                         )),
                   ),
@@ -249,10 +237,9 @@ class _HomePageState extends State<HomePage> {
                           secondaryIconHeight: 40,
                           onPressed: () {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    Fees()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => Fees()));
                           },
                         )),
                   ),
@@ -272,8 +259,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                Transport()));
+                            builder: (BuildContext context) => Transport()));
                   },
                 )),
             Padding(
