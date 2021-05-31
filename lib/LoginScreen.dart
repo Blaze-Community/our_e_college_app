@@ -10,6 +10,8 @@ class LoginScreen extends StatelessWidget {
 
   Future<String> _authUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
+    global.email = data.name;
+    global.password = data.password;
     if (data.name == "teacher@gmail.com") {
       global.user = "Teacher";
     } else {
