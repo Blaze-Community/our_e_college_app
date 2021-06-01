@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:our_e_college_app/components/timetable/timetableitems.dart';
 import 'package:table_calendar/table_calendar.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 class TimeTable extends StatefulWidget {
   @override
@@ -10,13 +9,51 @@ class TimeTable extends StatefulWidget {
 }
 
 class _TimeTableState extends State<TimeTable> {
-  CalendarController _controller;
-  @override
-  void initState() {
-    super.initState();
-    _controller = CalendarController();
-  }
-
+  DateTime selectedDay = DateTime.now();
+  DateTime focusedDay = DateTime.now();
+  String month, year;
+  Map<int, List> events = {
+    1: [
+      {"Subject": "Data Structure", "Time": "07:00", "Room": "402"},
+      {"Subject": "Operating System", "Time": "08:00", "Room": "404"},
+      {"Subject": "Digital Signals", "Time": "10:00", "Room": "406"},
+      {"Subject": "Maths", "Time": "12:00", "Room": "402"},
+      {"Subject": "Deep Learning", "Time": "15:00", "Room": "305"},
+      {"Subject": "Applied Science", "Time": "17:00", "Room": "402"}
+    ],
+    2: [
+      {"Subject": "Data Structure", "Time": "07:00", "Room": "402"},
+      {"Subject": "Operating System", "Time": "08:00", "Room": "404"},
+      {"Subject": "Digital Signals", "Time": "10:00", "Room": "406"},
+      {"Subject": "Applied Science", "Time": "12:00", "Room": "402"},
+      {"Subject": "Deep Learning", "Time": "15:00", "Room": "305"},
+      {"Subject": "Maths", "Time": "17:00", "Room": "402"}
+    ],
+    3: [
+      {"Subject": "Operating System", "Time": "07:00", "Room": "402"},
+      {"Subject": "Digital Signals", "Time": "08:00", "Room": "404"},
+      {"Subject": "Data Structure", "Time": "10:00", "Room": "406"},
+      {"Subject": "Maths", "Time": "12:00", "Room": "402"},
+      {"Subject": "Deep Learning", "Time": "15:00", "Room": "305"},
+      {"Subject": "Applied Science", "Time": "17:00", "Room": "402"}
+    ],
+    4: [
+      {"Subject": "Operating System", "Time": "07:00", "Room": "402"},
+      {"Subject": "Digital Signals", "Time": "08:00", "Room": "404"},
+      {"Subject": "Deep Learning", "Time": "10:00", "Room": "406"},
+      {"Subject": "Maths", "Time": "12:00", "Room": "402"},
+      {"Subject": "Data Structure", "Time": "15:00", "Room": "305"},
+      {"Subject": "Applied Science", "Time": "17:00", "Room": "402"}
+    ],
+    5: [
+      {"Subject": "Data Structure", "Time": "07:00", "Room": "402"},
+      {"Subject": "Operating System", "Time": "08:00", "Room": "404"},
+      {"Subject": "Digital Signals", "Time": "10:00", "Room": "406"},
+      {"Subject": "Applied Science", "Time": "12:00", "Room": "402"},
+      {"Subject": "Deep Learning", "Time": "15:00", "Room": "305"},
+      {"Subject": "Maths", "Time": "17:00", "Room": "402"}
+    ],
+  };
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +67,8 @@ class _TimeTableState extends State<TimeTable> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -50,7 +88,7 @@ class _TimeTableState extends State<TimeTable> {
                               ),
                               children: [
                                 TextSpan(
-                                  text: " 2021",
+                                  text: " ${selectedDay.year.toString()}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 16,
@@ -81,54 +119,46 @@ class _TimeTableState extends State<TimeTable> {
                   child: Column(
                     children: [
                       SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                             SizedBox(
-                            height: 15,
+                              height: 15,
                             ),
                             TableCalendar(
-                              calendarController: _controller,
-                              initialCalendarFormat: CalendarFormat.week,
+                              firstDay: DateTime.utc(2010, 10, 16),
+                              lastDay: DateTime.utc(2030, 3, 14),
+                              focusedDay: DateTime.now(),
+                              onDaySelected:
+                                  (DateTime selectDay, DateTime focusDay) {
+                                setState(() {
+                                  selectedDay = selectDay;
+                                });
+                                print(events[selectedDay.weekday]);
+                              },
+                              calendarFormat: CalendarFormat.week,
                               headerVisible: false,
-                            // calendarStyle: CalendarStyle(todayStyle: ),
+                              selectedDayPredicate: (DateTime day) {
+                                return isSameDay(selectedDay, day);
+                              },
+                              calendarStyle: CalendarStyle(
+                                  isTodayHighlighted: true,
+                                  selectedDecoration: BoxDecoration(
+                                      color: Colors.orange,
+                                      shape: BoxShape.circle)),
                             )
-                          ]
-                        )
-                      ),
+                          ])),
                       Expanded(
                         child: ListView(
                           children: [
-                            TimeTableItems(
-                              subject: "Software Engenring",
-                              time: "07:00",
-                              room: "class 401",
-                            ),
-                            TimeTableItems(
-                              subject: "Operating System",
-                              time: "08:00",
-                              room: "class 401",
-                            ),
-                            TimeTableItems(
-                              subject: "Object Oriented Programming",
-                              time: "09:00",
-                              room: "class 401",
-                            ),
-                            TimeTableItems(
-                              subject: "Data Structure",
-                              time: "11:00",
-                              room: "class 401",
-                            ),
-                            TimeTableItems(
-                              subject: "Digital Signals",
-                              time: "13:00",
-                              room: "class 407",
-                            ),
-                            TimeTableItems(
-                              subject: "Cloud computing",
-                              time: "15:00",
-                              room: "class 404",
-                            ),
+                            for (int i = 0;
+                                i < events[selectedDay.weekday].length;
+                                i++)
+                              TimeTableItems(
+                                  subject: events[selectedDay.weekday][i]
+                                      ["Subject"],
+                                  time: events[selectedDay.weekday][i]["Time"],
+                                  room: events[selectedDay.weekday][i]["Room"])
                           ],
                         ),
                       ),
@@ -136,59 +166,8 @@ class _TimeTableState extends State<TimeTable> {
                   ),
                 ),
               )
-
             ],
           ),
-          /*child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(75.0),
-                topRight: Radius.circular(75.0),
-              ),
-            ),
-            child: Padding(
-                padding: EdgeInsets.only(top: 45.0),
-                child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: ListView(
-                        children: [
-                          TimeTableItems(
-                            subject: "Software Engenring",
-                            time: "07:00",
-                            room: "class 401",
-                          ),
-                          TimeTableItems(
-                            subject: "Operating System",
-                            time: "08:00",
-                            room: "class 401",
-                          ),
-                          TimeTableItems(
-                            subject: "Object Oriented Programming",
-                            time: "09:00",
-                            room: "class 401",
-                          ),
-                          TimeTableItems(
-                            subject: "Data Structure",
-                            time: "11:00",
-                            room: "class 401",
-                          ),
-                          TimeTableItems(
-                            subject: "Digital Signals",
-                            time: "13:00",
-                            room: "class 407",
-                          ),
-                          TimeTableItems(
-                            subject: "Cloud computing",
-                            time: "15:00",
-                            room: "class 404",
-                          ),
-                        ]
-                      ),
-                    ))),
-          ),*/
-        )
-        );
+        ));
   }
 }
