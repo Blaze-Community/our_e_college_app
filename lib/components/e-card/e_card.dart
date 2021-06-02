@@ -61,6 +61,7 @@ class _EcardState extends State<Ecard>{
                   ),
                 ),
               )
+
             ),
           ),
 

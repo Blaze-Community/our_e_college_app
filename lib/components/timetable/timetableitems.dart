@@ -7,6 +7,17 @@ class TimeTableItems extends StatelessWidget {
   String room;
 
   TimeTableItems({this.subject, this.time, this.room});
+
+  factory TimeTableItems.fromJson(Map<String, dynamic> json) => TimeTableItems(
+    subject: json["Subject"],
+    time: json["Time"],
+    room: json["Room"],
+  );
+  Map<String, dynamic> toJson() => {
+    "Subject": subject,
+    "Time": time,
+    "Room": room,
+  };
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:our_e_college_app/admin/components/assignment/adminAssignmentItem.dart';
-import 'package:our_e_college_app/admin/components/assignment/newAssignment.dart';
-
+import 'package:our_e_college_app/Teacher/assignment/adminAssignmentItem.dart';
+import 'package:our_e_college_app/Teacher/assignment/newAssignment.dart';
 
 class AdminAssignment extends StatefulWidget {
   @override
@@ -57,35 +56,33 @@ class _AdminAssignmentState extends State<AdminAssignment> {
           title: Text("Assignment"),
         ),
         body: Stack(
-          
           children: [
             Container(
               height: double.infinity,
               width: double.infinity,
               child: ListView(
                   padding: EdgeInsets.only(top: 15),
-                  children: List.generate(items.length, (index) => items[index])),
+                  children:
+                      List.generate(items.length, (index) => items[index])),
             ),
             Padding(
-              // bottom: 10,
-              padding: EdgeInsets.only(bottom: 10),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: FloatingActionButton.extended(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => NewAssignment()));
-                  },
-                  label: Text('Add New Assignment'),
-                  icon: Icon(Icons.add),
-                ),
-
-              )
-            )
+                // bottom: 10,
+                padding: EdgeInsets.only(bottom: 10),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: FloatingActionButton.extended(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  NewAssignment()));
+                    },
+                    label: Text('Add New Assignment'),
+                    icon: Icon(Icons.add),
+                  ),
+                ))
           ],
-        )
-        );
+        ));
   }
 }
