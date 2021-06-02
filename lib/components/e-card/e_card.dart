@@ -36,7 +36,6 @@ class _EcardState extends State<Ecard>{
                 future: getImage(),
                 builder:(context,snapshot){
                     if (snapshot.connectionState == ConnectionState.done) {
-                      print(snapshot.data["e_card"]);
                       return Image.network(snapshot.data["e_card"],
                       fit: BoxFit.cover,);
                     }
