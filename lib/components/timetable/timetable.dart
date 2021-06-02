@@ -1,7 +1,16 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:our_e_college_app/components/timetable/timetableitems.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:http/http.dart' as http;
+
+import '../../app.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class TimeTable extends StatefulWidget {
   @override
@@ -11,49 +20,48 @@ class TimeTable extends StatefulWidget {
 class _TimeTableState extends State<TimeTable> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+
   String month, year;
-  Map<int, List> events = {
-    1: [
-      {"Subject": "Data Structure", "Time": "07:00", "Room": "402"},
-      {"Subject": "Operating System", "Time": "08:00", "Room": "404"},
-      {"Subject": "Digital Signals", "Time": "10:00", "Room": "406"},
-      {"Subject": "Maths", "Time": "12:00", "Room": "402"},
-      {"Subject": "Deep Learning", "Time": "15:00", "Room": "305"},
-      {"Subject": "Applied Science", "Time": "17:00", "Room": "402"}
-    ],
-    2: [
-      {"Subject": "Data Structure", "Time": "07:00", "Room": "402"},
-      {"Subject": "Operating System", "Time": "08:00", "Room": "404"},
-      {"Subject": "Digital Signals", "Time": "10:00", "Room": "406"},
-      {"Subject": "Applied Science", "Time": "12:00", "Room": "402"},
-      {"Subject": "Deep Learning", "Time": "15:00", "Room": "305"},
-      {"Subject": "Maths", "Time": "17:00", "Room": "402"}
-    ],
-    3: [
-      {"Subject": "Operating System", "Time": "07:00", "Room": "402"},
-      {"Subject": "Digital Signals", "Time": "08:00", "Room": "404"},
-      {"Subject": "Data Structure", "Time": "10:00", "Room": "406"},
-      {"Subject": "Maths", "Time": "12:00", "Room": "402"},
-      {"Subject": "Deep Learning", "Time": "15:00", "Room": "305"},
-      {"Subject": "Applied Science", "Time": "17:00", "Room": "402"}
-    ],
-    4: [
-      {"Subject": "Operating System", "Time": "07:00", "Room": "402"},
-      {"Subject": "Digital Signals", "Time": "08:00", "Room": "404"},
-      {"Subject": "Deep Learning", "Time": "10:00", "Room": "406"},
-      {"Subject": "Maths", "Time": "12:00", "Room": "402"},
-      {"Subject": "Data Structure", "Time": "15:00", "Room": "305"},
-      {"Subject": "Applied Science", "Time": "17:00", "Room": "402"}
-    ],
-    5: [
-      {"Subject": "Data Structure", "Time": "07:00", "Room": "402"},
-      {"Subject": "Operating System", "Time": "08:00", "Room": "404"},
-      {"Subject": "Digital Signals", "Time": "10:00", "Room": "406"},
-      {"Subject": "Applied Science", "Time": "12:00", "Room": "402"},
-      {"Subject": "Deep Learning", "Time": "15:00", "Room": "305"},
-      {"Subject": "Maths", "Time": "17:00", "Room": "402"}
-    ],
-  };
+  Future<String> getTimetable() async {
+    User user = FirebaseAuth.instance.currentUser;
+    var uid = user.uid;
+    var student;
+    await FirebaseFirestore.instance
+        .collection('Students')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        student = documentSnapshot.data();
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+    return await FirebaseFirestore.instance
+        .collection('Batch').doc(student["batch"])
+        .collection('Branch').doc(student["branch"])
+        .collection('Section').doc(student["section"])
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        return documentSnapshot["timetable"];
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+  }
+  Future fetchTimetable(http.Client client) async {
+    final timeTableUri = await getTimetable();
+    final response = await client
+        .get(Uri.parse(timeTableUri));
+    return parseTimetable(response.body);
+  }
+
+  Map<String, List<TimeTableItems>> parseTimetable(String str) {
+    return Map.from(json.decode(str)).map((k, v) => MapEntry<String, List<TimeTableItems>>(k, List<TimeTableItems>.from(v.map((x) => TimeTableItems.fromJson(x)))));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,15 +136,22 @@ class _TimeTableState extends State<TimeTable> {
                             TableCalendar(
                               firstDay: DateTime.utc(2010, 10, 16),
                               lastDay: DateTime.utc(2030, 3, 14),
-                              focusedDay: DateTime.now(),
+                              focusedDay: selectedDay,
                               onDaySelected:
                                   (DateTime selectDay, DateTime focusDay) {
                                 setState(() {
                                   selectedDay = selectDay;
                                 });
-                                print(events[selectedDay.weekday]);
                               },
-                              calendarFormat: CalendarFormat.week,
+                              onFormatChanged: (format) {
+                                if (_calendarFormat != format) {
+                                  // Call `setState()` when updating calendar format
+                                  setState(() {
+                                    _calendarFormat = format;
+                                  });
+                                }
+                              },
+                              calendarFormat:_calendarFormat ,
                               headerVisible: false,
                               selectedDayPredicate: (DateTime day) {
                                 return isSameDay(selectedDay, day);
@@ -148,20 +163,34 @@ class _TimeTableState extends State<TimeTable> {
                                       shape: BoxShape.circle)),
                             )
                           ])),
-                      Expanded(
-                        child: ListView(
-                          children: [
-                            for (int i = 0;
-                                i < events[selectedDay.weekday].length;
-                                i++)
-                              TimeTableItems(
-                                  subject: events[selectedDay.weekday][i]
-                                      ["Subject"],
-                                  time: events[selectedDay.weekday][i]["Time"],
-                                  room: events[selectedDay.weekday][i]["Room"])
-                          ],
-                        ),
-                      ),
+                      FutureBuilder(
+                        future:fetchTimetable(http.Client()),
+                        builder: (context,snapshot){
+                          if (snapshot.hasData) {
+                            //print("data ${snapshot.data[selectedDay.weekday.toString()].length}");
+                            if(selectedDay.weekday == 6 || selectedDay.weekday==7){
+                              return Expanded(child: ListView());
+                            }
+                            else {
+                              return Expanded(
+                                child: ListView.builder(
+                                  itemCount: snapshot.data[selectedDay.weekday.toString()].length,
+                                  itemBuilder: (context,i){
+                                    return TimeTableItems(
+                                        subject: snapshot.data[selectedDay.weekday.toString()][i].subject,
+                                        time: snapshot.data[selectedDay.weekday.toString()][i].time,
+                                        room: snapshot.data[selectedDay.weekday.toString()][i].room);
+                                  },
+                                ),
+                              );
+                            }
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
+                          // By default, show a loading spinner.
+                          return CircularProgressIndicator();
+                        },
+                      )
                     ],
                   ),
                 ),
