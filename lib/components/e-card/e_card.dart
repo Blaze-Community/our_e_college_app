@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flip_card/flip_card.dart';
 class Ecard extends StatefulWidget {
   @override
   _EcardState createState() => _EcardState();
@@ -32,16 +32,36 @@ class _EcardState extends State<Ecard>{
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
               ),
-              child: FutureBuilder(
-                future: getImage(),
-                builder:(context,snapshot){
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return Image.network(snapshot.data["e_card"],
-                      fit: BoxFit.cover,);
-                    }
-                    return CircularProgressIndicator();
-                },
-              ),
+              child: FlipCard(
+                direction: FlipDirection.HORIZONTAL, // default
+                front: Container(
+                  child: FutureBuilder(
+                    future: getImage(),
+                    builder:(context,snapshot){
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        print(snapshot.data["e_card"]);
+                        return Image.network(snapshot.data["e_card"],
+                          fit: BoxFit.cover,);
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  ),
+                ),
+                back: Container(
+                  child: FutureBuilder(
+                    future: getImage(),
+                    builder:(context,snapshot){
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        print(snapshot.data["e_card"]);
+                        return Image.network(snapshot.data["e_card"],
+                          fit: BoxFit.cover,);
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  ),
+                ),
+              )
+
             ),
           ),
 

@@ -39,9 +39,12 @@ class _TimeTableState extends State<TimeTable> {
       }
     });
     return await FirebaseFirestore.instance
-        .collection('Batch').doc(student["batch"])
-        .collection('Branch').doc(student["branch"])
-        .collection('Section').doc(student["section"])
+        .collection('Batch')
+        .doc(student["batch"])
+        .collection('Branch')
+        .doc(student["branch"])
+        .collection('Section')
+        .doc(student["section"])
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
@@ -51,15 +54,17 @@ class _TimeTableState extends State<TimeTable> {
       }
     });
   }
+
   Future fetchTimetable(http.Client client) async {
     final timeTableUri = await getTimetable();
-    final response = await client
-        .get(Uri.parse(timeTableUri));
+    final response = await client.get(Uri.parse(timeTableUri));
     return parseTimetable(response.body);
   }
 
   Map<String, List<TimeTableItems>> parseTimetable(String str) {
-    return Map.from(json.decode(str)).map((k, v) => MapEntry<String, List<TimeTableItems>>(k, List<TimeTableItems>.from(v.map((x) => TimeTableItems.fromJson(x)))));
+    return Map.from(json.decode(str)).map((k, v) => MapEntry<String,
+            List<TimeTableItems>>(k,
+        List<TimeTableItems>.from(v.map((x) => TimeTableItems.fromJson(x)))));
   }
 
   @override
@@ -151,7 +156,11 @@ class _TimeTableState extends State<TimeTable> {
                                   });
                                 }
                               },
-                              calendarFormat:_calendarFormat ,
+                              holidayPredicate: (DateTime day) {
+                                return DateTime.sunday == day.weekday ||
+                                    DateTime.saturday == day.weekday;
+                              },
+                              calendarFormat: _calendarFormat,
                               headerVisible: false,
                               selectedDayPredicate: (DateTime day) {
                                 return isSameDay(selectedDay, day);
@@ -160,26 +169,42 @@ class _TimeTableState extends State<TimeTable> {
                                   isTodayHighlighted: true,
                                   selectedDecoration: BoxDecoration(
                                       color: Colors.orange,
+                                      shape: BoxShape.circle),
+                                  holidayTextStyle:
+                                      TextStyle(color: Colors.white),
+                                  holidayDecoration: BoxDecoration(
+                                      color: Colors.red,
                                       shape: BoxShape.circle)),
                             )
                           ])),
                       FutureBuilder(
-                        future:fetchTimetable(http.Client()),
-                        builder: (context,snapshot){
+                        future: fetchTimetable(http.Client()),
+                        builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             //print("data ${snapshot.data[selectedDay.weekday.toString()].length}");
-                            if(selectedDay.weekday == 6 || selectedDay.weekday==7){
+                            if (selectedDay.weekday == 6 ||
+                                selectedDay.weekday == 7) {
                               return Expanded(child: ListView());
-                            }
-                            else {
+                            } else {
                               return Expanded(
                                 child: ListView.builder(
-                                  itemCount: snapshot.data[selectedDay.weekday.toString()].length,
-                                  itemBuilder: (context,i){
+                                  itemCount: snapshot
+                                      .data[selectedDay.weekday.toString()]
+                                      .length,
+                                  itemBuilder: (context, i) {
                                     return TimeTableItems(
-                                        subject: snapshot.data[selectedDay.weekday.toString()][i].subject,
-                                        time: snapshot.data[selectedDay.weekday.toString()][i].time,
-                                        room: snapshot.data[selectedDay.weekday.toString()][i].room);
+                                        subject: snapshot
+                                            .data[selectedDay.weekday
+                                                .toString()][i]
+                                            .subject,
+                                        time: snapshot
+                                            .data[selectedDay.weekday
+                                                .toString()][i]
+                                            .time,
+                                        room: snapshot
+                                            .data[selectedDay.weekday
+                                                .toString()][i]
+                                            .room);
                                   },
                                 ),
                               );
