@@ -20,7 +20,7 @@ class TimeTable extends StatefulWidget {
 class _TimeTableState extends State<TimeTable> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
 
   String month, year;
   Future<String> getTimetable() async {
