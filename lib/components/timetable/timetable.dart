@@ -18,9 +18,9 @@ class TimeTable extends StatefulWidget {
 }
 
 class _TimeTableState extends State<TimeTable> {
-  Map<String, List<TimeTableItems>> events={"":[]};
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.month;
 
   String month, year;
   Future<String> getTimetable() async {
@@ -53,12 +53,8 @@ class _TimeTableState extends State<TimeTable> {
   }
   Future fetchTimetable(http.Client client) async {
     final timeTableUri = await getTimetable();
-    print("timetableuri $timeTableUri");
     final response = await client
         .get(Uri.parse(timeTableUri));
-    setState(() {
-      events = parseTimetable(response.body);
-    });
     return parseTimetable(response.body);
   }
 
@@ -66,13 +62,6 @@ class _TimeTableState extends State<TimeTable> {
     return Map.from(json.decode(str)).map((k, v) => MapEntry<String, List<TimeTableItems>>(k, List<TimeTableItems>.from(v.map((x) => TimeTableItems.fromJson(x)))));
   }
 
-  List<TimeTableItems> _getEventsForDay(DateTime day) {
-    // Implementation example
-    if(day.weekday == 6 || day.weekday==7){
-      return [];
-    }
-    return events[day.weekday.toString()];
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,15 +136,22 @@ class _TimeTableState extends State<TimeTable> {
                             TableCalendar(
                               firstDay: DateTime.utc(2010, 10, 16),
                               lastDay: DateTime.utc(2030, 3, 14),
-                              focusedDay: DateTime.now(),
+                              focusedDay: selectedDay,
                               onDaySelected:
                                   (DateTime selectDay, DateTime focusDay) {
                                 setState(() {
                                   selectedDay = selectDay;
                                 });
                               },
-                              eventLoader: _getEventsForDay,
-                              calendarFormat: CalendarFormat.week,
+                              onFormatChanged: (format) {
+                                if (_calendarFormat != format) {
+                                  // Call `setState()` when updating calendar format
+                                  setState(() {
+                                    _calendarFormat = format;
+                                  });
+                                }
+                              },
+                              calendarFormat:_calendarFormat ,
                               headerVisible: false,
                               selectedDayPredicate: (DateTime day) {
                                 return isSameDay(selectedDay, day);
