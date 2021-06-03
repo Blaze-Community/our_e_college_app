@@ -15,6 +15,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String profileImageUri;
+  String profileName;
   Future getProfileImageFromDatabase() async {
     User user = FirebaseAuth.instance.currentUser;
     var uid = user.uid;
@@ -51,6 +53,8 @@ class _ProfileState extends State<Profile> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     print(snapshot.data);
                     if(snapshot.hasData){
+                      profileImageUri = snapshot.data["profilePhotoUri"];
+                      profileName = snapshot.data["profileName"];
                       return  Column(
                         children: [
                           Container(
@@ -129,7 +133,7 @@ class _ProfileState extends State<Profile> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    EditProfile()));
+                                    EditProfile(profileImageUri:profileImageUri,profileName: profileName,)));
                       },
                     ),
                     ProfileListItems(
