@@ -1,16 +1,11 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:our_e_college_app/components/timetable/timetableitems.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
-
-import '../../app.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 class TimeTable extends StatefulWidget {
   @override
@@ -35,7 +30,7 @@ class _TimeTableState extends State<TimeTable> {
       if (documentSnapshot.exists) {
         student = documentSnapshot.data();
       } else {
-        print('Document does not exist on the database');
+        print('Document does not exist on the student database');
       }
     });
     return await FirebaseFirestore.instance
@@ -50,7 +45,7 @@ class _TimeTableState extends State<TimeTable> {
       if (documentSnapshot.exists) {
         return documentSnapshot["timetable"];
       } else {
-        print('Document does not exist on the database');
+        print('Document does not exist on the timetable database');
       }
     });
   }

@@ -1,21 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/LoginScreen.dart';
 import 'package:our_e_college_app/profilesection/ProfileListItems/changepassword.dart';
 import 'package:our_e_college_app/profilesection/ProfileListItems/editprofile.dart';
-import 'package:our_e_college_app/profilesection/profilephoto.dart'
-    as ProfilePhoto;
 import 'package:our_e_college_app/profilesection/profilelistitem.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../app.dart';
 
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
+  
 }
 
 class _ProfileState extends State<Profile> {
+  Future getProfileImageFromDatabase() async {
+    User user = FirebaseAuth.instance.currentUser;
+    var uid = user.uid;
+    var student;
+    return await FirebaseFirestore.instance
+        .collection('Students')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) async {
+      if (documentSnapshot.exists) {
+        return await documentSnapshot.data();
+        print("student ${student}");
+      } else {
+        print('Document does not exist on the student database');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,31 +45,72 @@ class _ProfileState extends State<Profile> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-              Container(
-                height: 100,
-                width: 100,
-                margin: EdgeInsets.only(top: 30),
-                child: Stack(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    CircleAvatar(
-                      radius: 50,
-                      foregroundImage: ProfilePhoto.image == null
-                          ? AssetImage('splash.jpg')
-                          : FileImage(ProfilePhoto.image),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Harsh Shrivastava',
-              ),
-              SizedBox(height: 5),
-              Text(
-                'BT19CSE006@iitn.com',
+              FutureBuilder(
+                future: getProfileImageFromDatabase(),
+                builder:(context,snapshot){
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    print(snapshot.data);
+                    if(snapshot.hasData){
+                      return  Column(
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            margin: EdgeInsets.only(top: 30),
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                CircleAvatar(
+                                  radius: 50,
+                                  backgroundColor: Colors.white,
+                                  foregroundImage: (snapshot.data["profilePhotoUri"].length>0)?
+                                            NetworkImage(snapshot.data["profilePhotoUri"]):
+                                            AssetImage("assets/splash.jpg"),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(snapshot.data["profileName"],
+                          ),
+                          SizedBox(height: 5),
+                          Text(snapshot.data["email"],
+                          ),
+                        ],
+                      );
+                    }
+                  }
+                  return Column(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        margin: EdgeInsets.only(top: 30),
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Center(
+                                child: CircularProgressIndicator(
+                                )
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'StudentName',
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'E-Mail',
+                      ),
+                    ],
+                  );
+                },
               ),
               SizedBox(height: 20),
               Expanded(
