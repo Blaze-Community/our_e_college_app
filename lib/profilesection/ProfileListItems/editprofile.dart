@@ -5,8 +5,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:our_e_college_app/bottombar/bottomBarScreens.dart';
 
 class EditProfile extends StatefulWidget {
+  String profileImageUri;
+  String profileName;
+  EditProfile({
+    this.profileImageUri,
+    this.profileName
+  });
+
   @override
   _EditProfileState createState() => _EditProfileState();
 }
@@ -14,8 +22,9 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final picker = ImagePicker();
   bool loading = false;
-  String profileImageUri;
-
+  String editProfileUri ;
+  var updateProfileUri;
+  final myController = TextEditingController();
   Future saveFile() async {
     User user = FirebaseAuth.instance.currentUser;
     var uid = user.uid;
@@ -25,57 +34,47 @@ class _EditProfileState extends State<EditProfile> {
         .doc(uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) async {
-        student = documentSnapshot.data();
-        try {
-          await FirebaseStorage.instance
-              .ref('Batch/${student["batch"]}/Branch/${student["branch"]}/Students/${student["rollno"]}/Profile-Photo/bt19cse005')
-              .putFile(File(profileImageUri))
-              .then((snapshot) async {
-            CollectionReference studentCollection = FirebaseFirestore.instance
-                .collection('Students');
-            await studentCollection
-                .doc(student["uid"])
-                .update({'profilePhotoUri': await snapshot.ref.getDownloadURL()})
-                .then((value) {
-              setState(() {
-                loading =false;
-              });
-              print("User Updated");
-            })
-                .catchError((error) => print("Failed to update user: $error"));
-                print("snapshot uri ${ await snapshot.ref.getDownloadURL()}");
-          });
-        } on FirebaseException catch (e) {
-          // e.g, e.code == 'canceled'
-          print(e.code);
-        }
+      student = documentSnapshot.data();
     });
-  }
 
-  Future getProfileImageFromDatabase() async {
-    User user = FirebaseAuth.instance.currentUser;
-    var uid = user.uid;
-    var student;
-    return await FirebaseFirestore.instance
-        .collection('Students')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) async {
-      if (documentSnapshot.exists) {
-        return await documentSnapshot["profilePhotoUri"];
-        print("student ${student}");
-      } else {
-        print('Document does not exist on the student database');
+    if(editProfileUri!=null){
+      try {
+        await FirebaseStorage.instance
+            .ref('Batch/${student["batch"]}/Branch/${student["branch"]}/Students/${student["rollno"]}/Profile-Photo/${student["rollno"]}')
+            .putFile(File(editProfileUri))
+            .then((snapshot) async {
+          updateProfileUri = await snapshot.ref.getDownloadURL();
+        });
+      } on FirebaseException catch (e) {
+        // e.g, e.code == 'canceled'
+        print(e.code);
       }
-    });
+    }
+    CollectionReference studentCollection = await FirebaseFirestore.instance
+        .collection('Students');
+    await studentCollection
+        .doc(student["uid"])
+        .update({
+      'profilePhotoUri': await (updateProfileUri!=null)?updateProfileUri:student["profilePhotoUri"],
+      'profileName':myController.text})
+        .then((value) {
+      setState(() {
+        loading =false;
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    ProfileScreen()),(Route<dynamic> route) => false);
+      });
+      print("User Updated");
+    })
+        .catchError((error) => print("Failed to update user: $error"));
   }
-
-
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
-      profileImageUri = pickedFile.path;
+      editProfileUri = pickedFile.path;
     });
     //print("upload file ${await uploadFile(pickedFile.path)}");
     //uploadFile(pickedFile.path);
@@ -87,7 +86,8 @@ class _EditProfileState extends State<EditProfile> {
     // TODO: implement initState
     super.initState();
     //getProfileImageFromDatabase();
-    print("profileImage $profileImageUri");
+    myController..text = widget.profileName;
+    print("profileImage ${widget.profileImageUri}");
   }
   @override
   Widget build(BuildContext context) {
@@ -144,33 +144,17 @@ class _EditProfileState extends State<EditProfile> {
                             shape: BoxShape.circle,
                           
                         ),
-                        child: (profileImageUri!=null)?
+                        child: (editProfileUri!=null)?
                         CircleAvatar(
                           backgroundColor: Colors.transparent,
-                          backgroundImage: FileImage(File(profileImageUri)),
+                          backgroundImage: FileImage(File(editProfileUri)),
                         ):
-                        FutureBuilder(
-                          future: getProfileImageFromDatabase(),
-                          builder:(context,snapshot){
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              print(snapshot);
-                              if(snapshot.hasData && snapshot.data.length >0){
-                                return  CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage: NetworkImage(snapshot.data),
-                                );
-                              }
-                              else{
-                                return  CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage: AssetImage("assets/splash.jpg",),
-                                );
-                              }
-
-                            }
-                            return CircularProgressIndicator();
-                          },
-                        ),
+                        CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: (widget.profileImageUri.length>0)?
+                          NetworkImage(widget.profileImageUri):
+                          AssetImage("assets/splash.jpg"),
+                        )
                         ),
                     ),
                     Positioned(
@@ -198,7 +182,9 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(
                 height: 35,
               ),
-              buildTextField("Full Name", "Dor Alex"),
+              TextFormField(
+                controller: myController,
+              ),
               SizedBox(
                 height: 35,
               ),
@@ -207,12 +193,10 @@ class _EditProfileState extends State<EditProfile> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      if(profileImageUri!=null){
                         setState(() {
                           loading =true;
                         });
                         saveFile();
-                      }
                     },
                     style: ButtonStyle(
                       backgroundColor:MaterialStateProperty.all<Color>(Colors.green),
