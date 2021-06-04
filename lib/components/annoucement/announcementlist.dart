@@ -3,11 +3,11 @@ import 'package:flutter/widgets.dart';
 
 class AnnouncementList extends StatefulWidget {
   String title;
-  List<List> announcement;
+  List<List> announcementList;
 
   AnnouncementList({
     this.title,
-    this.announcement,
+    this.announcementList,
   });
   @override
   _AnnouncementListState createState() => _AnnouncementListState();
@@ -27,10 +27,10 @@ class _AnnouncementListState extends State<AnnouncementList> {
               Expanded(
                 child: ListView.builder(
                     //physics: const NeverScrollableScrollPhysics(),
-                    itemCount: widget.announcement.length,
+                    itemCount: widget.announcementList.length,
                     itemBuilder: (BuildContext ctxt, int i) {
                       return buildTaskListItem(
-                          widget.announcement[i][0], widget.announcement[i][1]);
+                          widget.announcementList[i][0], widget.announcementList[i][1]);
                     }),
               )
             ],
