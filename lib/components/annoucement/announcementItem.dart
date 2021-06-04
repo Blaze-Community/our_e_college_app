@@ -81,9 +81,10 @@ class _AnnouncementItemState extends State<AnnouncementItem> {
                 children: <Widget>[
                   SizedBox(
                     height: 220.0,
-                    child: ListView.builder(
+                    child: (widget.announcement.length!=0)?
+                    ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: widget.announcement.length,
+                        itemCount: (widget.announcement.length>7)?7:widget.announcement.length,
                         itemBuilder: (BuildContext ctxt, int i) {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -110,7 +111,10 @@ class _AnnouncementItemState extends State<AnnouncementItem> {
                           ),
                           ],
                           );
-                        }),
+                        }):
+                    Center(child: CircularProgressIndicator(
+                      color: Colors.white,
+                    )),
                   ),
                 ],
               ),

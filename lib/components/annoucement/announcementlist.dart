@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AnnouncementList extends StatefulWidget {
   String title;
-  List<List> announcementList;
+  List announcementList;
 
   AnnouncementList({
     this.title,
@@ -30,7 +31,7 @@ class _AnnouncementListState extends State<AnnouncementList> {
                     itemCount: widget.announcementList.length,
                     itemBuilder: (BuildContext ctxt, int i) {
                       return buildTaskListItem(
-                          widget.announcementList[i][0], widget.announcementList[i][1]);
+                          widget.announcementList[i]["title"], widget.announcementList[i]["link"]);
                     }),
               )
             ],
@@ -38,43 +39,11 @@ class _AnnouncementListState extends State<AnnouncementList> {
         ));
   }
 
-  Container buildTaskListItem(String announcement, String date) {
+  Container buildTaskListItem(String announcement, String link) {
     return Container(
       margin: EdgeInsets.only(bottom: 25),
       child: Column(
         children: [
-          Row(
-            children: [
-              Container(
-                width: 15,
-                height: 10,
-                decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(5),
-                    )),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                          text: date,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          )),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
           SizedBox(
             height: 10,
           ),
@@ -89,24 +58,30 @@ class _AnnouncementListState extends State<AnnouncementList> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        announcement,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
+                  Expanded(
+                    child: Text(
+                      announcement,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
                       ),
-                    ],
+                    ),
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      bool _validURL = Uri.parse(link).isAbsolute;
+                      if(_validURL == true){
+                        await launch(link);
+                      }
+                      else{
+                        await launch("https://iiitn.ac.in/"+link);
+                      }
+                    },
                     child: Text(
                       "Read More",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                       ),
                     ),
                   )

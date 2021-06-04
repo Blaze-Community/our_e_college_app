@@ -13,11 +13,7 @@ class TimeTableItems extends StatelessWidget {
     time: json["Time"],
     room: json["Room"],
   );
-  Map<String, dynamic> toJson() => {
-    "Subject": subject,
-    "Time": time,
-    "Room": room,
-  };
+
   @override
   Widget build(BuildContext context) {
     return Container(
