@@ -30,74 +30,72 @@ class _Annoucement extends State<Annoucement> {
 
   void facultyNotices() async {
     String url = 'https://fetch-announcements.herokuapp.com/faculty-notices';
-    print('Start toh hua');
-    print('heyyyy');
     final response = await http.get(Uri.parse(url));
-    print('byeeee');
 
     final responseJson = json.decode(response.body);
 
     for (var ele in responseJson) {
       outerListFacultyNotices.add(ele['title']);
-      innerListFacultyNotices.add([ele['title'], '2 May 2001']);
+      innerListFacultyNotices.add({"title":ele['title'],"link":ele['link']});
       // print(ele['title'] + ele['link']);
     }
-    print(outerListFacultyNotices);
-    print(innerListFacultyNotices);
+    setState(() {
+      outerListFacultyNotices = outerListFacultyNotices;
+      innerListFacultyNotices =innerListFacultyNotices;
+    });
+    print(outerListFacultyNotices,);
+    print(innerListFacultyNotices,);
     // return response;
   }
   void studentNotices() async {
     String url = 'https://fetch-announcements.herokuapp.com/student-notices';
-    print('Start toh hua');
-    print('heyyyy');
     final response = await http.get(Uri.parse(url));
-    print('byeeee');
-
+    print(response.body);
     final responseJson = json.decode(response.body);
 
     for (var ele in responseJson) {
-      outerListFacultyNotices.add(ele['title']);
-      innerListFacultyNotices.add([ele['title'], '2 May 2001']);
+      outerListStudentNotices.add(ele['title']);
+      innerListStudentNotices.add([{"title":ele['title'],"link":ele['link']}]);
       // print(ele['title'] + ele['link']);
     }
-    print(outerListFacultyNotices);
-    print(innerListFacultyNotices);
+    setState(() {
+      outerListStudentNotices = outerListStudentNotices;
+      innerListStudentNotices =innerListStudentNotices;
+    });
     // return response;
   }
   void facultyAchievements() async {
     String url = 'https://fetch-announcements.herokuapp.com/faculty-achievements';
-    print('Start toh hua');
-    print('heyyyy');
     final response = await http.get(Uri.parse(url));
-    print('byeeee');
 
     final responseJson = json.decode(response.body);
 
     for (var ele in responseJson) {
-      outerListFacultyNotices.add(ele['title']);
-      innerListFacultyNotices.add([ele['title'], '2 May 2001']);
+      outerListFacultyAchievements.add(ele['title']);
+      innerListFacultyAchievements.add([{"title":ele['title'],"link":ele['link']}]);
       // print(ele['title'] + ele['link']);
     }
-    print(outerListFacultyNotices);
-    print(innerListFacultyNotices);
+    setState(() {
+      outerListFacultyAchievements = outerListFacultyAchievements;
+      innerListFacultyAchievements =innerListFacultyAchievements;
+    });
     // return response;
   }
   void studentAchievements() async {
     String url = 'https://fetch-announcements.herokuapp.com/student-achievements';
-    print('Start toh hua');
-    print('heyyyy');
     final response = await http.get(Uri.parse(url));
-    print('byeeee');
 
     final responseJson = json.decode(response.body);
 
     for (var ele in responseJson) {
-      outerListFacultyNotices.add(ele['title']);
-      innerListFacultyNotices.add([ele['title'], '2 May 2001']);
+      outerListStudentAchievements.add(ele['title']);
+      innerListStudentAchievements.add([{"title":ele['title'],"link":ele['link']}]);
       // print(ele['title'] + ele['link']);
     }
-    print(outerListFacultyNotices);
-    print(innerListFacultyNotices);
+    setState(() {
+      outerListStudentAchievements = outerListStudentAchievements;
+      innerListStudentAchievements =innerListStudentAchievements;
+    });
     // return response;
   }
 
@@ -124,7 +122,7 @@ class _Annoucement extends State<Annoucement> {
           children: [
             AnnouncementItem(
               title: 'Teacher Notices',
-              announcement: ['welcome to our scj=hool', 'gjlshdfkh'],
+              announcement: outerListFacultyNotices,
               // announcement: outerListFacultyNotices,
               color: AppTheme.Colors.flatOrange,
               icon: FontAwesomeIcons.scroll,
@@ -134,10 +132,7 @@ class _Annoucement extends State<Annoucement> {
                     MaterialPageRoute(
                         builder: (BuildContext context) => AnnouncementList(
                               title: 'Teacher Notices',
-                              announcementList: [
-                                ['welcome to our scj=hool', '2 May 2001'],
-                                ['gjlshdfkh', '4 May 2001']
-                              ],
+                              announcementList:innerListFacultyNotices,
                               // announcementList: innerListFacultyNotices,
                             )));
               },
@@ -145,7 +140,7 @@ class _Annoucement extends State<Annoucement> {
             AnnouncementItem(
               title: 'Student Notices',
               icon: FontAwesomeIcons.scroll,
-              announcement: ['hgffkga', 'hgfadgfd'],
+              announcement: outerListStudentNotices,
               color: AppTheme.Colors.flatPurple,
               onPressed: () {
                 Navigator.push(
@@ -153,17 +148,14 @@ class _Annoucement extends State<Annoucement> {
                     MaterialPageRoute(
                         builder: (BuildContext context) => AnnouncementList(
                               title: 'Student Notices',
-                              announcementList: [
-                                ['hgffkga', '2 May 2001'],
-                                ['hgfadgfd', '4 May 2001']
-                              ],
+                              announcementList:innerListStudentNotices,
                             )));
               },
             ),
             AnnouncementItem(
               title: 'Teacher Achievement',
               icon: FontAwesomeIcons.trophy,
-              announcement: ['welcome to our scj=hool', 'gjlshdfkh'],
+              announcement: outerListFacultyAchievements,
               color: AppTheme.Colors.flatDeepPurple,
               onPressed: () {
                 Navigator.push(
@@ -171,17 +163,14 @@ class _Annoucement extends State<Annoucement> {
                     MaterialPageRoute(
                         builder: (BuildContext context) => AnnouncementList(
                               title: 'Teacher Achievement',
-                              announcementList: [
-                                ['welcome to our scj=hool', '2 May 2001'],
-                                ['gjlshdfkh', '4 May 2001']
-                              ],
+                              announcementList:innerListFacultyAchievements,
                             )));
               },
             ),
             AnnouncementItem(
               title: 'Student Achievements',
               icon: FontAwesomeIcons.trophy,
-              announcement: ['hgffkga', 'hgfadgfd'],
+              announcement: outerListStudentAchievements,
               color: AppTheme.Colors.flatRed,
               onPressed: () {
                 Navigator.push(
@@ -189,10 +178,7 @@ class _Annoucement extends State<Annoucement> {
                     MaterialPageRoute(
                         builder: (BuildContext context) => AnnouncementList(
                               title: 'Student Achivement',
-                              announcementList: [
-                                ['hgffkga', '2 May 2001'],
-                                ['hgfadgfd', '4 May 2001']
-                              ],
+                              announcementList:innerListStudentAchievements,
                             )));
               },
             ),
