@@ -55,7 +55,7 @@ class _Annoucement extends State<Annoucement> {
 
     for (var ele in responseJson) {
       outerListStudentNotices.add(ele['title']);
-      innerListStudentNotices.add([{"title":ele['title'],"link":ele['link']}]);
+      innerListStudentNotices.add({"title":ele['title'],"link":ele['link']});
       // print(ele['title'] + ele['link']);
     }
     setState(() {
@@ -72,7 +72,7 @@ class _Annoucement extends State<Annoucement> {
 
     for (var ele in responseJson) {
       outerListFacultyAchievements.add(ele['title']);
-      innerListFacultyAchievements.add([{"title":ele['title'],"link":ele['link']}]);
+      innerListFacultyAchievements.add({"title":ele['title'],"link":ele['link']});
       // print(ele['title'] + ele['link']);
     }
     setState(() {
@@ -89,7 +89,7 @@ class _Annoucement extends State<Annoucement> {
 
     for (var ele in responseJson) {
       outerListStudentAchievements.add(ele['title']);
-      innerListStudentAchievements.add([{"title":ele['title'],"link":ele['link']}]);
+      innerListStudentAchievements.add({"title":ele['title'],"link":ele['link']});
       // print(ele['title'] + ele['link']);
     }
     setState(() {
