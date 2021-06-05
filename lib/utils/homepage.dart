@@ -215,11 +215,8 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {
-                              if (Global.user == "Student") {
-                                return Assignment();
-                              } else {
-                                return AdminAssignment();
-                              }
+                              print(Global.user);
+                              return Assignment();
                             }));
                           },
                         )),

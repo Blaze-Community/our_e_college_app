@@ -28,72 +28,95 @@ class AppState extends State<App> {
   ];
   final List<Student> students = [
     Student(
-      uid:"8YiaPL1FJQhKPZKmsb2LOMg4lhA3",
-      email: "bt19cse005@gmail.com",
-      profileName:"AkashDeep",
-      rollno: "BT19CSE005",
-      batch:"2019-2023",
-      branch: "CSE",
-      profilePhotoUri:"",
-      section: "A",
-        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"
-    ),
+        uid: "8YiaPL1FJQhKPZKmsb2LOMg4lhA3",
+        email: "bt19cse005@gmail.com",
+        profileName: "AkashDeep",
+        rollno: "BT19CSE005",
+        batch: "2019-2023",
+        branch: "CSE",
+        profilePhotoUri: "",
+        section: "A",
+        e_card:
+            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
     Student(
-        uid:"n2NUIinc9BYN1yPmiQVaK0jU9s43",
+        uid: "n2NUIinc9BYN1yPmiQVaK0jU9s43",
         email: "bt19cse006@gmail.com",
         rollno: "BT19CSE006",
-        batch:"2019-2023",
-        profileName:"Harsh",
-        profilePhotoUri:"",
+        batch: "2019-2023",
+        profileName: "Harsh",
+        profilePhotoUri: "",
         branch: "CSE",
         section: "A",
-        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"
-    ),
-        Student(
-        uid:"acgTOv8RQBTHeRz1V62ixqHPVWm1",
+        e_card:
+            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
+    Student(
+        uid: "acgTOv8RQBTHeRz1V62ixqHPVWm1",
         email: "bt19cse008@gmail.com",
         rollno: "BT19CSE008",
-        profileName:"Tejas",
-        batch:"2019-2023",
-        profilePhotoUri:"",
+        profileName: "Tejas",
+        batch: "2019-2023",
+        profilePhotoUri: "",
         branch: "CSE",
         section: "A",
-            e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"
-    ),
+        e_card:
+            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
     Student(
-        uid:"VvzJy3RJyBeUk4bxgnj9zsrC3vK2",
+        uid: "VvzJy3RJyBeUk4bxgnj9zsrC3vK2",
         email: "bt19cse010@gmail.com",
         rollno: "BT19CSE010",
-        batch:"2019-2023",
-        profileName:"Vaibhav",
-        profilePhotoUri:"",
+        batch: "2019-2023",
+        profileName: "Vaibhav",
+        profilePhotoUri: "",
         branch: "CSE",
         section: "A",
-        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"
-    ),
+        e_card:
+            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
     Student(
-        uid:"2rdhkdsCTDRUQinE3nXzLAn7Sxh2",
+        uid: "2rdhkdsCTDRUQinE3nXzLAn7Sxh2",
         email: "bt19cse023@gmail.com",
-        batch:"2019-2023",
+        batch: "2019-2023",
         rollno: "BT19CSE023",
-        profileName:"Sonam",
-        profilePhotoUri:"",
+        profileName: "Sonam",
+        profilePhotoUri: "",
         branch: "CSE",
         section: "A",
-        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"
-    )
+        e_card:
+            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd")
   ];
-
+  final List<AssignmentList> assignment = [
+    AssignmentList(
+      subject: "Data Structure",
+      title: "Merge Sort",
+      submissionDate: "28 May 2021",
+      uploadDate: "21 May 2021",
+    ),
+    AssignmentList(
+      subject: "Operating System",
+      title: "Scheduling",
+      submissionDate: "20 May 2021",
+      uploadDate: "5 May 2021",
+    ),
+    AssignmentList(
+      subject: "Digital Electronics",
+      title: "K-map",
+      submissionDate: "16 May 2021",
+      uploadDate: "1 May 2021",
+    ),
+  ];
   @override
   void initState() {
     super.initState();
     // for(var i =0;i<students.length;i++){
     //   saveStudentToDatabase(students[i]);
     // }
+    // for (var i = 0; i < assignment.length; i++) {
+    //   addAssignmentToDatabase(assignment[i]);
+    // }
     //addTimeTableToDatabase("https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FSection%2FA%2FTimetable%2FCSE-A.json?alt=media&token=50d1a49e-0665-461f-9926-8d6c44ea3756");
     ContextKeeper().init(context);
     currentTab = 0;
   }
+
   AppState() {
     // indexing is necessary for proper funcationality
     // of determining which tab is active
@@ -103,30 +126,62 @@ class AppState extends State<App> {
   }
   Future<void> addTimeTableToDatabase(String uri) async {
     CollectionReference studentCollection = FirebaseFirestore.instance
-        .collection('Batch').doc("2019-2023")
-        .collection('Branch').doc("CSE")
+        .collection('Batch')
+        .doc("2019-2023")
+        .collection('Branch')
+        .doc("CSE")
         .collection('Section');
-    await studentCollection.doc("A").set({
-      "timetable":uri})
+    await studentCollection
+        .doc("A")
+        .set({"timetable": uri})
         .then((value) => print("Student Added"))
-        .catchError((error) => print("Failed to add student: $error"));;
+        .catchError((error) => print("Failed to add student: $error"));
+    ;
   }
-  Future<void> saveStudentToDatabase(Student student) async {
+
+  Future<void> addAssignmentToDatabase(AssignmentList assignment) async {
     CollectionReference studentCollection = FirebaseFirestore.instance
-        .collection('Students');
-    await studentCollection.doc(student.uid).set({
-      "uid":student.uid,
-      "branch":student.branch,
-      "batch":student.batch,
-      "email":student.email,
-      "rollno":student.rollno,
-      "section":student.section,
-      "profileName":student.profileName,
-      "profilePhotoUri":student.profilePhotoUri,
-      "e_card":student.e_card})
-        .then((value) => print("Student Added"))
-        .catchError((error) => print("Failed to add student: $error"));;
+        .collection('Batch')
+        .doc("2019-2023")
+        .collection('Branch')
+        .doc("CSE")
+        .collection('Section');
+    await studentCollection
+        .doc("A")
+        .collection("assignment")
+        .doc(assignment.subject)
+        .set({
+          "subject": assignment.subject,
+          "title": assignment.title,
+          "submissionDate": assignment.submissionDate,
+          "uploadDate": assignment.uploadDate
+        })
+        .then((value) => print("Assignment Added"))
+        .catchError((error) => print("Failed to add student: $error"));
+    ;
   }
+
+  Future<void> saveStudentToDatabase(Student student) async {
+    CollectionReference studentCollection =
+        FirebaseFirestore.instance.collection('Students');
+    await studentCollection
+        .doc(student.uid)
+        .set({
+          "uid": student.uid,
+          "branch": student.branch,
+          "batch": student.batch,
+          "email": student.email,
+          "rollno": student.rollno,
+          "section": student.section,
+          "profileName": student.profileName,
+          "profilePhotoUri": student.profilePhotoUri,
+          "e_card": student.e_card
+        })
+        .then((value) => print("Student Added"))
+        .catchError((error) => print("Failed to add student: $error"));
+    ;
+  }
+
   // sets current tab index
   // and update state
   void _selectTab(int index) {
@@ -138,7 +193,6 @@ class AppState extends State<App> {
       // update the state
       // in order to repaint
       setState(() => currentTab = index);
-
     }
   }
 
@@ -180,6 +234,7 @@ class AppState extends State<App> {
     );
   }
 }
+
 class ContextKeeper {
   static BuildContext buildContext;
 
@@ -187,25 +242,42 @@ class ContextKeeper {
     buildContext = context;
   }
 }
-class Student{
-    String uid;
-    String email;
-    String batch;
-    String rollno;
-    String branch;
-    String section;
-    String profileName;
-    String profilePhotoUri;
-    String e_card;
 
-    Student({
-        this.uid,
-        this.email,
-        this.batch,
-        this.rollno,
-        this.section,
-        this.profileName,
-        this.profilePhotoUri,
-        this.branch,
-        this.e_card});
+class Student {
+  String uid;
+  String email;
+  String batch;
+  String rollno;
+  String branch;
+  String section;
+  String profileName;
+  String profilePhotoUri;
+  String e_card;
+
+  Student(
+      {this.uid,
+      this.email,
+      this.batch,
+      this.rollno,
+      this.section,
+      this.profileName,
+      this.profilePhotoUri,
+      this.branch,
+      this.e_card});
+}
+
+class AssignmentList {
+  String subject;
+  String title;
+  // String submissionTime;
+  String submissionDate;
+  String uploadDate;
+
+  AssignmentList({
+    this.subject,
+    this.title,
+    // this.submissionTime,
+    this.uploadDate,
+    this.submissionDate,
+  });
 }
