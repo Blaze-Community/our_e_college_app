@@ -1,4 +1,13 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:our_e_college_app/components/buysell/sellList.dart';
+import 'package:uuid/uuid.dart';
+
+import 'buySell.dart';
 
 class NewPostSell extends StatefulWidget {
   @override
@@ -6,7 +15,63 @@ class NewPostSell extends StatefulWidget {
 }
 
 class _NewPostSellState extends State<NewPostSell> {
-
+  final picker = ImagePicker();
+  final ItemName = TextEditingController();
+  final ItemPrice = TextEditingController();
+  final SellerName = TextEditingController();
+  final SellerRoom = TextEditingController();
+  final SellerContact = TextEditingController();
+  String ItemImageUri;
+  bool loading = false;
+  Future getItemImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      ItemImageUri = pickedFile.path;
+    });
+    //print("upload file ${await uploadFile(pickedFile.path)}");
+    //uploadFile(pickedFile.path);
+  }
+  UploadItem() async {
+    User user = FirebaseAuth.instance.currentUser;
+    var uid = user.uid;
+      try {
+        var uuid = Uuid().v1();
+        await FirebaseStorage.instance
+            .ref('College-Olx/${uuid}')
+            .putFile(File(ItemImageUri))
+            .then((snapshot) async {
+            var uri = await snapshot.ref.getDownloadURL();
+            print("image added");
+          CollectionReference itemsCollection = FirebaseFirestore.instance
+                .collection('College-Olx');
+          await itemsCollection.doc(uuid).set({
+            "uid":uid,
+            "itemName":ItemName.text,
+            "itemPrice":ItemPrice.text,
+            "itemUri":uri,
+            "sellerName":SellerName.text,
+            "sellerRoom":SellerRoom.text,
+            "sellerContact":SellerContact.text})
+              .then((value) {
+                print("Item Added");
+                setState(() {
+                  ItemName.clear();
+                  ItemPrice.clear();
+                  SellerName.clear();
+                  SellerRoom.clear();
+                  SellerContact.clear();
+                  ItemImageUri=null;
+                  loading = false;
+                });
+                Navigator.pop(context);
+              })
+              .catchError((error) => print("Failed to add item: $error"));;
+        });
+      } on FirebaseException catch (e) {
+        // e.g, e.code == 'canceled'
+        print(e.code);
+      }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +132,7 @@ class _NewPostSellState extends State<NewPostSell> {
                           border: Border.all(color: Colors.deepPurple)
                         ),
                         child: TextField(
+                          controller: ItemName,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             labelText: "Item Name",
@@ -81,6 +147,7 @@ class _NewPostSellState extends State<NewPostSell> {
                           border: Border.all(color: Colors.deepPurple)
                         ),
                         child: TextField(
+                          controller: ItemPrice,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -90,7 +157,9 @@ class _NewPostSellState extends State<NewPostSell> {
                       ),
                       SizedBox(height: 20),
                       OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          getItemImage();
+                        },
 
                         child: Padding(
                           padding: EdgeInsets.all(15),
@@ -127,6 +196,7 @@ class _NewPostSellState extends State<NewPostSell> {
                           border: Border.all(color: Colors.deepPurple)
                         ),
                         child: TextField(
+                          controller: SellerName,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             labelText: "Name",
@@ -141,6 +211,7 @@ class _NewPostSellState extends State<NewPostSell> {
                           border: Border.all(color: Colors.deepPurple)
                         ),
                         child: TextField(
+                          controller: SellerRoom,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             labelText: "Room No.",
@@ -155,6 +226,7 @@ class _NewPostSellState extends State<NewPostSell> {
                           border: Border.all(color: Colors.deepPurple)
                         ),
                         child: TextField(
+                          controller: SellerContact,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -164,10 +236,19 @@ class _NewPostSellState extends State<NewPostSell> {
                       ),
                       SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            loading =true;
+                          });
+                          UploadItem();
+                        },
                         child: Padding(
                           padding: EdgeInsets.all(15),
-                          child: Row(
+                          child:  (loading==true)?
+                          CircularProgressIndicator(
+                            color: Colors.white,
+                          ):
+                          Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -192,170 +273,6 @@ class _NewPostSellState extends State<NewPostSell> {
             ),
           ),
         )
-        // body: ListView(children: [
-        //         Stack(children: [
-        //             Container(
-        //                 height: MediaQuery.of(context).size.height - 82.0,
-        //                 width: MediaQuery.of(context).size.width,
-        //                 color: Colors.transparent),
-        //             Positioned(
-        //                 top: 75.0,
-        //                 child: Container(
-        //                         decoration: BoxDecoration(
-        //                             borderRadius: BorderRadius.only(
-        //                               topLeft: Radius.circular(50.0),
-        //                               topRight: Radius.circular(50.0),
-        //                             ),
-        //                             color: Colors.white),
-        //                         height: MediaQuery.of(context).size.height - 100.0,
-        //                         width: MediaQuery.of(context).size.width
-        //                       )
-        //             ),
-        //             SizedBox(height: 40),
-        //             Positioned(
-        //               top: 100,
-        //               left: 25.0,
-        //               right: 25.0,
-        //               child: Column(
-        //                 children: [
-        //                   Text('Item Details',
-        //                     style: TextStyle(
-        //                         fontFamily: 'Montserrat',
-        //                         fontSize: 16.0,
-        //                         color: Colors.grey)),
-        //                   SizedBox(height: 5),
-        //                   Container(height: 1.0, color: Colors.deepOrange, width: 50.0),
-        //                   SizedBox(height: 20),
-        //                   Container(
-        //                     padding: EdgeInsets.fromLTRB(10,2,10,2),
-        //                     decoration: BoxDecoration(
-        //                       borderRadius: BorderRadius.circular(5),
-        //                       border: Border.all(color: Colors.deepPurple)
-        //                     ),
-        //                     child: TextField(
-        //                       decoration: InputDecoration(
-        //                         border: InputBorder.none,
-        //                         labelText: "Item Name",
-        //                       ),
-        //                     ),
-        //                   ),
-        //                   SizedBox(height: 20),
-        //                   Container(
-        //                     padding: EdgeInsets.fromLTRB(10,2,10,2),
-        //                     decoration: BoxDecoration(
-        //                       borderRadius: BorderRadius.circular(5),
-        //                       border: Border.all(color: Colors.deepPurple)
-        //                     ),
-        //                     child: TextField(
-        //                       keyboardType: TextInputType.number,
-        //                       decoration: InputDecoration(
-        //                         border: InputBorder.none,
-        //                         labelText: "Price",
-        //                       ),
-        //                     ),
-        //                   ),
-        //                   SizedBox(height: 20),
-        //                   OutlinedButton(
-        //                     onPressed: () {},
-                            
-        //                     child: Padding(
-        //                       padding: EdgeInsets.all(15),
-                              
-        //                       child: Row(
-        //                         crossAxisAlignment: CrossAxisAlignment.center,
-        //                         mainAxisAlignment: MainAxisAlignment.center,
-        //                           children: [
-        //                             Icon(Icons.upload, size: 25),
-        //                             SizedBox(width: 10),
-        //                             Text(
-        //                               "Upload Image",
-        //                               style: TextStyle(
-        //                                 fontSize: 15,
-        //                               ),
-        //                             ),
-        //                           ],
-        //                         ),
-        //                     )
-        //                   ),
-        //                   SizedBox(height: 40),
-        //                   Text('Contact Details',
-        //                     style: TextStyle(
-        //                         fontFamily: 'Montserrat',
-        //                         fontSize: 16.0,
-        //                         color: Colors.grey)),
-        //                   SizedBox(height: 5),
-        //                   Container(height: 1.0, color: Colors.deepOrange, width: 50.0),
-        //                   SizedBox(height: 20),
-        //                   Container(
-        //                     padding: EdgeInsets.fromLTRB(10,2,10,2),
-        //                     decoration: BoxDecoration(
-        //                       borderRadius: BorderRadius.circular(5),
-        //                       border: Border.all(color: Colors.deepPurple)
-        //                     ),
-        //                     child: TextField(
-        //                       decoration: InputDecoration(
-        //                         border: InputBorder.none,
-        //                         labelText: "Name",
-        //                       ),
-        //                     ),
-        //                   ),
-        //                   SizedBox(height: 20),
-        //                   Container(
-        //                     padding: EdgeInsets.fromLTRB(10,2,10,2),
-        //                     decoration: BoxDecoration(
-        //                       borderRadius: BorderRadius.circular(5),
-        //                       border: Border.all(color: Colors.deepPurple)
-        //                     ),
-        //                     child: TextField(
-        //                       decoration: InputDecoration(
-        //                         border: InputBorder.none,
-        //                         labelText: "Room No.",
-        //                       ),
-        //                     ),
-        //                   ),
-        //                   SizedBox(height: 20),
-        //                   Container(
-        //                     padding: EdgeInsets.fromLTRB(10,2,10,2),
-        //                     decoration: BoxDecoration(
-        //                       borderRadius: BorderRadius.circular(5),
-        //                       border: Border.all(color: Colors.deepPurple)
-        //                     ),
-        //                     child: TextField(
-        //                       keyboardType: TextInputType.number,
-        //                       decoration: InputDecoration(
-        //                         border: InputBorder.none,
-        //                         labelText: "Contact No.",
-        //                       ),
-        //                     ),
-        //                   ),
-        //                   SizedBox(height: 20),
-        //                   ElevatedButton(
-        //                     onPressed: () {},
-        //                     child: Padding(
-        //                       padding: EdgeInsets.all(15),
-        //                       child: Row(
-        //                         crossAxisAlignment: CrossAxisAlignment.center,
-        //                         mainAxisAlignment: MainAxisAlignment.center,
-        //                           children: [
-        //                             Icon(Icons.publish, size: 25),
-        //                             SizedBox(width: 10),
-        //                             Text(
-        //                               "Submit",
-        //                               style: TextStyle(
-        //                                 fontSize: 15,
-        //                               ),
-        //                             ),
-        //                           ],
-        //                         ),
-        //                     )
-        //                   ),
-        //                 ],
-        //               )
-        //             )
-        //           ]
-        //         )
-        //       ]
-        //     )
-        );
+    );
   }
 }

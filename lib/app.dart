@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'bottombar/bottomBarScreens.dart';
 import 'bottombar/bottomBarTabItem.dart';
 import 'bottombar/bottomNavigation.dart';
@@ -27,6 +28,17 @@ class AppState extends State<App> {
     ),
   ];
   final List<Student> students = [
+    Student(
+        uid:"eyY6XSH3DiS3TyB5UUI1knftB552",
+        email: "student@gmail.com",
+        profileName:"demo",
+        rollno: "BT19CSE000",
+        batch:"2019-2023",
+        branch: "CSE",
+        profilePhotoUri:"",
+        section: "A",
+        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"
+    ),
     Student(
         uid: "8YiaPL1FJQhKPZKmsb2LOMg4lhA3",
         email: "bt19cse005@gmail.com",
@@ -83,24 +95,47 @@ class AppState extends State<App> {
         e_card:
             "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd")
   ];
-  final List<AssignmentList> assignment = [
-    AssignmentList(
+  final List<Assignment> assignment = [
+    Assignment(
       subject: "Data Structure",
       title: "Merge Sort",
       submissionDate: "28 May 2021",
       uploadDate: "21 May 2021",
+      uri:"https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FSection%2FA%2FSubjects%2FData%20Structure%2FAssignment%2FSE%20Models.docx?alt=media&token=bca62fa3-f92b-408e-b048-c712c4b466e8"
     ),
-    AssignmentList(
+    Assignment(
       subject: "Operating System",
       title: "Scheduling",
       submissionDate: "20 May 2021",
       uploadDate: "5 May 2021",
+      uri:"https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FSection%2FA%2FSubjects%2FData%20Structure%2FAssignment%2FSE%20Models.docx?alt=media&token=bca62fa3-f92b-408e-b048-c712c4b466e8"
     ),
-    AssignmentList(
+    Assignment(
       subject: "Digital Electronics",
       title: "K-map",
       submissionDate: "16 May 2021",
       uploadDate: "1 May 2021",
+        uri:"https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FSection%2FA%2FSubjects%2FData%20Structure%2FAssignment%2FSE%20Models.docx?alt=media&token=bca62fa3-f92b-408e-b048-c712c4b466e8"
+    ),
+  ];
+  final List<Result> result = [
+    Result(
+        subject: "Data Structure",
+        marks: "12",
+        uploadDate: "21 May 2021",
+        uri:"https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FSection%2FA%2FSubjects%2FData%20Structure%2FResult%2Ftodo.py?alt=media&token=548e9798-e1e1-4495-aa56-ad0f4127af56"
+    ),
+    Result(
+        subject: "Operating System",
+        marks: "12",
+        uploadDate: "5 May 2021",
+        uri:"https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FSection%2FA%2FSubjects%2FData%20Structure%2FResult%2Ftodo.py?alt=media&token=548e9798-e1e1-4495-aa56-ad0f4127af56"
+    ),
+    Result(
+        subject: "Digital Electronics",
+        marks: "12",
+        uploadDate: "1 May 2021",
+        uri:"https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FSection%2FA%2FSubjects%2FData%20Structure%2FResult%2Ftodo.py?alt=media&token=548e9798-e1e1-4495-aa56-ad0f4127af56"
     ),
   ];
   @override
@@ -111,6 +146,9 @@ class AppState extends State<App> {
     // }
     // for (var i = 0; i < assignment.length; i++) {
     //   addAssignmentToDatabase(assignment[i]);
+    // }
+    // for (var i = 0; i < result.length; i++) {
+    //   addResultToDatabase(result[i]);
     // }
     //addTimeTableToDatabase("https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FSection%2FA%2FTimetable%2FCSE-A.json?alt=media&token=50d1a49e-0665-461f-9926-8d6c44ea3756");
     ContextKeeper().init(context);
@@ -139,7 +177,8 @@ class AppState extends State<App> {
     ;
   }
 
-  Future<void> addAssignmentToDatabase(AssignmentList assignment) async {
+  Future<void> addAssignmentToDatabase(Assignment assignment) async {
+    var uuid = Uuid().v1();
     CollectionReference studentCollection = FirebaseFirestore.instance
         .collection('Batch')
         .doc("2019-2023")
@@ -148,19 +187,41 @@ class AppState extends State<App> {
         .collection('Section');
     await studentCollection
         .doc("A")
-        .collection("assignment")
-        .doc(assignment.subject)
+        .collection("Assignment")
+        .doc(uuid)
         .set({
           "subject": assignment.subject,
           "title": assignment.title,
           "submissionDate": assignment.submissionDate,
-          "uploadDate": assignment.uploadDate
+          "uploadDate": assignment.uploadDate,
+          "uri":assignment.uri
         })
         .then((value) => print("Assignment Added"))
         .catchError((error) => print("Failed to add student: $error"));
     ;
   }
-
+  Future<void> addResultToDatabase(Result result) async {
+    var uuid = Uuid().v1();
+    CollectionReference studentCollection = FirebaseFirestore.instance
+        .collection('Batch')
+        .doc("2019-2023")
+        .collection('Branch')
+        .doc("CSE")
+        .collection('Section');
+    await studentCollection
+        .doc("A")
+        .collection("Result")
+        .doc(uuid)
+        .set({
+      "subject": result.subject,
+      "marks": result.marks,
+      "uploadDate": result.uploadDate,
+      "uri":result.uri
+    })
+        .then((value) => print("Result Added"))
+        .catchError((error) => print("Failed to add student: $error"));
+    ;
+  }
   Future<void> saveStudentToDatabase(Student student) async {
     CollectionReference studentCollection =
         FirebaseFirestore.instance.collection('Students');
@@ -266,18 +327,35 @@ class Student {
       this.e_card});
 }
 
-class AssignmentList {
+class Assignment {
   String subject;
   String title;
   // String submissionTime;
   String submissionDate;
   String uploadDate;
+  String uri;
 
-  AssignmentList({
+  Assignment({
     this.subject,
     this.title,
     // this.submissionTime,
     this.uploadDate,
     this.submissionDate,
+    this.uri
+  });
+}
+
+class Result {
+  String subject;
+  String marks;
+  String uploadDate;
+  String uri;
+
+  Result({
+    this.subject,
+    this.marks,
+    // this.submissionTime,
+    this.uploadDate,
+    this.uri
   });
 }

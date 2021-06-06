@@ -60,12 +60,12 @@ class _EditProfileState extends State<EditProfile> {
         .then((value) {
       setState(() {
         loading =false;
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    ProfileScreen()),(Route<dynamic> route) => false);
       });
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  ProfileScreen()),(Route<dynamic> route) => false);
       print("User Updated");
     })
         .catchError((error) => print("Failed to update user: $error"));

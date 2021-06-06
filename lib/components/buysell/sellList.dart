@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/components/buysell/buySellDetails.dart';
 import 'package:our_e_college_app/components/buysell/newPostSell.dart';
@@ -8,6 +10,27 @@ class SellList extends StatefulWidget {
 }
 
 class _SellListState extends State<SellList> {
+  List items;
+  Future<void> deleteItem(String uuid) async {
+    CollectionReference itemsCollection = FirebaseFirestore.instance
+        .collection('College-Olx');
+    await itemsCollection
+        .doc(uuid)
+        .delete()
+        .then((value) {
+          print("Item Deleted");
+        })
+        .catchError((error) => print("Failed to delete user: $error"));
+  }
+  fetchSellItemsList() {
+    User user = FirebaseAuth.instance.currentUser;
+    var uid = user.uid;
+    CollectionReference itemsCollection = FirebaseFirestore.instance
+        .collection('College-Olx');
+    return itemsCollection
+        .where('uid', isEqualTo: uid)
+        .snapshots();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,23 +50,32 @@ class _SellListState extends State<SellList> {
                 child: Container(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal:20.0),
-                      child: ListView(children: [
-                        _buildListItems(
-                            'assets/plate1.png', 'M & G Book', '50.00'),
-                        _buildListItems(
-                            'assets/plate1.png', 'Maths II Book', '50.00'),
-                        _buildListItems(
-                            'assets/plate1.png', 'Calculator', '50.00'),
-                        _buildListItems(
-                            'assets/plate1.png', 'Calculator', '50.00'),
-                        _buildListItems(
-                            'assets/plate1.png', 'Calculator', '50.00'),
-                        _buildListItems(
-                            'assets/plate1.png', 'Calculator', '50.00'),
-                        _buildListItems(
-                            'assets/plate1.png', 'Phillips Kettle', '50.00'),
-                        SizedBox(height: 30)
-                      ]),
+                      child: StreamBuilder(
+                        stream: fetchSellItemsList(),
+                        builder: (context,snapshot){
+                          if(snapshot.connectionState == ConnectionState.active){
+                            if(snapshot.hasData){
+                             items = snapshot.data.docs;
+                              return ListView.builder(
+                                  itemCount: items.length,
+                                  itemBuilder:  (BuildContext ctxt, int i) {
+                                    return _buildListItems(
+                                      items[i].id,
+                                      items[i]["itemUri"],
+                                      items[i]["itemName"],
+                                      items[i]["itemPrice"],
+                                      items[i]["sellerName"],
+                                      items[i]["sellerRoom"],
+                                      items[i]["sellerContact"],
+                                    );
+                                  }
+                              );
+                            }
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        ,
+                      ),
                     ))),
           ),
           Positioned(
@@ -63,7 +95,7 @@ class _SellListState extends State<SellList> {
     );
   }
 
-  Widget _buildListItems(String imgPath, String itemName, String price) {
+  Widget _buildListItems(String docId,String imgPath, String itemName, String itemPrice, String sellerName,String sellerRoom,String sellerContact) {
     return Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -77,9 +109,13 @@ class _SellListState extends State<SellList> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => BuySellDetails(
-                          heroTag: imgPath,
-                          itemName: itemName,
-                          itemPrice: price)));
+                        itemImageUri: imgPath,
+                        itemName: itemName,
+                        itemPrice: itemPrice,
+                        sellerName: sellerName,
+                        sellerRoom: sellerRoom,
+                        sellerContact: sellerContact
+                      )));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,7 +125,7 @@ class _SellListState extends State<SellList> {
                       Hero(
                         tag: imgPath,
                         child: Image(
-                          image: AssetImage(imgPath),
+                          image: NetworkImage(imgPath),
                           fit: BoxFit.cover,
                           height: 30.0,
                           width: 30.0
@@ -105,7 +141,7 @@ class _SellListState extends State<SellList> {
                                     fontSize: 17.0,
                                     fontWeight: FontWeight.bold)),
                             SizedBox(height: 10.0),
-                            Text('Rs. ' + price,
+                            Text('Rs. ' + itemPrice,
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 15.0,
@@ -115,7 +151,9 @@ class _SellListState extends State<SellList> {
                     IconButton(
                         icon: Icon(Icons.delete),
                         color: Colors.grey,
-                        onPressed: () {})
+                        onPressed: () {
+                          deleteItem(docId);
+                        })
                   ],
                 ))));
   }
