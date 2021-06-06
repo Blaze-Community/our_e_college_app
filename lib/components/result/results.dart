@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:our_e_college_app/components/result/resultitem.dart';
 
 class Result extends StatefulWidget {
@@ -7,18 +9,45 @@ class Result extends StatefulWidget {
 }
 
 class _ResultState extends State<Result> {
-  final List items = [
-    ResultItem(subject: "DSA", uploadDate: "28 May 2021", marks: 25),
-    ResultItem(subject: "DSA", uploadDate: "27 May 2021", marks: 25),
-    ResultItem(subject: "DSA", uploadDate: "26 May 2021", marks: 25),
-    ResultItem(subject: "DSA", uploadDate: "25 May 2021", marks: 25),
-    ResultItem(subject: "DSA", uploadDate: "24 May 2021", marks: 25),
-    ResultItem(subject: "DSA", uploadDate: "23 May 2021", marks: 25),
-  ];
+  Future getresult() async {
+    User user = FirebaseAuth.instance.currentUser;
+    var uid = user.uid;
+    var student;
+    await FirebaseFirestore.instance
+        .collection('Students')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        student = documentSnapshot.data();
+      } else {
+        print('Document does not exist on the student database\n\n\n');
+      }
+    });
+    return await FirebaseFirestore.instance
+        .collection('Batch')
+        .doc(student["batch"])
+        .collection('Branch')
+        .doc(student["branch"])
+        .collection('Section')
+        .doc(student["section"])
+        .collection("result")
+        .get()
+        .then((snapshot) async {
+      return snapshot;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // getassignment();
+    // print(items);
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    items.sort((a, b) => a.uploadDate.compareTo(b.uploadDate));
     return Scaffold(
         appBar: AppBar(
           title: Text("Results"),
@@ -26,89 +55,29 @@ class _ResultState extends State<Result> {
         body: Container(
           height: double.infinity,
           width: double.infinity,
-          child: ListView(
-              padding: EdgeInsets.only(top: 15),
-              children: List.generate(items.length, (index) => items[index])),
+          child: FutureBuilder(
+            future: getresult(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  final List items = snapshot.data.docs;
+                  return ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (BuildContext ctxt, int i) {
+                      return ResultItem(
+                        subject: items[i]["subject"],
+                        uploadDate: items[i]["uploadDate"],
+                        marks: items[i]["marks"],
+                      );
+                    },
+                  );
+                }
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
         ));
   }
 }
-/*@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Subjects'),
-      ),
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        children: <Widget>[
-          CurvedListItem(
-            title: 'English',
-            color: Colors.red,
-            nextColor: Colors.green,
-          ),
-          CurvedListItem(
-            title: 'Hindi',
-            color: Colors.green,
-            nextColor: Colors.black,
-          ),
-          CurvedListItem(
-            title: 'Maths',
-            color: Colors.black,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CurvedListItem extends StatelessWidget {
-  final String title;
-  final String people;
-  final IconData icon;
-  final Color color;
-  final Color nextColor;
-
-  const CurvedListItem({
-    this.title,
-    this.icon,
-    this.people,
-    this.color,
-    this.nextColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: nextColor,
-      child: Container(
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(80.0),
-          ),
-        ),
-        padding: const EdgeInsets.only(
-          left: 32,
-          top: 80.0,
-          bottom: 50,
-        ),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(
-                height: 2,
-              ),
-              Text(
-                title,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold),
-              ),
-              Row(),
-            ]),
-      ),
-    );
-  }
-}
-*/

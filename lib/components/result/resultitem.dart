@@ -9,9 +9,10 @@ class ResultItem extends StatefulWidget {
 
   ResultItem(
       {this.subject,
-        // this.submissionTime,
-        this.uploadDate,
-        this.marks});
+      // this.submissionTime,
+      this.uploadDate,
+      this.marks,
+      });
 
   @override
   _ResultItemState createState() => _ResultItemState();
@@ -117,8 +118,7 @@ class _ResultItemState extends State<ResultItem> {
                     onPressed: () {},
                     child: Row(
                       children: [
-                        Icon(FontAwesomeIcons.download,
-                            size: 12),
+                        Icon(FontAwesomeIcons.download, size: 12),
                         SizedBox(width: 10),
                         Text(
                           "MARKSHEET",
