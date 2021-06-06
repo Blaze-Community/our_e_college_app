@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BuySellDetails extends StatefulWidget {
-  final heroTag;
+  final itemImageUri;
   final itemName;
   final itemPrice;
+  final sellerName;
+  final sellerRoom;
+  final sellerContact;
 
-  BuySellDetails({this.heroTag, this.itemName, this.itemPrice});
+  BuySellDetails({this.itemImageUri, this.itemName, this.itemPrice,this.sellerName,this.sellerContact,this.sellerRoom});
   @override
   _BuySellDetailsState createState() => _BuySellDetailsState();
 }
@@ -62,15 +66,13 @@ class _BuySellDetailsState extends State<BuySellDetails> {
             Positioned(
                 top: 30.0,
                 left: (MediaQuery.of(context).size.width / 2) - 100.0,
-                child: Hero(
-                    tag: widget.heroTag,
-                    child: Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(widget.heroTag),
-                                fit: BoxFit.cover)),
-                        height: 200.0,
-                        width: 200.0))),
+                child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(widget.itemImageUri),
+                            fit: BoxFit.cover)),
+                    height: 200.0,
+                    width: 200.0)),
             Positioned(
                 top: 300.0,
                 left: 25.0,
@@ -95,7 +97,7 @@ class _BuySellDetailsState extends State<BuySellDetails> {
                       ],
                     ),
                     SizedBox(height: 40.0),
-                    _buildContactDetails('Ashish Sonam', 'C-21', '8210864839'),
+                    _buildContactDetails(widget.sellerName, widget.sellerRoom, widget.sellerContact),
                     // Container(
                     //   child: _buildContactDetails('Ashish Sonam', 'C-21', '8210864839'),
                     // ),
@@ -203,7 +205,14 @@ class _BuySellDetailsState extends State<BuySellDetails> {
                   ],
                 ),
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    String url = 'tel:${widget.sellerContact}';
+                    if (await canLaunch(url)) {
+                    await launch(url);
+                    } else {
+                    throw 'Could not launch $url';
+                    }
+                  },
 
                   child: Text(
                     "CALL",

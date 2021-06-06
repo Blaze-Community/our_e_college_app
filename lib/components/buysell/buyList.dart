@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/components/buysell/buySellDetails.dart';
 
 class BuyList extends StatefulWidget {
@@ -8,6 +8,11 @@ class BuyList extends StatefulWidget {
 }
 
 class _BuyListState extends State<BuyList> {
+
+   fetchBuyItemsList() {
+    return FirebaseFirestore.instance
+        .collection('College-Olx').snapshots();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,24 +30,37 @@ class _BuyListState extends State<BuyList> {
             child: Container(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: ListView(
-                      children: [
-                    _buildListItems('assets/1.jpg', 'M & G Book', '50.00'),
-                    _buildListItems('assets/1.jpg', 'Maths II Book', '50.00'),
-                    _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
-                    _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
-                    _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
-                    _buildListItems('assets/1.jpg', 'Calculator', '50.00'),
-                    _buildListItems(
-                        'assets/plate1.png', 'Phillips Kettle', '50.00'),
-                    SizedBox(height: 30)
-                  ]),
+                  child: StreamBuilder(
+                    stream: fetchBuyItemsList(),
+                    builder: (context,snapshot){
+                      if(snapshot.connectionState == ConnectionState.active){
+                          if(snapshot.hasData){
+                            final List items = snapshot.data.docs;
+                            return ListView.builder(
+                                itemCount: items.length,
+                                itemBuilder:  (BuildContext ctxt, int i) {
+                                  return _buildListItems(
+                                      items[i]["itemUri"],
+                                      items[i]["itemName"],
+                                      items[i]["itemPrice"],
+                                      items[i]["sellerName"],
+                                      items[i]["sellerRoom"],
+                                      items[i]["sellerContact"],
+                                  );
+                                }
+                            );
+                          }
+                      }
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    ,
+                  ),
                 ))),
       ),
     );
   }
 
-  Widget _buildListItems(String imgPath, String itemName, String itemPrice) {
+  Widget _buildListItems(String imgPath, String itemName, String itemPrice, String sellerName,String sellerRoom,String sellerContact) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
@@ -64,9 +82,13 @@ class _BuyListState extends State<BuyList> {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => BuySellDetails(
-                      heroTag: imgPath,
+                      itemImageUri: imgPath,
                       itemName: itemName,
-                      itemPrice: itemPrice)));
+                      itemPrice: itemPrice,
+                      sellerName: sellerName,
+                      sellerRoom: sellerRoom,
+                      sellerContact: sellerContact,
+                     )));
             },
             child: Stack(
               children: <Widget>[
@@ -74,7 +96,7 @@ class _BuyListState extends State<BuyList> {
                   children: <Widget>[
                     AspectRatio(
                       aspectRatio: 2.5,
-                      child: Image.asset(
+                      child: Image.network(
                         imgPath,
                         fit: BoxFit.cover,
                       ),
@@ -103,27 +125,6 @@ class _BuyListState extends State<BuyList> {
                     ),
                   ],
                 ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(32.0),
-                      ),
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          FontAwesomeIcons.heart,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
               ],
             ),
           ),

@@ -13,28 +13,28 @@ class _ResultState extends State<Result> {
     User user = FirebaseAuth.instance.currentUser;
     var uid = user.uid;
     var student;
-    await FirebaseFirestore.instance
+    return await FirebaseFirestore.instance
         .collection('Students')
         .doc(uid)
         .get()
-        .then((DocumentSnapshot documentSnapshot) {
+        .then((DocumentSnapshot documentSnapshot) async {
       if (documentSnapshot.exists) {
         student = documentSnapshot.data();
+        return await FirebaseFirestore.instance
+            .collection('Batch')
+            .doc(student["batch"])
+            .collection('Branch')
+            .doc(student["branch"])
+            .collection('Section')
+            .doc(student["section"])
+            .collection("Result")
+            .get()
+            .then((snapshot) async {
+          return snapshot;
+        });
       } else {
         print('Document does not exist on the student database\n\n\n');
       }
-    });
-    return await FirebaseFirestore.instance
-        .collection('Batch')
-        .doc(student["batch"])
-        .collection('Branch')
-        .doc(student["branch"])
-        .collection('Section')
-        .doc(student["section"])
-        .collection("result")
-        .get()
-        .then((snapshot) async {
-      return snapshot;
     });
   }
 
@@ -55,28 +55,32 @@ class _ResultState extends State<Result> {
         body: Container(
           height: double.infinity,
           width: double.infinity,
-          child: FutureBuilder(
-            future: getresult(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  final List items = snapshot.data.docs;
-                  return ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (BuildContext ctxt, int i) {
-                      return ResultItem(
-                        subject: items[i]["subject"],
-                        uploadDate: items[i]["uploadDate"],
-                        marks: items[i]["marks"],
-                      );
-                    },
-                  );
+          child: Padding(
+            padding: const EdgeInsets.only(top:12.0),
+            child: FutureBuilder(
+              future: getresult(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    final List items = snapshot.data.docs;
+                    return ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (BuildContext ctxt, int i) {
+                        return ResultItem(
+                          subject: items[i]["subject"],
+                          uploadDate: items[i]["uploadDate"],
+                          marks: items[i]["marks"],
+                          uri: items[i]["uri"],
+                        );
+                      },
+                    );
+                  }
                 }
-              }
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            },
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
           ),
         ));
   }

@@ -12,11 +12,6 @@ class LoginScreen extends StatelessWidget {
     print('Name: ${data.name}, Password: ${data.password}');
     global.email = data.name;
     global.password = data.password;
-    if (data.name == "teacher@gmail.com") {
-      global.user = "Teacher";
-    } else {
-      global.user = "Student";
-    }
 
     return Future.delayed(loginTime).then((_) async {
       try {
@@ -40,7 +35,7 @@ class LoginScreen extends StatelessWidget {
       onSubmitAnimationCompleted: () async {
         final SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        sharedPreferences.setString('email', global.user);
+        sharedPreferences.setString('email', global.email);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => App(),
         ));

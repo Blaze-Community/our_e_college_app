@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AssignmentList extends StatefulWidget {
   String subject;
@@ -7,6 +8,7 @@ class AssignmentList extends StatefulWidget {
   // String submissionTime;
   String submissionDate;
   String uploadDate;
+  String uri;
 
   AssignmentList({
     this.subject,
@@ -14,6 +16,7 @@ class AssignmentList extends StatefulWidget {
     // this.submissionTime,
     this.uploadDate,
     this.submissionDate,
+    this.uri,
   });
 
   @override
@@ -125,7 +128,10 @@ class _AssignmentListState extends State<AssignmentList> {
                     ],
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                        print(widget.uri);
+                        await launch(widget.uri);
+                    },
                     child: Row(
                       children: [
                         Icon(FontAwesomeIcons.download, size: 12),

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ResultItem extends StatefulWidget {
   String subject;
   // String submissionTime;
   String uploadDate;
-  int marks;
+  String marks;
+  String uri;
 
   ResultItem(
       {this.subject,
       // this.submissionTime,
       this.uploadDate,
       this.marks,
+      this.uri
       });
 
   @override
@@ -104,7 +107,7 @@ class _ResultItemState extends State<ResultItem> {
                             ),
                           ),
                           Text(
-                            widget.marks.toString() + "/100",
+                            widget.marks + "/100",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -115,7 +118,10 @@ class _ResultItemState extends State<ResultItem> {
                     ],
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      print(widget.uri);
+                      await launch(widget.uri);
+                    },
                     child: Row(
                       children: [
                         Icon(FontAwesomeIcons.download, size: 12),
