@@ -12,6 +12,11 @@ class LoginScreen extends StatelessWidget {
     print('Name: ${data.name}, Password: ${data.password}');
     global.email = data.name;
     global.password = data.password;
+    if (data.name == "teacher@gmail.com") {
+      global.user = "Teacher";
+    } else {
+      global.user = "Student";
+    }
 
     return Future.delayed(loginTime).then((_) async {
       try {
@@ -28,6 +33,20 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
+  Future<String> _resetPassword(String email) async {
+      return Future.delayed(loginTime).then((_) async {
+        try {
+          FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+          await firebaseAuth.sendPasswordResetEmail(email: email);
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'user-not-found') {
+            return 'No user found for that email.';
+          } 
+        }
+        return null;
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
@@ -35,12 +54,19 @@ class LoginScreen extends StatelessWidget {
       onSubmitAnimationCompleted: () async {
         final SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        sharedPreferences.setString('email', global.email);
+        sharedPreferences.setString('email', global.user);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => App(),
         ));
       },
       hideSignUpButton: true,
+      onRecoverPassword: _resetPassword,
+      theme: LoginTheme(
+        primaryColor: Colors.deepPurple,
+      ),
+      messages: LoginMessages(
+        recoverPasswordDescription: 'We will send you an email to reset your password for the above account.'
+      ),
     );
   }
 }
