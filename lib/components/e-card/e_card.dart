@@ -14,7 +14,7 @@ class _EcardState extends State<Ecard>{
     User user = FirebaseAuth.instance.currentUser;
     var uid = user.uid;
     return await FirebaseFirestore.instance
-        .collection('Students')
+        .collection('Users')
         .doc(uid)
         .get();
   }
