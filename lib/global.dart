@@ -1,3 +1,3 @@
-String user = "Student";
+String user = "Teacher";
 String email = "";
 String password = "";

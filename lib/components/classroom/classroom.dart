@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Transport extends StatefulWidget {
+class ClassRoom extends StatefulWidget {
   @override
-  _TransportState createState() => _TransportState();
+  _ClassRoomState createState() => _ClassRoomState();
 }
 
-class _TransportState extends State<Transport>{
+class _ClassRoomState extends State<ClassRoom>{
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Transport"),
+          title: Text("ClassRoom"),
         ),
         body:  Center(
           child: ElevatedButton(

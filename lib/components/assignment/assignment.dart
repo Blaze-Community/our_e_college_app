@@ -11,11 +11,10 @@ class Assignment extends StatefulWidget {
 class _AssignmentState extends State<Assignment> {
 
   getassignment() async {
-    User user = FirebaseAuth.instance.currentUser;
-    var uid = user.uid;
+    var uid = FirebaseAuth.instance.currentUser.uid;
     var student;
     return await FirebaseFirestore.instance
-        .collection('Students')
+        .collection('Users')
         .doc(uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) async {

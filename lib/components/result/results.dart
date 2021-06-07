@@ -10,11 +10,10 @@ class Result extends StatefulWidget {
 
 class _ResultState extends State<Result> {
   Future getresult() async {
-    User user = FirebaseAuth.instance.currentUser;
-    var uid = user.uid;
+    var uid = FirebaseAuth.instance.currentUser.uid;
     var student;
     return await FirebaseFirestore.instance
-        .collection('Students')
+        .collection('Users')
         .doc(uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) async {
