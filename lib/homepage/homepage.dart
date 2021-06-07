@@ -259,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => ClassRoom()));
+                            builder: (BuildContext context) => GoogleClassroomClone()));
                   },
                 )),
             Padding(

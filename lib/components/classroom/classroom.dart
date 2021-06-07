@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
+import 'screens/home_page.dart';
 
-class ClassRoom extends StatefulWidget {
+void main() => runApp(GoogleClassroomClone());
+
+class GoogleClassroomClone extends StatefulWidget {
   @override
-  _ClassRoomState createState() => _ClassRoomState();
+  _GoogleClassroomCloneState createState() => _GoogleClassroomCloneState();
 }
 
-class _ClassRoomState extends State<ClassRoom>{
+class _GoogleClassroomCloneState extends State<GoogleClassroomClone> {
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("ClassRoom"),
-        ),
-        body:  Center(
-          child: ElevatedButton(
-
-            onPressed: () {
-
-              Navigator.pop(context);
-            },
-            child: Text('Coming Soon!!'),
-          ),
-
-        ));
+    return MaterialApp(
+      title: "GoogleClassroomClone",
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
   }
-
 }
