@@ -29,11 +29,11 @@ class AppState extends State<App> {
   ];
   final List<Class> classes = [
     Class(
-      enrolKey: "",
-      subject: "",
-      batch: "",
-      section: "",
-      branch: ""
+      enrolKey: Uuid().v1(),
+      subject: "DAA",
+      batch: "2019-2023",
+      section: "A",
+      branch: "CSE"
     )
   ];
 
@@ -161,6 +161,10 @@ class AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    //enrolStudentInClass("7602fc20-c76a-11eb-b1ac-997b4bdee393");
+    // for(var i =0;i<classes.length;i++){
+    //   createClass(classes[i]);
+    // }
     // for(var i =0;i<teachers.length;i++){
     //   saveTeacherToDatabase(teachers[i]);
     // }
@@ -261,7 +265,6 @@ class AppState extends State<App> {
         .catchError((error) => print("Failed to add teacher: $error"));
     ;
   }
-
   Future<void> saveStudentToDatabase(Student student) async {
     CollectionReference usersCollection =
         FirebaseFirestore.instance.collection('Users');
@@ -282,6 +285,55 @@ class AppState extends State<App> {
         .then((value) => print("Student Added"))
         .catchError((error) => print("Failed to add student: $error"));
     ;
+  }
+  Future<void> createClass(Class clas) async {
+    var uid = FirebaseAuth.instance.currentUser.uid;
+    CollectionReference classesCollection =
+    FirebaseFirestore.instance.collection('Classes');
+    await classesCollection
+        .doc(clas.enrolKey)
+        .set({
+      "enrolKey": clas.enrolKey,
+      "branch":clas.branch,
+      "section":clas.section,
+      "subject":clas.subject,
+      "batch":clas.batch,
+      "createdBy":uid
+    })
+        .then((value) async {
+          print("Class Created");
+        })
+        .catchError((error) => print("Failed to create class: $error"));
+  }
+  Future<void> enrolStudentInClass(String enrolKey) async {
+    CollectionReference classesCollection =
+    FirebaseFirestore.instance.collection('Classes');
+    await classesCollection
+        .doc(enrolKey)
+        .get()
+        .then((snapshot) async {
+          if(snapshot.exists){
+            print("Class Exists: ${snapshot.data()}");
+            var uid = FirebaseAuth.instance.currentUser.uid;
+            CollectionReference usersCollection =
+
+            FirebaseFirestore.instance.collection('Users');
+            await usersCollection
+                .doc(uid)
+                .collection("EnrollClasses")
+                .add({
+              'enrolKey':enrolKey
+            })
+                .then((value) async {
+              print("Class Enroled");
+            })
+                .catchError((error) => print("Failed to enrol class: $error"));
+          }
+          else
+            {
+              print("Class Doesn't Exists");
+            }
+         });
   }
 
   // sets current tab index
