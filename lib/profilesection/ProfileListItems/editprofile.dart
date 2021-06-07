@@ -26,36 +26,56 @@ class _EditProfileState extends State<EditProfile> {
   var updateProfileUri;
   final myController = TextEditingController();
   Future saveFile() async {
-    User user = FirebaseAuth.instance.currentUser;
-    var uid = user.uid;
-    var student;
+    var uid = FirebaseAuth.instance.currentUser.uid;
+    var user;
     await FirebaseFirestore.instance
-        .collection('Students')
+        .collection('Users')
         .doc(uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) async {
-      student = documentSnapshot.data();
+      user = documentSnapshot.data();
     });
-
-    if(editProfileUri!=null){
-      try {
-        await FirebaseStorage.instance
-            .ref('Batch/${student["batch"]}/Branch/${student["branch"]}/Students/${student["rollno"]}/Profile-Photo/${student["rollno"]}')
-            .putFile(File(editProfileUri))
-            .then((snapshot) async {
-          updateProfileUri = await snapshot.ref.getDownloadURL();
-        });
-      } on FirebaseException catch (e) {
-        // e.g, e.code == 'canceled'
-        print(e.code);
+    if(user["role"]=="student") {
+      var student = user;
+      if (editProfileUri != null) {
+        try {
+          await FirebaseStorage.instance
+              .ref(
+                  'Batch/${student["batch"]}/Branch/${student["branch"]}/Students/${student["rollno"]}/Profile-Photo/${student["rollno"]}')
+              .putFile(File(editProfileUri))
+              .then((snapshot) async {
+            updateProfileUri = await snapshot.ref.getDownloadURL();
+          });
+        } on FirebaseException catch (e) {
+          // e.g, e.code == 'canceled'
+          print(e.code);
+        }
       }
     }
-    CollectionReference studentCollection = await FirebaseFirestore.instance
-        .collection('Students');
-    await studentCollection
-        .doc(student["uid"])
+    else{
+      var teacher = user;
+      if (editProfileUri != null) {
+        try {
+          await FirebaseStorage.instance
+              .ref(
+              'Teachers/${teacher["uid"]}/Profile-Photo/${teacher["profileName"]}')
+              .putFile(File(editProfileUri))
+              .then((snapshot) async {
+            updateProfileUri = await snapshot.ref.getDownloadURL();
+          });
+        } on FirebaseException catch (e) {
+          // e.g, e.code == 'canceled'
+          print(e.code);
+        }
+      }
+    }
+    CollectionReference userCollection = await FirebaseFirestore.instance
+        .collection('Users');
+
+    await userCollection
+        .doc(user["uid"])
         .update({
-      'profilePhotoUri': await (updateProfileUri!=null)?updateProfileUri:student["profilePhotoUri"],
+      'profilePhotoUri': await (updateProfileUri!=null)?updateProfileUri:user["profilePhotoUri"],
       'profileName':myController.text})
         .then((value) {
       setState(() {

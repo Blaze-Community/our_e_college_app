@@ -2,7 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/app.dart';
 import 'bottomBarTabItem.dart';
-import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
+import 'package:our_e_college_app/homepage/Theme.dart' as AppTheme;
 
 class BottomNavigation extends StatelessWidget {
   BottomNavigation({

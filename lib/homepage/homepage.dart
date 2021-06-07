@@ -9,9 +9,9 @@ import 'package:our_e_college_app/components/e-card/e_card.dart';
 import 'package:our_e_college_app/components/ebooks/ebooks.dart';
 import 'package:our_e_college_app/components/exam/exam.dart';
 import 'package:our_e_college_app/components/fees/fees.dart';
-import 'package:our_e_college_app/components/transport/transport.dart';
+import 'package:our_e_college_app/components/classroom/classroom.dart';
 import 'package:our_e_college_app/global.dart' as Global;
-import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
+import 'package:our_e_college_app/homepage/Theme.dart' as AppTheme;
 import 'package:our_e_college_app/components/timetable/timetable.dart';
 import 'package:our_e_college_app/components/result/results.dart';
 import 'package:our_e_college_app/components/assignment/assignment.dart';
@@ -250,16 +250,16 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
                 child: HomeCategoryItem(
                   primaryColor: AppTheme.Colors.flatRed,
-                  primaryIcon: FontAwesomeIcons.bus,
-                  primaryTitle: "Transportation",
+                  primaryIcon: FontAwesomeIcons.graduationCap,
+                  primaryTitle: "ClassRoom",
                   secondaryColor: AppTheme.Colors.flatOrange,
-                  secondaryIcon: FontAwesomeIcons.bus,
+                  secondaryIcon: FontAwesomeIcons.graduationCap,
                   secondaryIconHeight: 30,
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => Transport()));
+                            builder: (BuildContext context) => ClassRoom()));
                   },
                 )),
             Padding(

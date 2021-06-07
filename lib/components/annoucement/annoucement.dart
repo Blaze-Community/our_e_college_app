@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:our_e_college_app/components/annoucement/announcementlist.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:our_e_college_app/utils/Theme.dart' as AppTheme;
+import 'package:our_e_college_app/homepage/Theme.dart' as AppTheme;
 import 'package:our_e_college_app/components/annoucement/announcementItem.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;

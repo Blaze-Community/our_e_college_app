@@ -18,19 +18,16 @@ class _ProfileState extends State<Profile> {
   String profileImageUri;
   String profileName;
   Future getProfileImageFromDatabase() async {
-    User user = FirebaseAuth.instance.currentUser;
-    var uid = user.uid;
-    var student;
+    var uid = FirebaseAuth.instance.currentUser.uid;
     return await FirebaseFirestore.instance
-        .collection('Students')
+        .collection('Users')
         .doc(uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) async {
       if (documentSnapshot.exists) {
         return await documentSnapshot.data();
-        print("student ${student}");
       } else {
-        print('Document does not exist on the student database');
+        print('Document does not exist on the user database');
       }
     });
   }

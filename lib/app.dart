@@ -27,9 +27,29 @@ class AppState extends State<App> {
       page: ProfileScreen(),
     ),
   ];
+  final List<Class> classes = [
+    Class(
+      enrolKey: "",
+      subject: "",
+      batch: "",
+      section: "",
+      branch: ""
+    )
+  ];
+
+  final List<Teacher> teachers = [
+    Teacher(
+        uid:"GFu2fEtA3rg0yAAFg6xU7KAxUXG2",
+        role:"teacher",
+        email: "teacher@gmail.com",
+        profileName:"teacher",
+        profilePhotoUri:"",
+    ),
+  ];
   final List<Student> students = [
     Student(
         uid:"eyY6XSH3DiS3TyB5UUI1knftB552",
+        role:"student",
         email: "student@gmail.com",
         profileName:"demo",
         rollno: "BT19CSE000",
@@ -41,6 +61,7 @@ class AppState extends State<App> {
     ),
     Student(
         uid: "8YiaPL1FJQhKPZKmsb2LOMg4lhA3",
+        role:"student",
         email: "bt19cse005@gmail.com",
         profileName: "AkashDeep",
         rollno: "BT19CSE005",
@@ -48,10 +69,10 @@ class AppState extends State<App> {
         branch: "CSE",
         profilePhotoUri: "",
         section: "A",
-        e_card:
-            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
+        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
     Student(
         uid: "n2NUIinc9BYN1yPmiQVaK0jU9s43",
+        role:"student",
         email: "bt19cse006@gmail.com",
         rollno: "BT19CSE006",
         batch: "2019-2023",
@@ -59,10 +80,10 @@ class AppState extends State<App> {
         profilePhotoUri: "",
         branch: "CSE",
         section: "A",
-        e_card:
-            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
+        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
     Student(
         uid: "acgTOv8RQBTHeRz1V62ixqHPVWm1",
+        role:"student",
         email: "bt19cse008@gmail.com",
         rollno: "BT19CSE008",
         profileName: "Tejas",
@@ -70,10 +91,10 @@ class AppState extends State<App> {
         profilePhotoUri: "",
         branch: "CSE",
         section: "A",
-        e_card:
-            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
+        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
     Student(
         uid: "VvzJy3RJyBeUk4bxgnj9zsrC3vK2",
+        role:"student",
         email: "bt19cse010@gmail.com",
         rollno: "BT19CSE010",
         batch: "2019-2023",
@@ -81,10 +102,10 @@ class AppState extends State<App> {
         profilePhotoUri: "",
         branch: "CSE",
         section: "A",
-        e_card:
-            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
+        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd"),
     Student(
         uid: "2rdhkdsCTDRUQinE3nXzLAn7Sxh2",
+        role:"student",
         email: "bt19cse023@gmail.com",
         batch: "2019-2023",
         rollno: "BT19CSE023",
@@ -92,8 +113,7 @@ class AppState extends State<App> {
         profilePhotoUri: "",
         branch: "CSE",
         section: "A",
-        e_card:
-            "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd")
+        e_card: "https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FStudents%2FBT19CSE005%2FE-Card%2Fchota.PNG?alt=media&token=19d84d07-f707-48f9-9ccc-e9a768a9dfbd")
   ];
   final List<Assignment> assignment = [
     Assignment(
@@ -141,6 +161,9 @@ class AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    // for(var i =0;i<teachers.length;i++){
+    //   saveTeacherToDatabase(teachers[i]);
+    // }
     // for(var i =0;i<students.length;i++){
     //   saveStudentToDatabase(students[i]);
     // }
@@ -222,13 +245,31 @@ class AppState extends State<App> {
         .catchError((error) => print("Failed to add student: $error"));
     ;
   }
+  Future<void> saveTeacherToDatabase(Teacher teacher) async {
+    CollectionReference usersCollection =
+    FirebaseFirestore.instance.collection('Users');
+    await usersCollection
+        .doc(teacher.uid)
+        .set({
+      "uid": teacher.uid,
+      "role": teacher.role,
+      "email": teacher.email,
+      "profileName": teacher.profileName,
+      "profilePhotoUri": teacher.profilePhotoUri,
+    })
+        .then((value) => print("Teacher Added"))
+        .catchError((error) => print("Failed to add teacher: $error"));
+    ;
+  }
+
   Future<void> saveStudentToDatabase(Student student) async {
-    CollectionReference studentCollection =
-        FirebaseFirestore.instance.collection('Students');
-    await studentCollection
+    CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('Users');
+    await usersCollection
         .doc(student.uid)
         .set({
           "uid": student.uid,
+          "role": student.role,
           "branch": student.branch,
           "batch": student.batch,
           "email": student.email,
@@ -310,6 +351,7 @@ class Student {
   String batch;
   String rollno;
   String branch;
+  String role;
   String section;
   String profileName;
   String profilePhotoUri;
@@ -319,12 +361,29 @@ class Student {
       {this.uid,
       this.email,
       this.batch,
+      this.role,
       this.rollno,
       this.section,
       this.profileName,
       this.profilePhotoUri,
       this.branch,
       this.e_card});
+}
+
+class Teacher {
+  String uid;
+  String email;
+  String role;
+  String profileName;
+  String profilePhotoUri;
+
+  Teacher(
+      {this.uid,
+        this.email,
+        this.role,
+        this.profileName,
+        this.profilePhotoUri,
+      });
 }
 
 class Assignment {
@@ -358,4 +417,21 @@ class Result {
     this.uploadDate,
     this.uri
   });
+}
+
+class Class{
+  String enrolKey;
+  String branch;
+  String subject;
+  String batch;
+  String section;
+
+  Class({
+    this.enrolKey,
+    this.subject,
+    this.batch,
+    this.section,
+    this.branch
+});
+
 }
