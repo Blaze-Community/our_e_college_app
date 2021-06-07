@@ -97,7 +97,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         obscureText: true,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(bottom: 3),
-                            labelText: "Current Password",
+                            labelText: "New Password",
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             hintStyle: TextStyle(
                               fontSize: 16,
