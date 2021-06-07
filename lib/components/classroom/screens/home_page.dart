@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:our_e_college_app/components/classroom/create_join/create_class.dart';
+import 'package:our_e_college_app/components/classroom/create_join/join_class.dart';
 import 'package:our_e_college_app/components/classroom/data/classrooms.dart';
-
+import 'package:our_e_college_app/global.dart' as Global;
 import 'class_room_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,8 +16,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           /*leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back),
+            color: Colors.white,
           ),*/
           title: Text('Classroom'),
           backgroundColor: Colors.deepOrange,
@@ -103,10 +108,22 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add_sharp, color: Colors.deepOrange, size: 30,),
-        backgroundColor: Colors.white,
-      ),);
+
+        floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (BuildContext context) {
+                if (Global.user == "Student") {
+                  return joinclass();
+                } else {
+                  return createclass();
+                }
+              }));
+        },
+        child: const Icon(Icons.add_sharp, color: Colors.white, size: 30,),
+        backgroundColor: Colors.deepOrange,
+        ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 }
