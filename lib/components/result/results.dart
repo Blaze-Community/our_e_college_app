@@ -79,12 +79,26 @@ class _ResultState extends State<Result> {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  }
-                }
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+                  },
+                ),
+                if(Global.user == "Teacher")Padding(
+                  // bottom: 10,
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: FloatingActionButton.extended(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      NewAssignment()));
+                        },
+                        label: Text('Add Result'),
+                        icon: Icon(Icons.add),
+                      ),
+                    )),
+              ],
             ),
           ),
         ));
