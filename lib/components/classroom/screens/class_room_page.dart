@@ -36,54 +36,45 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
       ClassWork(),
       PeopleTab()
     ];
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        leading: Icon(
-          Icons.menu,
-          color: Colors.black87,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Classroom",
+          style: TextStyle(
+            color: Colors.deepOrange
+          ),),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back),
+            color: Colors.deepOrange,
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          bottom: TabBar(
+            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.deepOrange,
+            tabs: [
+              Tab(
+                icon: Icon(Icons.chat),
+                text: "Stream",
+              ),
+              Tab(
+                icon: Icon(Icons.book),
+                text: "Classwork",
+              ),
+              Tab(
+                icon: Icon(Icons.people),
+                text: "People",
+              ),
+            ],
+          ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.info_outline,
-              color: Colors.black87,
-            ),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.more_vert,
-              color: Colors.black87,
-              size: 26,
-            ),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: tabs[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            title: Text('Stream'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            title: Text('Classwork'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            title: Text(
-              'People',
-              style: TextStyle(),
-            ),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.redAccent,
-        onTap: _onItemTapped,
+        // backgroundColor: Colors.deepPurple,
+        body: TabBarView(
+        children:tabs,)
       ),
     );
   }

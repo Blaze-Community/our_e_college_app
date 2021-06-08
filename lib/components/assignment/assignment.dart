@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:our_e_college_app/components/assignment/newAssignment.dart';
 import 'package:our_e_college_app/components/assignment/assignmentItem.dart';
+import 'package:our_e_college_app/global.dart' as Global;
 
 class Assignment extends StatefulWidget {
   @override
@@ -42,39 +44,60 @@ class _AssignmentState extends State<Assignment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Assignment"),
-        ),
+        // appBar: AppBar(
+        //   title: Text("Assignment"),
+        // ),
         body: Container(
           height: double.infinity,
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.only(top:12.0),
-            child: FutureBuilder(
-              future: getassignment(),
-              builder: (context, snapshot) {
-                print("snapshot ass $snapshot");
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    final List items = snapshot.data.docs;
-                    return ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext ctxt, int i) {
-                        return AssignmentList(
-                          subject: items[i]["subject"],
-                          submissionDate: items[i]["submissionDate"],
-                          title: items[i]["title"],
-                          uploadDate: items[i]["uploadDate"],
-                          uri:items[i]["uri"]
+            child: Stack(
+              children: [
+                FutureBuilder(
+                  future: getassignment(),
+                  builder: (context, snapshot) {
+                    print("snapshot ass $snapshot");
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        final List items = snapshot.data.docs;
+                        return ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (BuildContext ctxt, int i) {
+                            return AssignmentList(
+                              subject: items[i]["subject"],
+                              submissionDate: items[i]["submissionDate"],
+                              title: items[i]["title"],
+                              uploadDate: items[i]["uploadDate"],
+                              uri:items[i]["uri"]
+                            );
+                          },
                         );
-                      },
+                      }
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
                     );
-                  }
-                }
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+                  },
+                ),
+                if(Global.user == "Teacher")Padding(
+                  // bottom: 10,
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: FloatingActionButton.extended(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      NewAssignment()));
+                        },
+                        label: Text('Add New Assignment'),
+                        icon: Icon(Icons.add),
+                      ),
+                    )),
+              ],
             ),
           ),
         ));

@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
       onSubmitAnimationCompleted: () async {
         final SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        sharedPreferences.setString('email', global.user);
+        sharedPreferences.setString('email', global.email);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => App(),
         ));
@@ -62,7 +62,7 @@ class LoginScreen extends StatelessWidget {
       hideSignUpButton: true,
       onRecoverPassword: _resetPassword,
       theme: LoginTheme(
-        primaryColor: Colors.deepPurple,
+        primaryColor: Colors.deepOrange,
       ),
       messages: LoginMessages(
         recoverPasswordDescription: 'We will send you an email to reset your password for the above account.'
