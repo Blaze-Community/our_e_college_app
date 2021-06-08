@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:our_e_college_app/Teacher/assignment/adminAssignment.dart';
-import 'package:our_e_college_app/Teacher/attendence/adminAttendence.dart';
-import 'package:our_e_college_app/Teacher/result/adminResult.dart';
 import 'package:our_e_college_app/components/annoucement/annoucement.dart';
 import 'package:our_e_college_app/components/attendence/attendence.dart';
 import 'package:our_e_college_app/components/e-card/e_card.dart';
@@ -130,23 +127,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Padding(
-                padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-                child: HomeCategoryItem(
-                  primaryColor: AppTheme.Colors.flatRed,
-                  primaryIcon: Icons.announcement,
-                  primaryTitle: "Announcement",
-                  secondaryColor: AppTheme.Colors.flatOrange,
-                  secondaryIcon: Icons.announcement,
-                  secondaryIconHeight: 30,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => Annoucement()));
-                  },
-                )),
-            Padding(
-              padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+              padding: const EdgeInsets.only(top: 16,left: 16, right: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -155,93 +136,37 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.only(right: 7),
                         child: HomeCategoryItem(
                           primaryColor: AppTheme.Colors.flatRed,
-                          primaryIcon: Icons.event_available,
-                          primaryTitle: "Attendence",
+                          primaryIcon: Icons.announcement,
+                          primaryTitle: "Announcement",
                           secondaryColor: AppTheme.Colors.flatOrange,
-                          secondaryIcon: Icons.event_available,
+                          secondaryIcon: Icons.announcement,
                           secondaryIconHeight: 30,
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              if (Global.user == "Student") {
-                                return Attendence();
-                              } else {
-                                return AdminAttendence();
-                              }
-                            }));
-                          },
-                        )),
-                  ),
-                  Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 7),
-                        child: HomeCategoryItem(
-                          primaryColor: AppTheme.Colors.flatPurple,
-                          primaryIcon: Icons.assessment,
-                          primaryTitle: "Results",
-                          secondaryColor: AppTheme.Colors.flatDeepPurple,
-                          secondaryIcon: Icons.assessment,
-                          secondaryIconHeight: 40,
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              if (Global.user == "Student") {
-                                return Result();
-                              } else {
-                                return AdminResult();
-                              }
-                            }));
-                          },
-                        )),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.only(right: 7),
-                        child: HomeCategoryItem(
-                          primaryColor: AppTheme.Colors.flatRed,
-                          primaryIcon: Icons.assignment,
-                          primaryTitle: "Assignments",
-                          secondaryColor: AppTheme.Colors.flatOrange,
-                          secondaryIcon: Icons.assignment,
-                          secondaryIconHeight: 30,
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              print(Global.user);
-                              if (Global.user == "Student") {
-                                return Assignment();
-                              } else {
-                                return AdminAssignment();
-                              }
-                            }));
-                          },
-                        )),
-                  ),
-                  Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 7),
-                        child: HomeCategoryItem(
-                          primaryColor: AppTheme.Colors.flatPurple,
-                          primaryIcon: Icons.attach_money,
-                          primaryTitle: "Fees",
-                          secondaryColor: AppTheme.Colors.flatDeepPurple,
-                          secondaryIcon: Icons.attach_money,
-                          secondaryIconHeight: 40,
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) => Fees()));
+                                    builder: (BuildContext context) => Annoucement()));
                           },
                         )),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 7),
+                      child: HomeCategoryItem(
+                        primaryColor: AppTheme.Colors.flatRed,
+                        primaryIcon: Icons.event_available,
+                        primaryTitle: "Attendence",
+                        secondaryColor: AppTheme.Colors.flatOrange,
+                        secondaryIcon: Icons.event_available,
+                        secondaryIconHeight: 30,
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  Attendence()
+                          ));
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),

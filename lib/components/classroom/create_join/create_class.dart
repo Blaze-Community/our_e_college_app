@@ -12,9 +12,9 @@ class _createclass extends State<createclass> {
         title: Text("Create Class"),
         backgroundColor: Colors.deepOrange,
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15.0,left: 15.0,right: 15.0),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 15.0,left: 15.0,right: 15.0),
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Container(

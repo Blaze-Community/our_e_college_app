@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/home_page.dart';
+import 'package:our_e_college_app/app.dart';
+import 'screens/class_home_page.dart';
 
 void main() => runApp(GoogleClassroomClone());
 
@@ -11,10 +12,11 @@ class GoogleClassroomClone extends StatefulWidget {
 class _GoogleClassroomCloneState extends State<GoogleClassroomClone> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "GoogleClassroomClone",
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+    return Scaffold(
+      appBar: AppBar(
+        title:Text("Classroom"),
+      ),
+      body: ClassRoomHomePage(),
     );
   }
 }

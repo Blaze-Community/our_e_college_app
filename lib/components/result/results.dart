@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:our_e_college_app/components/assignment/newAssignment.dart';
 import 'package:our_e_college_app/components/result/resultitem.dart';
+import 'package:our_e_college_app/global.dart' as Global;
 
 class Result extends StatefulWidget {
   @override
@@ -48,30 +50,34 @@ class _ResultState extends State<Result> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Results"),
-        ),
         body: Container(
           height: double.infinity,
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.only(top:12.0),
-            child: FutureBuilder(
-              future: getresult(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    final List items = snapshot.data.docs;
-                    return ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext ctxt, int i) {
-                        return ResultItem(
-                          subject: items[i]["subject"],
-                          uploadDate: items[i]["uploadDate"],
-                          marks: items[i]["marks"],
-                          uri: items[i]["uri"],
+            child: Stack(
+              children: [
+                FutureBuilder(
+                  future: getresult(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        final List items = snapshot.data.docs;
+                        return ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (BuildContext ctxt, int i) {
+                            return ResultItem(
+                              subject: items[i]["subject"],
+                              uploadDate: items[i]["uploadDate"],
+                              marks: items[i]["marks"],
+                              uri: items[i]["uri"],
+                            );
+                          },
                         );
-                      },
+                      }
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
                     );
                   }
                 }

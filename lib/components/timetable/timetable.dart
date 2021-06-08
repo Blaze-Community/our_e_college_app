@@ -23,14 +23,14 @@ class _TimeTableState extends State<TimeTable> {
     var uid = user.uid;
     var student;
     await FirebaseFirestore.instance
-        .collection('Students')
+        .collection('Users')
         .doc(uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         student = documentSnapshot.data();
       } else {
-        print('Document does not exist on the student database');
+        print('Document does not exist on the user database');
       }
     });
     return await FirebaseFirestore.instance
