@@ -16,8 +16,22 @@ class _TimeTableState extends State<TimeTable> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
+  List month = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
+  ];
+  String clas = "";
 
-  String month, year;
   Future<String> getTimetable() async {
     User user = FirebaseAuth.instance.currentUser;
     var uid = user.uid;
@@ -29,6 +43,10 @@ class _TimeTableState extends State<TimeTable> {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         student = documentSnapshot.data();
+        setState(() {
+          clas = student["branch"] + " " + student["section"];
+        });
+        // print(clas);
       } else {
         print('Document does not exist on the user database');
       }
@@ -88,7 +106,7 @@ class _TimeTableState extends State<TimeTable> {
                         ),
                         RichText(
                           text: TextSpan(
-                              text: "May",
+                              text: month[selectedDay.month - 1],
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0XFF263064),
@@ -107,7 +125,7 @@ class _TimeTableState extends State<TimeTable> {
                       ],
                     ),
                     Text(
-                      "CSE Batch - A",
+                      clas,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Color(0XFF3E3993),
