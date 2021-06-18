@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/homepage/Theme.dart' as AppTheme;
+
 class HomeCategoryItem extends StatefulWidget {
-  Color primaryColor;
-  IconData primaryIcon;
-  String primaryTitle;
-  Color secondaryColor;
-  IconData secondaryIcon;
-  double secondaryIconHeight;
+  final Color primaryColor;
+  final IconData primaryIcon;
+  final String primaryTitle;
+  final Color secondaryColor;
+  final IconData secondaryIcon;
+  final double secondaryIconHeight;
   final Function onPressed;
 
   HomeCategoryItem(
