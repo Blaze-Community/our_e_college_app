@@ -7,11 +7,13 @@ import 'package:our_e_college_app/profilesection/ProfileListItems/editprofile.da
 import 'package:our_e_college_app/profilesection/profilelistitem.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
-  
 }
 
 class _ProfileState extends State<Profile> {
@@ -32,6 +34,25 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  var calendarLink;
+
+  void acadmicCalendar() async {
+    String url = 'https://iiitn-web-crawler.herokuapp.com/acadmic-calendar';
+    final response = await http.get(Uri.parse(url));
+
+    final responseJson = json.decode(response.body);
+    // print(responseJson);
+    setState(() {
+      calendarLink = responseJson[1];
+      // print(lis);
+    });
+  }
+
+  void initState() {
+    super.initState();
+    acadmicCalendar();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +67,13 @@ class _ProfileState extends State<Profile> {
             children: [
               FutureBuilder(
                 future: getProfileImageFromDatabase(),
-                builder:(context,snapshot){
+                builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     print(snapshot.data);
-                    if(snapshot.hasData){
+                    if (snapshot.hasData) {
                       profileImageUri = snapshot.data["profilePhotoUri"];
                       profileName = snapshot.data["profileName"];
-                      return  Column(
+                      return Column(
                         children: [
                           Container(
                             height: 100,
@@ -66,18 +87,23 @@ class _ProfileState extends State<Profile> {
                                 CircleAvatar(
                                   radius: 50,
                                   backgroundColor: Colors.white,
-                                  foregroundImage: (snapshot.data["profilePhotoUri"].length>0)?
-                                            NetworkImage(snapshot.data["profilePhotoUri"]):
-                                            AssetImage("assets/splash.jpg"),
+                                  foregroundImage:
+                                      (snapshot.data["profilePhotoUri"].length >
+                                              0)
+                                          ? NetworkImage(
+                                              snapshot.data["profilePhotoUri"])
+                                          : AssetImage("assets/splash.jpg"),
                                 ),
                               ],
                             ),
                           ),
                           SizedBox(height: 20),
-                          Text(snapshot.data["profileName"],
+                          Text(
+                            snapshot.data["profileName"],
                           ),
                           SizedBox(height: 5),
-                          Text(snapshot.data["email"],
+                          Text(
+                            snapshot.data["email"],
                           ),
                         ],
                       );
@@ -94,10 +120,7 @@ class _ProfileState extends State<Profile> {
                             SizedBox(
                               height: 30,
                             ),
-                            Center(
-                                child: CircularProgressIndicator(
-                                )
-                            ),
+                            Center(child: CircularProgressIndicator()),
                           ],
                         ),
                       ),
@@ -129,8 +152,10 @@ class _ProfileState extends State<Profile> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    EditProfile(profileImageUri:profileImageUri,profileName: profileName,)));
+                                builder: (BuildContext context) => EditProfile(
+                                      profileImageUri: profileImageUri,
+                                      profileName: profileName,
+                                    )));
                       },
                     ),
                     ProfileListItems(
@@ -145,15 +170,11 @@ class _ProfileState extends State<Profile> {
                       },
                     ),
                     ProfileListItems(
-                      icon: Icons.book,
-                      text: 'Backlogs',
-                      onPressed: () {},
-                    ),
-                    ProfileListItems(
-                      icon: Icons.calendar_today,
-                      text: 'Acadmic Calendar',
-                      onPressed: () {},
-                    ),
+                        icon: Icons.calendar_today,
+                        text: 'Acadmic Calendar',
+                        onPressed: () async {
+                          await launch(calendarLink);
+                        }),
                     ProfileListItems(
                       icon: Icons.notifications,
                       text: 'Notification',

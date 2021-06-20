@@ -6,6 +6,9 @@ import 'package:flutter/widgets.dart';
 import 'package:our_e_college_app/components/timetable/timetableitems.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class TimeTable extends StatefulWidget {
   @override
@@ -69,14 +72,15 @@ class _TimeTableState extends State<TimeTable> {
   }
 
   Future fetchTimetable(http.Client client) async {
-    final timeTableUri = await getTimetable();
-    final response = await client.get(Uri.parse(timeTableUri));
-    return parseTimetable(response.body);
+    String url = "http://localhost:5000/api/timtable";
+    final response = await http.get(Uri.parse(url));
+    final responseJson = json.decode(response.body);
+    // print(responseJson);
+    return parseTimetable(responseJson);
   }
 
-  Map<String, List<TimeTableItems>> parseTimetable(String str) {
-    return Map.from(json.decode(str)).map((k, v) => MapEntry<String,
-            List<TimeTableItems>>(k,
+  Map<String, List<TimeTableItems>> parseTimetable(var str) {
+    return Map.from(str).map((k, v) => MapEntry<String, List<TimeTableItems>>(k,
         List<TimeTableItems>.from(v.map((x) => TimeTableItems.fromJson(x)))));
   }
 
