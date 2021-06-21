@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/components/buysell/buySellDetails.dart';
 import 'package:our_e_college_app/components/buysell/newPostSell.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SellList extends StatefulWidget {
   @override
@@ -11,30 +13,27 @@ class SellList extends StatefulWidget {
 
 class _SellListState extends State<SellList> {
   List items;
-  Future<void> deleteItem(String uuid) async {
-    CollectionReference itemsCollection = FirebaseFirestore.instance
-        .collection('College-Olx');
-    await itemsCollection
-        .doc(uuid)
-        .delete()
-        .then((value) {
-          print("Item Deleted");
-        })
-        .catchError((error) => print("Failed to delete user: $error"));
+
+  Future<void> deleteItem(String id) async {
+    String url = "http://localhost:5000/api/deleteitem";
+    final response = await http.post((Uri.parse(url)), body: {"id": id});
+    final responseJson = json.decode(response.body);
+    // print(responseJson);
   }
-  fetchSellItemsList() {
-    User user = FirebaseAuth.instance.currentUser;
-    var uid = user.uid;
-    CollectionReference itemsCollection = FirebaseFirestore.instance
-        .collection('College-Olx');
-    return itemsCollection
-        .where('uid', isEqualTo: uid)
-        .snapshots();
+
+  Future fetchSellItemsList() async {
+    String url = "http://localhost:5000/api/myitem";
+    final response = await http
+        .get((Uri.parse(url)), headers: {"email": "bt19cse005@gmail.com"});
+    final responseJson = json.decode(response.body);
+    // print(responseJson);
+    return responseJson;
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top:30.0),
+      padding: const EdgeInsets.only(top: 30.0),
       child: Stack(
         children: [
           Container(
@@ -49,34 +48,32 @@ class _SellListState extends State<SellList> {
                 padding: EdgeInsets.only(top: 45.0),
                 child: Container(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:20.0),
-                      child: StreamBuilder(
-                        stream: fetchSellItemsList(),
-                        builder: (context,snapshot){
-                          if(snapshot.connectionState == ConnectionState.active){
-                            if(snapshot.hasData){
-                             items = snapshot.data.docs;
-                              return ListView.builder(
-                                  itemCount: items.length,
-                                  itemBuilder:  (BuildContext ctxt, int i) {
-                                    return _buildListItems(
-                                      items[i].id,
-                                      items[i]["itemUri"],
-                                      items[i]["itemName"],
-                                      items[i]["itemPrice"],
-                                      items[i]["sellerName"],
-                                      items[i]["sellerRoom"],
-                                      items[i]["sellerContact"],
-                                    );
-                                  }
-                              );
-                            }
-                          }
-                          return Center(child: CircularProgressIndicator());
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: StreamBuilder(
+                    stream: fetchSellItemsList().asStream(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          items = snapshot.data;
+                          return ListView.builder(
+                              itemCount: items.length,
+                              itemBuilder: (BuildContext ctxt, int i) {
+                                return _buildListItems(
+                                  items[i]["_id"],
+                                  items[i]["itemImageUri"],
+                                  items[i]["itemName"],
+                                  items[i]["itemPrice"],
+                                  items[i]["sellerName"],
+                                  items[i]["sellerRoom"],
+                                  items[i]["sellerContact"],
+                                );
+                              });
                         }
-                        ,
-                      ),
-                    ))),
+                      }
+                      return Center(child: CircularProgressIndicator());
+                    },
+                  ),
+                ))),
           ),
           Positioned(
             bottom: 20,
@@ -95,7 +92,14 @@ class _SellListState extends State<SellList> {
     );
   }
 
-  Widget _buildListItems(String docId,String imgPath, String itemName, String itemPrice, String sellerName,String sellerRoom,String sellerContact) {
+  Widget _buildListItems(
+      String docId,
+      String imgPath,
+      String itemName,
+      String itemPrice,
+      String sellerName,
+      String sellerRoom,
+      String sellerContact) {
     return Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -109,13 +113,12 @@ class _SellListState extends State<SellList> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => BuySellDetails(
-                        itemImageUri: imgPath,
-                        itemName: itemName,
-                        itemPrice: itemPrice,
-                        sellerName: sellerName,
-                        sellerRoom: sellerRoom,
-                        sellerContact: sellerContact
-                      )));
+                          itemImageUri: imgPath,
+                          itemName: itemName,
+                          itemPrice: itemPrice,
+                          sellerName: sellerName,
+                          sellerRoom: sellerRoom,
+                          sellerContact: sellerContact)));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,14 +126,12 @@ class _SellListState extends State<SellList> {
                     Container(
                         child: Row(children: [
                       Hero(
-                        tag: imgPath,
-                        child: Image(
-                          image: NetworkImage(imgPath),
-                          fit: BoxFit.cover,
-                          height: 30.0,
-                          width: 30.0
-                        )
-                      ),
+                          tag: imgPath,
+                          child: Image(
+                              image: NetworkImage(imgPath),
+                              fit: BoxFit.cover,
+                              height: 30.0,
+                              width: 30.0)),
                       SizedBox(width: 10.0),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
