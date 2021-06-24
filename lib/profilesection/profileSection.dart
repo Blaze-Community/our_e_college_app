@@ -10,6 +10,7 @@ import '../app.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -20,18 +21,28 @@ class _ProfileState extends State<Profile> {
   String profileImageUri;
   String profileName;
   Future getProfileImageFromDatabase() async {
-    var uid = FirebaseAuth.instance.currentUser.uid;
-    return await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) async {
-      if (documentSnapshot.exists) {
-        return await documentSnapshot.data();
-      } else {
-        print('Document does not exist on the user database');
-      }
+    // var uid = FirebaseAuth.instance.currentUser.uid;
+    // return await FirebaseFirestore.instance
+    //     .collection('Users')
+    //     .doc(uid)
+    //     .get()
+    //     .then((DocumentSnapshot documentSnapshot) async {
+    //   if (documentSnapshot.exists) {
+    //     return await documentSnapshot.data();
+    //   } else {
+    //     print('Document does not exist on the user database');
+    //   }
+    // });
+    String url = 'https://college-app-backend.herokuapp.com/api/getinfo';
+    final storage = new FlutterSecureStorage();
+    final token = await storage.read(key: "token");
+
+    final response = await http.get(Uri.parse(url), headers: {
+      "Authorization": "Bearer $token",
     });
+    final responseJson = json.decode(response.body);
+    print(responseJson);
+    return responseJson;
   }
 
   var calendarLink;
@@ -193,6 +204,9 @@ class _ProfileState extends State<Profile> {
                           final SharedPreferences sharedPreferences =
                               await SharedPreferences.getInstance();
                           sharedPreferences.remove('email');
+                          final storage = new FlutterSecureStorage();
+                          await storage.delete(key: "token");
+
                           Navigator.pushReplacement(
                               ContextKeeper.buildContext,
                               MaterialPageRoute(

@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:our_e_college_app/bottombar/bottomBarScreens.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class EditProfile extends StatefulWidget {
   String profileImageUri;
   String profileName;
-  EditProfile({
-    this.profileImageUri,
-    this.profileName
-  });
+  EditProfile({this.profileImageUri, this.profileName});
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -22,73 +22,95 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final picker = ImagePicker();
   bool loading = false;
-  String editProfileUri ;
+  String editProfileUri;
   var updateProfileUri;
   final myController = TextEditingController();
   Future saveFile() async {
-    var uid = FirebaseAuth.instance.currentUser.uid;
-    var user;
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) async {
-      user = documentSnapshot.data();
-    });
-    if(user["role"]=="student") {
-      var student = user;
-      if (editProfileUri != null) {
-        try {
-          await FirebaseStorage.instance
-              .ref(
-                  'Batch/${student["batch"]}/Branch/${student["branch"]}/Students/${student["rollno"]}/Profile-Photo/${student["rollno"]}')
-              .putFile(File(editProfileUri))
-              .then((snapshot) async {
-            updateProfileUri = await snapshot.ref.getDownloadURL();
-          });
-        } on FirebaseException catch (e) {
-          // e.g, e.code == 'canceled'
-          print(e.code);
-        }
-      }
-    }
-    else{
-      var teacher = user;
-      if (editProfileUri != null) {
-        try {
-          await FirebaseStorage.instance
-              .ref(
-              'Teachers/${teacher["uid"]}/Profile-Photo/${teacher["profileName"]}')
-              .putFile(File(editProfileUri))
-              .then((snapshot) async {
-            updateProfileUri = await snapshot.ref.getDownloadURL();
-          });
-        } on FirebaseException catch (e) {
-          // e.g, e.code == 'canceled'
-          print(e.code);
-        }
-      }
-    }
-    CollectionReference userCollection = await FirebaseFirestore.instance
-        .collection('Users');
+    // var uid = FirebaseAuth.instance.currentUser.uid;
+    // var user;
+    // await FirebaseFirestore.instance
+    //     .collection('Users')
+    //     .doc(uid)
+    //     .get()
+    //     .then((DocumentSnapshot documentSnapshot) async {
+    //   user = documentSnapshot.data();
+    // });
+    // if(user["role"]=="student") {
+    //   var student = user;
+    //   if (editProfileUri != null) {
+    //     try {
+    //       await FirebaseStorage.instance
+    //           .ref(
+    //               'Batch/${student["batch"]}/Branch/${student["branch"]}/Students/${student["rollno"]}/Profile-Photo/${student["rollno"]}')
+    //           .putFile(File(editProfileUri))
+    //           .then((snapshot) async {
+    //         updateProfileUri = await snapshot.ref.getDownloadURL();
+    //       });
+    //     } on FirebaseException catch (e) {
+    //       // e.g, e.code == 'canceled'
+    //       print(e.code);
+    //     }
+    //   }
+    // }
+    // else{
+    //   var teacher = user;
+    //   if (editProfileUri != null) {
+    //     try {
+    //       await FirebaseStorage.instance
+    //           .ref(
+    //           'Teachers/${teacher["uid"]}/Profile-Photo/${teacher["profileName"]}')
+    //           .putFile(File(editProfileUri))
+    //           .then((snapshot) async {
+    //         updateProfileUri = await snapshot.ref.getDownloadURL();
+    //       });
+    //     } on FirebaseException catch (e) {
+    //       // e.g, e.code == 'canceled'
+    //       print(e.code);
+    //     }
+    //   }
+    // }
+    // CollectionReference userCollection = await FirebaseFirestore.instance
+    //     .collection('Users');
 
-    await userCollection
-        .doc(user["uid"])
-        .update({
-      'profilePhotoUri': await (updateProfileUri!=null)?updateProfileUri:user["profilePhotoUri"],
-      'profileName':myController.text})
-        .then((value) {
-      setState(() {
-        loading =false;
-      });
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  ProfileScreen()),(Route<dynamic> route) => false);
-      print("User Updated");
-    })
-        .catchError((error) => print("Failed to update user: $error"));
+    // await userCollection
+    //     .doc(user["uid"])
+    //     .update({
+    //   'profilePhotoUri': await (updateProfileUri!=null)?updateProfileUri:user["profilePhotoUri"],
+    //   'profileName':myController.text})
+    //     .then((value) {
+    //   setState(() {
+    //     loading =false;
+    //   });
+    //   Navigator.pushAndRemoveUntil(
+    //       context,
+    //       MaterialPageRoute(
+    //           builder: (BuildContext context) =>
+    //               ProfileScreen()),(Route<dynamic> route) => false);
+    //   print("User Updated");
+    // })
+    //     .catchError((error) => print("Failed to update user: $error"));
+    String url = 'https://college-app-backend.herokuapp.com/api/editprofile';
+    final storage = new FlutterSecureStorage();
+    final token = await storage.read(key: "token");
+    final body = json.encode({
+      "profilePhotoUri":
+          (editProfileUri != null) ? editProfileUri : widget.profileImageUri,
+      "profileName": myController.text
+    });
+    final response = await http
+        .post(Uri.parse(url),
+            headers: {
+              "Authorization": "Bearer $token",
+              "Content-Type": "application/json",
+            },
+            body: body)
+        .then((value) => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => ProfileScreen()),
+            (Route<dynamic> route) => false));
+    final responseJson = json.decode(response.body);
+    print(responseJson);
   }
 
   Future getImage() async {
@@ -109,6 +131,7 @@ class _EditProfileState extends State<EditProfile> {
     myController..text = widget.profileName;
     print("profileImage ${widget.profileImageUri}");
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,12 +171,13 @@ class _EditProfileState extends State<EditProfile> {
                         getImage();
                       },
                       child: Container(
-                        width: 130,
-                        height: 130,
-                        decoration: BoxDecoration(
+                          width: 130,
+                          height: 130,
+                          decoration: BoxDecoration(
                             border: Border.all(
                                 width: 4,
-                                color: Theme.of(context).scaffoldBackgroundColor),
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor),
                             boxShadow: [
                               BoxShadow(
                                   spreadRadius: 2,
@@ -162,20 +186,20 @@ class _EditProfileState extends State<EditProfile> {
                                   offset: Offset(0, 10))
                             ],
                             shape: BoxShape.circle,
-                          
-                        ),
-                        child: (editProfileUri!=null)?
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: FileImage(File(editProfileUri)),
-                        ):
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: (widget.profileImageUri.length>0)?
-                          NetworkImage(widget.profileImageUri):
-                          AssetImage("assets/splash.jpg"),
-                        )
-                        ),
+                          ),
+                          child: (editProfileUri != null)
+                              ? CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      FileImage(File(editProfileUri)),
+                                )
+                              : CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      (widget.profileImageUri.length > 0)
+                                          ? NetworkImage(widget.profileImageUri)
+                                          : AssetImage("assets/splash.jpg"),
+                                )),
                     ),
                     Positioned(
                         bottom: 0,
@@ -213,26 +237,29 @@ class _EditProfileState extends State<EditProfile> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                        setState(() {
-                          loading =true;
-                        });
-                        saveFile();
+                      setState(() {
+                        loading = true;
+                      });
+                      saveFile();
                     },
                     style: ButtonStyle(
-                      backgroundColor:MaterialStateProperty.all<Color>(Colors.green),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 50,vertical: 5)),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.green),
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 5)),
                       elevation: MaterialStateProperty.all<double>(2),
-                      shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
                     ),
-                    child: (loading==true)?
-                    CircularProgressIndicator(
-                      color: Colors.white,
-                    ):
-                    Text("Save",
-                    style: TextStyle(
-                      fontSize: 14
-                    ),),
+                    child: (loading == true)
+                        ? CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : Text(
+                            "Save",
+                            style: TextStyle(fontSize: 14),
+                          ),
                   )
                 ],
               )
