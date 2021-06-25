@@ -25,92 +25,62 @@ class _EditProfileState extends State<EditProfile> {
   String editProfileUri;
   var updateProfileUri;
   final myController = TextEditingController();
-  Future saveFile() async {
-    // var uid = FirebaseAuth.instance.currentUser.uid;
-    // var user;
-    // await FirebaseFirestore.instance
-    //     .collection('Users')
-    //     .doc(uid)
-    //     .get()
-    //     .then((DocumentSnapshot documentSnapshot) async {
-    //   user = documentSnapshot.data();
-    // });
-    // if(user["role"]=="student") {
-    //   var student = user;
-    //   if (editProfileUri != null) {
-    //     try {
-    //       await FirebaseStorage.instance
-    //           .ref(
-    //               'Batch/${student["batch"]}/Branch/${student["branch"]}/Students/${student["rollno"]}/Profile-Photo/${student["rollno"]}')
-    //           .putFile(File(editProfileUri))
-    //           .then((snapshot) async {
-    //         updateProfileUri = await snapshot.ref.getDownloadURL();
-    //       });
-    //     } on FirebaseException catch (e) {
-    //       // e.g, e.code == 'canceled'
-    //       print(e.code);
-    //     }
-    //   }
-    // }
-    // else{
-    //   var teacher = user;
-    //   if (editProfileUri != null) {
-    //     try {
-    //       await FirebaseStorage.instance
-    //           .ref(
-    //           'Teachers/${teacher["uid"]}/Profile-Photo/${teacher["profileName"]}')
-    //           .putFile(File(editProfileUri))
-    //           .then((snapshot) async {
-    //         updateProfileUri = await snapshot.ref.getDownloadURL();
-    //       });
-    //     } on FirebaseException catch (e) {
-    //       // e.g, e.code == 'canceled'
-    //       print(e.code);
-    //     }
-    //   }
-    // }
-    // CollectionReference userCollection = await FirebaseFirestore.instance
-    //     .collection('Users');
 
-    // await userCollection
-    //     .doc(user["uid"])
-    //     .update({
-    //   'profilePhotoUri': await (updateProfileUri!=null)?updateProfileUri:user["profilePhotoUri"],
-    //   'profileName':myController.text})
-    //     .then((value) {
-    //   setState(() {
-    //     loading =false;
-    //   });
-    //   Navigator.pushAndRemoveUntil(
-    //       context,
-    //       MaterialPageRoute(
-    //           builder: (BuildContext context) =>
-    //               ProfileScreen()),(Route<dynamic> route) => false);
-    //   print("User Updated");
-    // })
-    //     .catchError((error) => print("Failed to update user: $error"));
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    final responseJson = json.decode(response.body);
+    if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+      // refresh token expired, show dailogue that says user to login again.
+      print("Refresh token expired, please login again");
+    }
+    final accessToken = responseJson['accessToken'];
+    await storage.write(key: "accessToken", value: accessToken);
+  }
+
+  Future<dynamic> checkAccessToken() async {
     String url = 'https://college-app-backend.herokuapp.com/api/editprofile';
     final storage = new FlutterSecureStorage();
-    final token = await storage.read(key: "token");
+    final accessToken = await storage.read(key: "accessToken");
+
     final body = json.encode({
       "profilePhotoUri":
           (editProfileUri != null) ? editProfileUri : widget.profileImageUri,
       "profileName": myController.text
     });
-    final response = await http
-        .post(Uri.parse(url),
-            headers: {
-              "Authorization": "Bearer $token",
-              "Content-Type": "application/json",
-            },
-            body: body)
-        .then((value) => Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => ProfileScreen()),
-            (Route<dynamic> route) => false));
+
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $accessToken",
+          "Content-Type": "application/json",
+        },
+        body: body);
+
     final responseJson = json.decode(response.body);
+    return responseJson;
+  }
+
+  Future saveFile() async {
+    var responseJson = await checkAccessToken();
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken();
+    }
+
     print(responseJson);
+    if (responseJson['success'] == true) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) => ProfileScreen()),
+          (Route<dynamic> route) => false);
+    }
   }
 
   Future getImage() async {

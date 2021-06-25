@@ -20,27 +20,46 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String profileImageUri;
   String profileName;
-  Future getProfileImageFromDatabase() async {
-    // var uid = FirebaseAuth.instance.currentUser.uid;
-    // return await FirebaseFirestore.instance
-    //     .collection('Users')
-    //     .doc(uid)
-    //     .get()
-    //     .then((DocumentSnapshot documentSnapshot) async {
-    //   if (documentSnapshot.exists) {
-    //     return await documentSnapshot.data();
-    //   } else {
-    //     print('Document does not exist on the user database');
-    //   }
-    // });
+
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    final responseJson = json.decode(response.body);
+    if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+      // refresh token expired, show dailogue that says user to login again.
+      print("Refresh token expired, please login again");
+    }
+    final accessToken = responseJson['accessToken'];
+    await storage.write(key: "accessToken", value: accessToken);
+  }
+
+  Future<dynamic> checkAccessToken() async {
     String url = 'https://college-app-backend.herokuapp.com/api/getinfo';
     final storage = new FlutterSecureStorage();
-    final token = await storage.read(key: "token");
+    final accessToken = await storage.read(key: "accessToken");
 
     final response = await http.get(Uri.parse(url), headers: {
-      "Authorization": "Bearer $token",
+      "Authorization": "Bearer $accessToken",
     });
+
     final responseJson = json.decode(response.body);
+    return responseJson;
+  }
+
+  Future getProfileImageFromDatabase() async {
+    var responseJson = await checkAccessToken();
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken();
+    }
+
     print(responseJson);
     return responseJson;
   }
@@ -200,12 +219,13 @@ class _ProfileState extends State<Profile> {
                         icon: Icons.logout,
                         text: 'Logout',
                         onPressed: () async {
-                          await FirebaseAuth.instance.signOut();
+                          // await FirebaseAuth.instance.signOut();
                           final SharedPreferences sharedPreferences =
                               await SharedPreferences.getInstance();
                           sharedPreferences.remove('email');
                           final storage = new FlutterSecureStorage();
-                          await storage.delete(key: "token");
+                          await storage.delete(key: "accessToken");
+                          await storage.delete(key: "refreshToken");
 
                           Navigator.pushReplacement(
                               ContextKeeper.buildContext,

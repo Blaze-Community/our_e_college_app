@@ -35,10 +35,12 @@ class LoginScreen extends StatelessWidget {
             },
             body: body);
         final responseJson = json.decode(response.body);
-        final token = responseJson['token'];
-        if (token != null) {
+        final accessToken = responseJson['accessToken'];
+        final refreshToken = responseJson['refreshToken'];
+        if (accessToken != null && refreshToken != null) {
           final storage = new FlutterSecureStorage();
-          await storage.write(key: "token", value: token);
+          await storage.write(key: "accessToken", value: accessToken);
+          await storage.write(key: "refreshToken", value: refreshToken);
         }
         print('response ${response.statusCode} ${response.body}');
         if (response.statusCode != 200) {
