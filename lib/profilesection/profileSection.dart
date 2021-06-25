@@ -7,29 +7,80 @@ import 'package:our_e_college_app/profilesection/ProfileListItems/editprofile.da
 import 'package:our_e_college_app/profilesection/profilelistitem.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
-  
 }
 
 class _ProfileState extends State<Profile> {
   String profileImageUri;
   String profileName;
-  Future getProfileImageFromDatabase() async {
-    var uid = FirebaseAuth.instance.currentUser.uid;
-    return await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) async {
-      if (documentSnapshot.exists) {
-        return await documentSnapshot.data();
-      } else {
-        print('Document does not exist on the user database');
-      }
+
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    final responseJson = json.decode(response.body);
+    if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+      // refresh token expired, show dailogue that says user to login again.
+      print("Refresh token expired, please login again");
+    }
+    final accessToken = responseJson['accessToken'];
+    await storage.write(key: "accessToken", value: accessToken);
+  }
+
+  Future<dynamic> checkAccessToken() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/getinfo';
+    final storage = new FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+
+    final response = await http.get(Uri.parse(url), headers: {
+      "Authorization": "Bearer $accessToken",
     });
+
+    final responseJson = json.decode(response.body);
+    return responseJson;
+  }
+
+  Future getProfileImageFromDatabase() async {
+    var responseJson = await checkAccessToken();
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken();
+    }
+
+    print(responseJson);
+    return responseJson;
+  }
+
+  var calendarLink;
+
+  void acadmicCalendar() async {
+    String url = 'https://iiitn-web-crawler.herokuapp.com/acadmic-calendar';
+    final response = await http.get(Uri.parse(url));
+
+    final responseJson = json.decode(response.body);
+    // print(responseJson);
+    setState(() {
+      calendarLink = responseJson[1];
+      // print(lis);
+    });
+  }
+
+  void initState() {
+    super.initState();
+    acadmicCalendar();
   }
 
   @override
@@ -46,13 +97,13 @@ class _ProfileState extends State<Profile> {
             children: [
               FutureBuilder(
                 future: getProfileImageFromDatabase(),
-                builder:(context,snapshot){
+                builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     print(snapshot.data);
-                    if(snapshot.hasData){
+                    if (snapshot.hasData) {
                       profileImageUri = snapshot.data["profilePhotoUri"];
                       profileName = snapshot.data["profileName"];
-                      return  Column(
+                      return Column(
                         children: [
                           Container(
                             height: 100,
@@ -66,18 +117,23 @@ class _ProfileState extends State<Profile> {
                                 CircleAvatar(
                                   radius: 50,
                                   backgroundColor: Colors.white,
-                                  foregroundImage: (snapshot.data["profilePhotoUri"].length>0)?
-                                            NetworkImage(snapshot.data["profilePhotoUri"]):
-                                            AssetImage("assets/splash.jpg"),
+                                  foregroundImage:
+                                      (snapshot.data["profilePhotoUri"].length >
+                                              0)
+                                          ? NetworkImage(
+                                              snapshot.data["profilePhotoUri"])
+                                          : AssetImage("assets/splash.jpg"),
                                 ),
                               ],
                             ),
                           ),
                           SizedBox(height: 20),
-                          Text(snapshot.data["profileName"],
+                          Text(
+                            snapshot.data["profileName"],
                           ),
                           SizedBox(height: 5),
-                          Text(snapshot.data["email"],
+                          Text(
+                            snapshot.data["email"],
                           ),
                         ],
                       );
@@ -94,10 +150,7 @@ class _ProfileState extends State<Profile> {
                             SizedBox(
                               height: 30,
                             ),
-                            Center(
-                                child: CircularProgressIndicator(
-                                )
-                            ),
+                            Center(child: CircularProgressIndicator()),
                           ],
                         ),
                       ),
@@ -129,8 +182,10 @@ class _ProfileState extends State<Profile> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    EditProfile(profileImageUri:profileImageUri,profileName: profileName,)));
+                                builder: (BuildContext context) => EditProfile(
+                                      profileImageUri: profileImageUri,
+                                      profileName: profileName,
+                                    )));
                       },
                     ),
                     ProfileListItems(
@@ -145,15 +200,11 @@ class _ProfileState extends State<Profile> {
                       },
                     ),
                     ProfileListItems(
-                      icon: Icons.book,
-                      text: 'Backlogs',
-                      onPressed: () {},
-                    ),
-                    ProfileListItems(
-                      icon: Icons.calendar_today,
-                      text: 'Acadmic Calendar',
-                      onPressed: () {},
-                    ),
+                        icon: Icons.calendar_today,
+                        text: 'Acadmic Calendar',
+                        onPressed: () async {
+                          await launch(calendarLink);
+                        }),
                     ProfileListItems(
                       icon: Icons.notifications,
                       text: 'Notification',
@@ -168,10 +219,14 @@ class _ProfileState extends State<Profile> {
                         icon: Icons.logout,
                         text: 'Logout',
                         onPressed: () async {
-                          await FirebaseAuth.instance.signOut();
+                          // await FirebaseAuth.instance.signOut();
                           final SharedPreferences sharedPreferences =
                               await SharedPreferences.getInstance();
                           sharedPreferences.remove('email');
+                          final storage = new FlutterSecureStorage();
+                          await storage.delete(key: "accessToken");
+                          await storage.delete(key: "refreshToken");
+
                           Navigator.pushReplacement(
                               ContextKeeper.buildContext,
                               MaterialPageRoute(
