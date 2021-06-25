@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/components/buysell/buySellDetails.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class BuyList extends StatefulWidget {
   @override
@@ -8,15 +10,18 @@ class BuyList extends StatefulWidget {
 }
 
 class _BuyListState extends State<BuyList> {
-
-   fetchBuyItemsList() {
-    return FirebaseFirestore.instance
-        .collection('College-Olx').snapshots();
+  Future fetchBuyItemsList() async {
+    String url = "http://localhost:5000/api/allitems";
+    final response = await http.get(Uri.parse(url));
+    final responseJson = json.decode(response.body);
+    // print(responseJson);
+    return responseJson;
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top:30.0),
+      padding: const EdgeInsets.only(top: 30.0),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -29,38 +34,38 @@ class _BuyListState extends State<BuyList> {
             padding: EdgeInsets.only(top: 45.0),
             child: Container(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: StreamBuilder(
-                    stream: fetchBuyItemsList(),
-                    builder: (context,snapshot){
-                      if(snapshot.connectionState == ConnectionState.active){
-                          if(snapshot.hasData){
-                            final List items = snapshot.data.docs;
-                            return ListView.builder(
-                                itemCount: items.length,
-                                itemBuilder:  (BuildContext ctxt, int i) {
-                                  return _buildListItems(
-                                      items[i]["itemUri"],
-                                      items[i]["itemName"],
-                                      items[i]["itemPrice"],
-                                      items[i]["sellerName"],
-                                      items[i]["sellerRoom"],
-                                      items[i]["sellerContact"],
-                                  );
-                                }
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: StreamBuilder(
+                stream: fetchBuyItemsList().asStream(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    // print(snapshot);
+                    if (snapshot.hasData) {
+                      final List items = snapshot.data;
+                      return ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (BuildContext ctxt, int i) {
+                            return _buildListItems(
+                              items[i]["itemImageUri"],
+                              items[i]["itemName"],
+                              items[i]["itemPrice"],
+                              items[i]["sellerName"],
+                              items[i]["sellerRoom"],
+                              items[i]["sellerContact"],
                             );
-                          }
-                      }
-                      return Center(child: CircularProgressIndicator());
+                          });
                     }
-                    ,
-                  ),
-                ))),
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
+              ),
+            ))),
       ),
     );
   }
 
-  Widget _buildListItems(String imgPath, String itemName, String itemPrice, String sellerName,String sellerRoom,String sellerContact) {
+  Widget _buildListItems(String imgPath, String itemName, String itemPrice,
+      String sellerName, String sellerRoom, String sellerContact) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
@@ -82,13 +87,13 @@ class _BuyListState extends State<BuyList> {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => BuySellDetails(
-                      itemImageUri: imgPath,
-                      itemName: itemName,
-                      itemPrice: itemPrice,
-                      sellerName: sellerName,
-                      sellerRoom: sellerRoom,
-                      sellerContact: sellerContact,
-                     )));
+                        itemImageUri: imgPath,
+                        itemName: itemName,
+                        itemPrice: itemPrice,
+                        sellerName: sellerName,
+                        sellerRoom: sellerRoom,
+                        sellerContact: sellerContact,
+                      )));
             },
             child: Stack(
               children: <Widget>[
