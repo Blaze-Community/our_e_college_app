@@ -4,6 +4,9 @@ import 'package:our_e_college_app/components/classroom/data/classworks.dart';
 import 'package:our_e_college_app/components/result/results.dart';
 
 class ClassWork extends StatefulWidget {
+  final classDetails;
+  ClassWork({this.classDetails});
+
   @override
   _ClassWorkState createState() => _ClassWorkState();
 }
@@ -12,12 +15,14 @@ class _ClassWorkState extends State<ClassWork> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: NestedTabBar(),
+        body: NestedTabBar(classDetails: widget.classDetails,),
     );
   }
 }
 
 class NestedTabBar extends StatefulWidget {
+  final classDetails;
+  NestedTabBar({this.classDetails});
   @override
   _NestedTabBarState createState() => _NestedTabBarState();
 }
@@ -59,8 +64,8 @@ class _NestedTabBarState extends State<NestedTabBar>
           child: TabBarView(
             controller: _nestedTabController,
             children: <Widget>[
-              Assignment(),
-              Result()
+              Assignment(classDetails: widget.classDetails,),
+              Result(classDetails: widget.classDetails,)
 
             ],
           ),

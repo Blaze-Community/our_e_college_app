@@ -1,10 +1,45 @@
+import 'dart:convert';
+import 'dart:html';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 
 class createclass extends StatefulWidget {
   @override
   _createclass createState() => _createclass();
 }
 class _createclass extends State<createclass> {
+  final Subject = TextEditingController();
+  final Batch = TextEditingController();
+  final Section = TextEditingController();
+  final Branch = TextEditingController();
+
+  createClass() async {
+    setState(() {
+      ClassRoomHelper.loading = true;
+    });
+    var url = Uri.parse('http://localhost:5000/api/createClass');
+    Map body =  {
+      "clas": {
+        "branch":Branch.text,
+        "section": Section.text,
+        "subject": Subject.text,
+        "batch": Batch.text,
+        "createdBy": "60d01593c1f3a30047498cac"
+      }
+    };
+    await http.post(url,body:json.encode(body),headers:{'content-type':'application/json'}).then((response){
+      if(response.statusCode == 200) {
+        Navigator.pop(context);
+        ClassRoomHelper.shared.fetchClassRoomlist("60d01593c1f3a30047498cac");
+      }
+      else {
+        print(json.encode(response.body));
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +58,7 @@ class _createclass extends State<createclass> {
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.deepPurple)),
                 child: TextField(
+                  controller: Subject,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     labelText: "Subject",
@@ -36,6 +72,7 @@ class _createclass extends State<createclass> {
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.deepPurple)),
                 child: TextField(
+                  controller: Batch,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     labelText: "Batch",
@@ -49,6 +86,7 @@ class _createclass extends State<createclass> {
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.deepPurple)),
                 child: TextField(
+                  controller: Section,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     labelText: "Section",
@@ -62,15 +100,21 @@ class _createclass extends State<createclass> {
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.deepPurple)),
                 child: TextField(
+                  controller: Branch,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    labelText: "Course",
+                    labelText: "Branch",
                   ),
                 ),
               ),
               SizedBox(height:45.0),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      ClassRoomHelper.loading = true;
+                    });
+                    createClass();
+                  },
                   child: Padding(
                     padding: EdgeInsets.all(15),
                     child: Row(

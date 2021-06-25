@@ -1,10 +1,29 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../classroom_helper.dart';
 
 class joinclass extends StatefulWidget {
   @override
   _joinclass createState() => _joinclass();
 }
 class _joinclass extends State<joinclass> {
+  final EnrolKey = TextEditingController();
+
+  joinClass(enrolkey,studentId) async {
+    var url = Uri.parse('http://localhost:5000/api/joinClass');
+    Map body = {
+      "enrolKey":enrolkey,
+      "studentId":studentId
+    };
+    await http.post(url,body:json.encode(body),headers:{'content-type':'application/json'}).then((response){
+      Navigator.pop(context);
+      ClassRoomHelper.shared.fetchClassRoomlist("60d01593c1f3a30047498cac");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,24 +42,19 @@ class _joinclass extends State<joinclass> {
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(color: Colors.deepPurple)),
               child: TextField(
+                controller: EnrolKey,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   labelText: "Key",
                 ),
               ),
             ),
-            /*TextField(
-              decoration: InputDecoration(
-                hintText: "Enter the KEY",
-                hintStyle: TextStyle(
-                  color: Colors.purple,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ),*/
             SizedBox(height:45.0),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                print(EnrolKey.text);
+                //joinClass(EnrolKey.text,"60d01516c1f3a30047498ca8");
+              },
               child: Padding(
                 padding: EdgeInsets.all(15),
                 child: Row(
@@ -50,7 +64,7 @@ class _joinclass extends State<joinclass> {
                     Icon(Icons.publish, size: 25),
                     SizedBox(width: 10),
                     Text(
-                      "Create",
+                      "Join",
                       style: TextStyle(
                         fontSize: 15,
                       ),

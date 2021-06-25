@@ -172,10 +172,10 @@ class AppState extends State<App> {
     //   saveStudentToDatabase(students[i]);
     // }
     // for (var i = 0; i < assignment.length; i++) {
-    //   addAssignmentToDatabase(assignment[i]);
+    //   addAssignmentToDatabase("7602fc20-c76a-11eb-b1ac-997b4bdee393",assignment[i]);
     // }
     // for (var i = 0; i < result.length; i++) {
-    //   addResultToDatabase(result[i]);
+    //   addResultToDatabase("7602fc20-c76a-11eb-b1ac-997b4bdee393",result[i]);
     // }
     //addTimeTableToDatabase("https://firebasestorage.googleapis.com/v0/b/our-e-college-app-909e3.appspot.com/o/Batch%2F2019-2023%2FBranch%2FCSE%2FSection%2FA%2FTimetable%2FCSE-A.json?alt=media&token=50d1a49e-0665-461f-9926-8d6c44ea3756");
     ContextKeeper().init(context);
@@ -203,18 +203,65 @@ class AppState extends State<App> {
         .catchError((error) => print("Failed to add student: $error"));
     ;
   }
+  Future<void> fetchStudentList(String uid) async {
 
-  Future<void> addAssignmentToDatabase(Assignment assignment) async {
+    return await FirebaseFirestore.instance
+        .collection('Classes')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) async {
+      if (documentSnapshot.exists) {
+        print("student data ${documentSnapshot.data()}");
+        return Student(
+          uid:documentSnapshot["uid"],
+          email:documentSnapshot["email"],
+          batch:documentSnapshot["batch"],
+          rollno:documentSnapshot["rollno"],
+          branch:documentSnapshot["branch"],
+          role:documentSnapshot["role"],
+          section:documentSnapshot["section"],
+          profileName:documentSnapshot["profileName"],
+          profilePhotoUri:documentSnapshot["profilePhotoUri"],
+          e_card:documentSnapshot["e_card"],
+        );
+      } else {
+        print('Document does not exist on the user database');
+      }
+    });
+  }
+  Future<void> fetchStudent(String uid) async {
+
+    return await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) async {
+      if (documentSnapshot.exists) {
+        print("student data ${documentSnapshot.data()}");
+        return Student(
+            uid:documentSnapshot["uid"],
+            email:documentSnapshot["email"],
+            batch:documentSnapshot["batch"],
+            rollno:documentSnapshot["rollno"],
+            branch:documentSnapshot["branch"],
+            role:documentSnapshot["role"],
+            section:documentSnapshot["section"],
+            profileName:documentSnapshot["profileName"],
+            profilePhotoUri:documentSnapshot["profilePhotoUri"],
+            e_card:documentSnapshot["e_card"],
+        );
+      } else {
+        print('Document does not exist on the user database');
+      }
+    });
+  }
+
+  Future<void> addAssignmentToDatabase(String classUid,Assignment assignment) async {
     var uuid = Uuid().v1();
-    CollectionReference studentCollection = FirebaseFirestore.instance
-        .collection('Batch')
-        .doc("2019-2023")
-        .collection('Branch')
-        .doc("CSE")
-        .collection('Section');
-    await studentCollection
-        .doc("A")
-        .collection("Assignment")
+    await FirebaseFirestore.instance
+        .collection('Classes')
+        .doc(classUid)
+        .collection('Assignments')
         .doc(uuid)
         .set({
           "subject": assignment.subject,
@@ -227,17 +274,12 @@ class AppState extends State<App> {
         .catchError((error) => print("Failed to add student: $error"));
     ;
   }
-  Future<void> addResultToDatabase(Result result) async {
+  Future<void> addResultToDatabase(String classUid,Result result) async {
     var uuid = Uuid().v1();
-    CollectionReference studentCollection = FirebaseFirestore.instance
-        .collection('Batch')
-        .doc("2019-2023")
-        .collection('Branch')
-        .doc("CSE")
-        .collection('Section');
-    await studentCollection
-        .doc("A")
-        .collection("Result")
+    await FirebaseFirestore.instance
+        .collection('Classes')
+        .doc(classUid)
+        .collection('Results')
         .doc(uuid)
         .set({
       "subject": result.subject,
@@ -306,34 +348,19 @@ class AppState extends State<App> {
         .catchError((error) => print("Failed to create class: $error"));
   }
   Future<void> enrolStudentInClass(String enrolKey) async {
+    var uid = FirebaseAuth.instance.currentUser.uid;
     CollectionReference classesCollection =
     FirebaseFirestore.instance.collection('Classes');
     await classesCollection
         .doc(enrolKey)
-        .get()
-        .then((snapshot) async {
-          if(snapshot.exists){
-            print("Class Exists: ${snapshot.data()}");
-            var uid = FirebaseAuth.instance.currentUser.uid;
-            CollectionReference usersCollection =
+        .update({
+            "enrollStudents": FieldValue.arrayUnion([uid])
+        })
+        .then((value) async {
+          print("$uid enrolled successfully");
+          })
+        .catchError((error) => print("Failed to enroll in  class: $error"));
 
-            FirebaseFirestore.instance.collection('Users');
-            await usersCollection
-                .doc(uid)
-                .collection("EnrollClasses")
-                .add({
-              'enrolKey':enrolKey
-            })
-                .then((value) async {
-              print("Class Enroled");
-            })
-                .catchError((error) => print("Failed to enrol class: $error"));
-          }
-          else
-            {
-              print("Class Doesn't Exists");
-            }
-         });
   }
 
   // sets current tab index

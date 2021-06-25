@@ -1,14 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:our_e_college_app/components/classroom/data/classrooms.dart';
+import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 import 'package:our_e_college_app/components/classroom/data/comments.dart';
 import 'package:our_e_college_app/components/classroom/widgets/profile_tile.dart';
 
 class PeopleTab extends StatefulWidget {
+  final classDetails;
+  PeopleTab({this.classDetails});
+
   @override
   _PeopleTabState createState() => _PeopleTabState();
 }
 
 class _PeopleTabState extends State<PeopleTab> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,9 +39,21 @@ class _PeopleTabState extends State<PeopleTab> {
           height: 2,
           color: Colors.redAccent,
         ),
-        Profile(
-          name: classRoomList[0].creator,
-        ),
+        StreamBuilder(
+            stream: ClassRoomStreamControllerHelper.shared.classInfostream,
+            builder:(context,snapshot){
+              if(snapshot.connectionState == ConnectionState.active){
+                if(snapshot.hasData){
+                  var item = snapshot.data["classInfo"]["createdBy"];
+                  print(item);
+                  return Profile(
+                          name: item["profileName"],
+                          uri: item["profilePhotoUri"],
+                  );
+                }
+              }
+              return Center(child: CircularProgressIndicator());
+            }),
         SizedBox(width: 30),
         Container(
           padding: EdgeInsets.only(top: 30, left: 15, bottom: 10),
@@ -46,14 +69,26 @@ class _PeopleTabState extends State<PeopleTab> {
           height: 2,
           color: Colors.redAccent,
         ),
-        Expanded(
-            child: ListView.builder(
-                itemCount: commentList.length,
-                itemBuilder: (context, int index) {
-                  return Profile(
-                    name: commentList[index].userName,
-                  );
-                }))
+        StreamBuilder(
+            stream: ClassRoomStreamControllerHelper.shared.classInfostream,
+            builder:(context,snapshot){
+              if(snapshot.connectionState == ConnectionState.active){
+                if(snapshot.hasData){
+                  var item = snapshot.data["classInfo"]["enrollStudents"];
+                  print(item);
+                  return Expanded(
+                      child: ListView.builder(
+                          itemCount: item.length,
+                          itemBuilder: (context, int index) {
+                            return Profile(
+                              uri: item[index]["profilePhotoUri"],
+                              name: item[index]["profileName"],
+                            );
+                          }));
+                }
+              }
+              return Center(child: CircularProgressIndicator());
+            })
       ],
     );
   }

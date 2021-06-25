@@ -48,7 +48,7 @@ class _NewPostSellState extends State<NewPostSell> {
             "uid":uid,
             "itemName":ItemName.text,
             "itemPrice":ItemPrice.text,
-            "itemUri":uri,
+            "itemPrice":uri,
             "sellerName":SellerName.text,
             "sellerRoom":SellerRoom.text,
             "sellerContact":SellerContact.text})
