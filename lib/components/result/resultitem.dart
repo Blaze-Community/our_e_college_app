@@ -3,17 +3,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ResultItem extends StatefulWidget {
-  String subject;
+  String title;
   // String submissionTime;
   String uploadDate;
-  String marks;
+
   String uri;
 
   ResultItem(
-      {this.subject,
-      // this.submissionTime,
-      this.uploadDate,
-      this.marks,
+      {this.title,
+        this.uploadDate,
       this.uri
       });
 
@@ -60,7 +58,7 @@ class _ResultItemState extends State<ResultItem> {
             height: 10,
           ),
           Container(
-              height: 100,
+              height: 80,
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border.all(width: 1, color: Colors.grey[300]),
@@ -70,52 +68,12 @@ class _ResultItemState extends State<ResultItem> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.subject,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          /*Icon(
-                            Icons.assignment,
-                            size: 18,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            widget.title,
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          ),*/
-                          Text(
-                            "Marks: ",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Text(
-                            widget.marks + "/100",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  Text(
+                    widget.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
                   ),
                   OutlinedButton(
                     onPressed: () async {

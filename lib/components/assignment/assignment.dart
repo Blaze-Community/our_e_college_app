@@ -3,44 +3,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:our_e_college_app/components/assignment/newAssignment.dart';
 import 'package:our_e_college_app/components/assignment/assignmentItem.dart';
+import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
+import 'package:our_e_college_app/components/classroom/create_join/create_class.dart';
 import 'package:our_e_college_app/global.dart' as Global;
+import 'package:simple_moment/simple_moment.dart';
 
 class Assignment extends StatefulWidget {
+  final classDetails;
+  Assignment({this.classDetails});
+
   @override
   _AssignmentState createState() => _AssignmentState();
 }
 
 class _AssignmentState extends State<Assignment> {
 
-  getassignment() async {
-    var uid = FirebaseAuth.instance.currentUser.uid;
-    var student;
-    return await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) async {
-      if (documentSnapshot.exists) {
-        student = documentSnapshot.data();
-        print(student);
-        return await FirebaseFirestore.instance
-            .collection('Batch')
-            .doc(student["batch"])
-            .collection('Branch')
-            .doc(student["branch"])
-            .collection('Section')
-            .doc(student["section"])
-            .collection("Assignment")
-            .get()
-            .then((snapshot){
-             return snapshot;
-        });
-      } else {
-        print('Document does not exist on the student database\n\n\n');
-      }
-    });
+  @override
+  void initState() {
+    // TODO: implement initState
+    ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
+    super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,21 +37,19 @@ class _AssignmentState extends State<Assignment> {
             padding: const EdgeInsets.only(top:12.0),
             child: Stack(
               children: [
-                FutureBuilder(
-                  future: getassignment(),
+                StreamBuilder(
+                  stream: ClassRoomStreamControllerHelper.shared.classInfostream,
                   builder: (context, snapshot) {
-                    print("snapshot ass $snapshot");
-                    if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.connectionState == ConnectionState.active) {
                       if (snapshot.hasData) {
-                        final List items = snapshot.data.docs;
+                        final List items = snapshot.data["classInfo"]["assignments"];
                         return ListView.builder(
                           itemCount: items.length,
                           itemBuilder: (BuildContext ctxt, int i) {
                             return AssignmentList(
-                              subject: items[i]["subject"],
                               submissionDate: items[i]["submissionDate"],
                               title: items[i]["title"],
-                              uploadDate: items[i]["uploadDate"],
+                              uploadDate: Moment.parse(items[i]["createdAt"]).format('dd-MM-yyyy'),
                               uri:items[i]["uri"]
                             );
                           },
@@ -91,7 +72,7 @@ class _AssignmentState extends State<Assignment> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      NewAssignment()));
+                                      NewAssignment(classDetails: widget.classDetails)));
                         },
                         label: Text('Add New Assignment'),
                         icon: Icon(Icons.add),

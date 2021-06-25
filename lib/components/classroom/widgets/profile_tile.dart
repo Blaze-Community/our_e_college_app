@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   String name;
+  String uri;
 
-  Profile({this.name});
+  Profile({this.name, this.uri,});
 
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -13,17 +18,15 @@ class Profile extends StatelessWidget {
         children: [
           SizedBox(width: 15),
           CircleAvatar(
-            child: Icon(
-              Icons.person,
-              size: 30,
-              color: Colors.grey,
-            ),
-            backgroundColor: Colors.grey[400],
+            backgroundColor: Colors.transparent,
+            backgroundImage: (widget.uri.length>0)?
+            NetworkImage(widget.uri):
+            AssetImage("assets/splash.jpg")
           ),
           SizedBox(
             width: 10,
           ),
-          Text(name)
+          Text(widget.name)
         ],
       ),
     );

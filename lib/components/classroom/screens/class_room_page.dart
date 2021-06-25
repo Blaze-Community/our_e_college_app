@@ -7,34 +7,29 @@ import 'classroom/stream_tab.dart';
 class ClassRoomPage extends StatefulWidget {
   AssetImage bannerImg;
   String className;
-  Color uiColor;
+  final classDetails;
+  //Color uiColor;
 
-  ClassRoomPage({this.className, this.bannerImg, this.uiColor});
+  ClassRoomPage({this.className, this.bannerImg,this.classDetails});
 
   @override
   _ClassRoomPageState createState() => _ClassRoomPageState();
 }
 
 class _ClassRoomPageState extends State<ClassRoomPage> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     String className = widget.className;
     AssetImage bannerImg = widget.bannerImg;
+    final classDetails = widget.classDetails;
     final tabs = [
       StreamTab(
         bannerImg: bannerImg,
         className: className,
       ),
-      ClassWork(),
-      PeopleTab()
+      ClassWork(classDetails: classDetails),
+      PeopleTab(classDetails: classDetails)
     ];
     return DefaultTabController(
       length: 3,

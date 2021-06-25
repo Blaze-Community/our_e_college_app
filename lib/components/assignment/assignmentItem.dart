@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AssignmentList extends StatefulWidget {
-  String subject;
   String title;
   // String submissionTime;
   String submissionDate;
@@ -11,7 +10,6 @@ class AssignmentList extends StatefulWidget {
   String uri;
 
   AssignmentList({
-    this.subject,
     this.title,
     // this.submissionTime,
     this.uploadDate,
@@ -62,7 +60,7 @@ class _AssignmentListState extends State<AssignmentList> {
             height: 10,
           ),
           Container(
-              height: 120,
+              height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border.all(width: 1, color: Colors.grey[300]),
@@ -75,16 +73,6 @@ class _AssignmentListState extends State<AssignmentList> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.subject,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

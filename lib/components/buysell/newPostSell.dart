@@ -27,6 +27,7 @@ class _NewPostSellState extends State<NewPostSell> {
     //uploadFile(pickedFile.path);
   }
 
+
   Future<void> uploadItem() async {
     String url = "http://localhost:5000/api/additem";
     final response = await http.post((Uri.parse(url)), body: {
