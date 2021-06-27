@@ -104,6 +104,8 @@ class _StreamTabState extends State<StreamTab> {
                     itemCount: items.length,
                     itemBuilder: (BuildContext ctxt, int i) {
                       return CommentComposer(
+                        classId: widget.classDetails["_id"],
+                        id: items[i]["_id"],
                         date: Moment.parse(items[i]["createdAt"])
                             .format('dd-MM-yyyy'),
                         message: items[i]["message"],

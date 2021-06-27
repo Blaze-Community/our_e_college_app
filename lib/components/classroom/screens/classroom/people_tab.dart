@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
-import 'package:our_e_college_app/components/classroom/data/comments.dart';
 import 'package:our_e_college_app/components/classroom/widgets/profile_tile.dart';
 
 class PeopleTab extends StatefulWidget {
@@ -13,13 +12,13 @@ class PeopleTab extends StatefulWidget {
 }
 
 class _PeopleTabState extends State<PeopleTab> {
-
   @override
   void initState() {
     // TODO: implement initState
     ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -41,14 +40,14 @@ class _PeopleTabState extends State<PeopleTab> {
         ),
         StreamBuilder(
             stream: ClassRoomStreamControllerHelper.shared.classInfostream,
-            builder:(context,snapshot){
-              if(snapshot.connectionState == ConnectionState.active){
-                if(snapshot.hasData){
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasData) {
                   var item = snapshot.data["classInfo"]["createdBy"];
                   print(item);
                   return Profile(
-                          name: item["profileName"],
-                          uri: item["profilePhotoUri"],
+                    name: item["profileName"],
+                    uri: item["profilePhotoUri"],
                   );
                 }
               }
@@ -71,9 +70,9 @@ class _PeopleTabState extends State<PeopleTab> {
         ),
         StreamBuilder(
             stream: ClassRoomStreamControllerHelper.shared.classInfostream,
-            builder:(context,snapshot){
-              if(snapshot.connectionState == ConnectionState.active){
-                if(snapshot.hasData){
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasData) {
                   var item = snapshot.data["classInfo"]["enrollStudents"];
                   print(item);
                   return Expanded(

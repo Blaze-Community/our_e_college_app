@@ -1,18 +1,31 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:our_e_college_app/components/classroom/data/comments.dart';
 import 'package:our_e_college_app/global.dart' as Global;
+import 'package:http/http.dart' as http;
 import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 
 class CommentComposer extends StatefulWidget {
+  final String id;
   final String message;
   final String date;
-  CommentComposer({this.date, this.message});
+  final String classId;
+  CommentComposer({this.classId, this.id, this.date, this.message});
   @override
   _CommentComposerState createState() => _CommentComposerState();
 }
 
 class _CommentComposerState extends State<CommentComposer> {
+  deleteMessage() async {
+    var url = Uri.parse('http://localhost:5000/api/deleteMessage');
+    await http.delete(url,
+        body: {"classId": widget.classId, "msgId": widget.id}).then((response) {
+      ClassRoomHelper.shared.fetchClassInfo(widget.classId);
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +55,9 @@ class _CommentComposerState extends State<CommentComposer> {
                       Icons.delete,
                       color: Colors.grey,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      deleteMessage();
+                    },
                   )
               ],
             ),
