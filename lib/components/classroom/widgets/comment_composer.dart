@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/components/classroom/data/comments.dart';
+import 'package:our_e_college_app/global.dart' as Global;
+import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 
 class CommentComposer extends StatefulWidget {
+  final String message;
+  final String date;
+  CommentComposer({this.date, this.message});
   @override
   _CommentComposerState createState() => _CommentComposerState();
 }
@@ -10,76 +15,55 @@ class CommentComposer extends StatefulWidget {
 class _CommentComposerState extends State<CommentComposer> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: ListView.builder(
-            itemCount: commentList.length,
-            itemBuilder: (context, int index) {
-              return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                      boxShadow: [
-                        BoxShadow(color: Colors.black26, blurRadius: 0)
-                      ]),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(width: 10),
-                              CircleAvatar(
-                                backgroundImage:
-                                    AssetImage("${commentList[index].userDp}"),
-                              ),
-                              SizedBox(width: 10),
-                              Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      commentList[index].userName,
-                                      style: TextStyle(),
-                                    ),
-                                    Text(
-                                      commentList[index].date,
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ]),
-                            ],
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.more_vert,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {},
-                          )
-                        ],
-                      ),
-                      Container(
-                          width: MediaQuery.of(context).size.width - 40,
-                          margin:
-                              EdgeInsets.only(left: 15, top: 15, bottom: 10),
-                          child: Text(commentList[index].comment)),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        height: 40,
-                        width: MediaQuery.of(context).size.width - 30,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                top: BorderSide(
-                                    width: 1, color: Colors.grey[300]))),
-                        child: Text(
-                          "     Add class comment",
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                      )
-                    ],
-                  ));
-            }));
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        padding: EdgeInsets.only(left: 15, right: 15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: Colors.deepOrange),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: [
+                Expanded(
+                    child: Text(
+                  "Dated : ${widget.date}",
+                  style: TextStyle(color: Colors.black),
+                )),
+                if (Global.user != "Student")
+                  IconButton(
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {},
+                  )
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              "Message - ",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+                width: MediaQuery.of(context).size.width - 40,
+                margin: EdgeInsets.only(bottom: 10),
+                child: Text(widget.message)),
+          ],
+        ));
   }
 }
