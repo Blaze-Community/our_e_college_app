@@ -8,11 +8,10 @@ import 'package:our_e_college_app/global-helper.dart';
 import 'package:simple_moment/simple_moment.dart';
 
 class StreamTab extends StatefulWidget {
-  final AssetImage bannerImg;
-  final String className;
-  final classDetails;
+  AssetImage bannerImg;
+  String className;
 
-  StreamTab({this.bannerImg, this.className, this.classDetails});
+  StreamTab({this.bannerImg, this.className});
 
   @override
   _StreamTabState createState() => _StreamTabState();
@@ -123,6 +122,7 @@ class _StreamTabState extends State<StreamTab> {
         if (GlobalHelper.userRole != "student")
           Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
+            height: 60,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(5),

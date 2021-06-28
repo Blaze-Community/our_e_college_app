@@ -1,22 +1,18 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 import 'package:our_e_college_app/global-helper.dart';
+import 'package:our_e_college_app/components/classroom/data/comments.dart';
 
 class CommentComposer extends StatefulWidget {
-  final String id;
-  final String message;
-  final String date;
-  final String classId;
-  CommentComposer({this.classId, this.id, this.date, this.message});
   @override
   _CommentComposerState createState() => _CommentComposerState();
 }
 
 class _CommentComposerState extends State<CommentComposer> {
+  
   Future refresh() async {
     String url = 'https://college-app-backend.herokuapp.com/api/refresh';
     final storage = new FlutterSecureStorage();

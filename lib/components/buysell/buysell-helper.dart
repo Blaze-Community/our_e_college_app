@@ -72,7 +72,6 @@ class BuySellHelper {
       await refresh();
       responseJson = await fetchSellItemsList();
     }
-    print(responseJson);
     if(responseJson['success'] == true){
       BuySellStreamControllerHelper.shared._sellListStreamController.add(responseJson["list"]);
     }

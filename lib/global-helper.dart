@@ -63,6 +63,7 @@ class GlobalHelper {
       await refresh();
       responseJson = await checkAccessToken();
     }
+
     userRole = responseJson["role"];
     return responseJson;
   }

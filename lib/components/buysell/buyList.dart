@@ -41,7 +41,7 @@ class _BuyListState extends State<BuyList> {
               child: StreamBuilder(
                 stream: BuySellStreamControllerHelper.shared.buyListStream,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
                     if (snapshot.hasData) {
                       final List items = snapshot.data;
                       return ListView.builder(

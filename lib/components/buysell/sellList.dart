@@ -42,10 +42,8 @@ class _SellListState extends State<SellList> {
       print(json.decode(response.body)["msg"]);
     }
   }
-
   Future<dynamic> checkAccessToken(String id) async {
         String url = "https://college-app-backend.herokuapp.com/api/college-olx/deleteItem";
-
         final storage = new FlutterSecureStorage();
         final accessToken = await storage.read(key: "accessToken");
         // final  accessToken = GlobalHelper.accessToken;

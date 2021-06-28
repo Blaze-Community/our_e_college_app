@@ -61,7 +61,6 @@ class _NewPostSellState extends State<NewPostSell> {
           .then((snapshot) async {
           var uri = await snapshot.ref.getDownloadURL();
           String url = 'https://college-app-backend.herokuapp.com/api/college-olx/additem';
-
           final storage = new FlutterSecureStorage();
           final accessToken = await storage.read(key: "accessToken");
           //final accessToken = GlobalHelper.accessToken;
