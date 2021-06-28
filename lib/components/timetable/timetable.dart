@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:our_e_college_app/components/timetable/timetableitems.dart';
@@ -33,7 +31,7 @@ class _TimeTableState extends State<TimeTable> {
   String clas = "";
 
   Future fetchTimetable(http.Client client) async {
-    String url = "http://localhost:5000/api/timetable";
+    String url = "https://college-app-backend.herokuapp.com/api/timetable";
     final response = await http.get(Uri.parse(url));
     final responseJson = json.decode(response.body);
     // print(responseJson);
