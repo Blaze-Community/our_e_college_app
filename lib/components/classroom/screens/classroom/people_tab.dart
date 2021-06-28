@@ -43,7 +43,7 @@ class _PeopleTabState extends State<PeopleTab> {
         StreamBuilder(
             stream: ClassRoomStreamControllerHelper.shared.classInfostream,
             builder:(context,snapshot){
-              if(snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false){
+              if(snapshot.connectionState == ConnectionState.active){
                 if(snapshot.hasData){
                   var item = snapshot.data["createdBy"];
                   return Profile(

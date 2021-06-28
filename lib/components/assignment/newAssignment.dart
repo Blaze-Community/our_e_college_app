@@ -110,9 +110,6 @@ class _NewAssignmentState extends State<NewAssignment> {
       responseJson = await checkAccessToken();
     }
     if (responseJson['success'] == true) {
-      setState(() {
-        GlobalHelper.loading = true;
-      });
       Navigator.pop(context);
       ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
     }
@@ -205,6 +202,7 @@ class _NewAssignmentState extends State<NewAssignment> {
                     onPressed: () {
                       setState(() {
                         loading = true;
+                        GlobalHelper.loading = true;
                       });
                       uploadAssignment();
                     },

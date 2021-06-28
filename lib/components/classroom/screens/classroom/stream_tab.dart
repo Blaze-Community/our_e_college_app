@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:our_e_college_app/components/classroom/widgets/comment_composer.dart';
-import 'package:our_e_college_app/global.dart' as Global;
 import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 import 'package:http/http.dart' as http;
+import 'package:our_e_college_app/global-helper.dart';
 import 'package:simple_moment/simple_moment.dart';
 
 class StreamTab extends StatefulWidget {
@@ -20,17 +20,70 @@ class StreamTab extends StatefulWidget {
 
 class _StreamTabState extends State<StreamTab> {
   final message_for_class = TextEditingController();
-  uploadMessage() async {
-    var url = Uri.parse('http://localhost:5000/api/uploadMessage');
-    await http.post(url, body: {
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+      await storage.write(key: "accessToken", value: accessToken);
+      // GlobalHelper.accessToken = accessToken;
+    }
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
+  }
+
+  Future<dynamic> checkAccessToken() async {
+    final storage = new FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    //final accessToken = GlobalHelper.accessToken;
+
+    var url = 'https://college-app-backend.herokuapp.com/api/uploadMessage';
+    Map body =  {
       "classId": widget.classDetails["_id"],
       "message": message_for_class.text
-    }).then((response) {
+    };
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $accessToken",
+          "Content-Type": "application/json",
+        },
+        body: json.encode(body));
+    try{
+      if(response.statusCode == 200){
+        return json.decode(response.body);
+      }
+      else{
+        print(json.decode(response.body)["msg"]);
+      }
+    }
+    catch(err){
+      print(err);
+    }
+  }
+  uploadMessage() async {
+    var responseJson = await checkAccessToken();
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken();
+    }
+    if (responseJson['success'] == true) {
+      message_for_class.clear();
       ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
-      final responseJson = json.decode(response.body);
-      message_for_class.text = "";
-      print(responseJson);
-    });
+    }
   }
 
   @override
@@ -67,7 +120,7 @@ class _StreamTabState extends State<StreamTab> {
             ],
           ),
         ),
-        if (Global.user != "Student")
+        if (GlobalHelper.userRole != "student")
           Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
             decoration: BoxDecoration(
@@ -87,7 +140,7 @@ class _StreamTabState extends State<StreamTab> {
                       onTap: () {
                         print("send message");
                         setState(() {
-                          ClassRoomHelper.loading = true;
+                          GlobalHelper.loading = true;
                         });
                         uploadMessage();
                       }),
@@ -97,9 +150,9 @@ class _StreamTabState extends State<StreamTab> {
           child: StreamBuilder(
             stream: ClassRoomStreamControllerHelper.shared.classInfostream,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
                 if (snapshot.hasData) {
-                  final List items = snapshot.data["classInfo"]["messages"];
+                  final List items = snapshot.data["messages"];
                   return ListView.builder(
                     itemCount: items.length,
                     itemBuilder: (BuildContext ctxt, int i) {

@@ -47,6 +47,8 @@ class _AssignmentState extends State<Assignment> {
                           itemCount: items.length,
                           itemBuilder: (BuildContext ctxt, int i) {
                             return AssignmentList(
+                              id: items[i]["_id"],
+                              classId: widget.classDetails["_id"],
                               submissionDate: items[i]["submissionDate"],
                               title: items[i]["title"],
                               uploadDate: Moment.parse(items[i]["createdAt"]).format('dd-MM-yyyy'),

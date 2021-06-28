@@ -41,6 +41,8 @@ class _ResultState extends State<Result> {
                           itemCount: items.length,
                           itemBuilder: (BuildContext ctxt, int i) {
                             return ResultItem(
+                              id: items[i]["_id"],
+                              classId: widget.classDetails["_id"],
                               title: items[i]["title"],
                               uploadDate: Moment.parse(items[i]["createdAt"]).format('dd-MM-yyyy'),
                               uri: items[i]["uri"],

@@ -59,7 +59,7 @@ class BuySellHelper {
   }
 
   Future fetchSellItemsList() async {
-    String url = "https://college-app-backend.herokuapp.com/college-olx/myItem";
+    String url = "https://college-app-backend.herokuapp.com/api/college-olx/myItem";
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
     // final accessToken = GlobalHelper.accessToken;
@@ -72,6 +72,7 @@ class BuySellHelper {
       await refresh();
       responseJson = await fetchSellItemsList();
     }
+    print(responseJson);
     if(responseJson['success'] == true){
       BuySellStreamControllerHelper.shared._sellListStreamController.add(responseJson["list"]);
     }

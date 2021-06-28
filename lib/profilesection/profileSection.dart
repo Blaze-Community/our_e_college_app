@@ -82,10 +82,11 @@ class _ProfileState extends State<Profile> {
 
   void acadmicCalendar() async {
     String url = 'https://iiitn-web-crawler.herokuapp.com/acadmic-calendar';
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(url)).then((value){
+      print("resonsejson ${value}");
+    });
 
     final responseJson = json.decode(response.body);
-    // print(responseJson);
     setState(() {
       calendarLink = responseJson[1];
       // print(lis);
@@ -93,7 +94,7 @@ class _ProfileState extends State<Profile> {
   }
 
   void initState() {
-    //acadmicCalendar();
+    acadmicCalendar();
     super.initState();
   }
 
@@ -216,6 +217,7 @@ class _ProfileState extends State<Profile> {
                         icon: Icons.calendar_today,
                         text: 'Acadmic Calendar',
                         onPressed: () async {
+                          print(calendarLink);
                           await launch(calendarLink);
                         }),
                     ProfileListItems(

@@ -76,11 +76,7 @@ class _SellListState extends State<SellList> {
       await refresh();
       responseJson = await checkAccessToken(id);
     }
-
     if (responseJson['success'] == true) {
-      setState(() {
-        GlobalHelper.loading = true;
-      });
       BuySellHelper.shared.fetchSellItemsList();
     }
     else{
@@ -116,7 +112,6 @@ class _SellListState extends State<SellList> {
                   child: StreamBuilder(
                     stream: BuySellStreamControllerHelper.shared.sellListStream,
                     builder: (context, snapshot) {
-                      print(snapshot);
                       if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
                         if (snapshot.hasData) {
                           items = snapshot.data;
@@ -219,7 +214,7 @@ class _SellListState extends State<SellList> {
                         color: Colors.grey,
                         onPressed: () {
                           setState(() {
-                            GlobalHelper.loading == false;
+                            GlobalHelper.loading = true;
                           });
                           deleteItem(docId);
                         })

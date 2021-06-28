@@ -60,7 +60,7 @@ class _NewPostSellState extends State<NewPostSell> {
           .putFile(File(itemImageUri))
           .then((snapshot) async {
           var uri = await snapshot.ref.getDownloadURL();
-          String url = 'https://college-app-backend.herokuapp.com/api/additem';
+          String url = 'https://college-app-backend.herokuapp.com/api/college-olx/additem';
 
           final storage = new FlutterSecureStorage();
           final accessToken = await storage.read(key: "accessToken");
@@ -113,9 +113,6 @@ class _NewPostSellState extends State<NewPostSell> {
       responseJson = await checkAccessToken();
     }
     if (responseJson['success'] == true) {
-      setState(() {
-        GlobalHelper.loading = true;
-      });
       Navigator.pop(context);
       BuySellHelper.shared.fetchSellItemsList();
     }
@@ -276,6 +273,7 @@ class _NewPostSellState extends State<NewPostSell> {
                         onPressed: () {
                           setState(() {
                             loading = true;
+                            GlobalHelper.loading = true;
                           });
                           uploadItem();
                         },
