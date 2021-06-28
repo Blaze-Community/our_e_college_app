@@ -27,6 +27,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
       StreamTab(
         bannerImg: bannerImg,
         className: className,
+        classDetails : classDetails
       ),
       ClassWork(classDetails: classDetails),
       PeopleTab(classDetails: classDetails)

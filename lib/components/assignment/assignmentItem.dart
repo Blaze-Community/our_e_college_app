@@ -7,6 +7,8 @@ import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
+import '../../global-helper.dart';
+
 class AssignmentList extends StatefulWidget {
   String classId;
   String id;
@@ -82,7 +84,7 @@ class _AssignmentListState extends State<AssignmentList> {
       print(err);
     }
   }
-  deleteMessage() async {
+  deleteAssignment() async {
     var responseJson = await checkAccessToken();
     if (responseJson['msg'] == "Access token expired") {
       await refresh();
@@ -131,78 +133,95 @@ class _AssignmentListState extends State<AssignmentList> {
             height: 10,
           ),
           Container(
-              height: 100,
+              height: 140,
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border.all(width: 1, color: Colors.grey[300]),
                   borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.only(right: 10, left: 30),
               padding: EdgeInsets.all(20),
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.assignment,
-                            size: 18,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.assignment,
+                                size: 18,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                widget.title,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            widget.title,
-                            style: TextStyle(
-                              fontSize: 15,
+                          OutlinedButton(
+                            onPressed: () async {
+                              await launch(widget.uri);
+                            },
+                            child: Row(
+                              children: [
+                                Icon(FontAwesomeIcons.download, size: 12),
+                                SizedBox(width: 10),
+                                Text(
+                                  "PDF",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Submission Date: ",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Text(
-                            widget.submissionDate,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      )
                     ],
                   ),
-                  OutlinedButton(
-                    onPressed: () async {
-                        await launch(widget.uri);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(FontAwesomeIcons.download, size: 12),
-                        SizedBox(width: 10),
-                        Text(
-                          "PDF",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Submission Date: ",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                widget.submissionDate,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
+                          if(GlobalHelper.userRole== "teacher")
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.deepOrange,
+                              ),
+                              splashColor: Colors.white54,
+                              onPressed: () {
+                                setState(() {
+                                  GlobalHelper.loading  = true;
+                                });
+                                deleteAssignment();
+                              },
+                              iconSize: 25,
+                            ),
+                    ],
                   )
                 ],
               ))

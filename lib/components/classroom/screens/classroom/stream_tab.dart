@@ -10,8 +10,9 @@ import 'package:simple_moment/simple_moment.dart';
 class StreamTab extends StatefulWidget {
   AssetImage bannerImg;
   String className;
+  var classDetails;
 
-  StreamTab({this.bannerImg, this.className});
+  StreamTab({this.bannerImg, this.className,this.classDetails});
 
   @override
   _StreamTabState createState() => _StreamTabState();
