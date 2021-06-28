@@ -7,6 +7,8 @@ import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
+import '../../global-helper.dart';
+
 class ResultItem extends StatefulWidget {
   String classId;
   String id;
@@ -81,7 +83,7 @@ class _ResultItemState extends State<ResultItem> {
       print(err);
     }
   }
-  deleteMessage() async {
+  deleteResult() async {
     var responseJson = await checkAccessToken();
     if (responseJson['msg'] == "Access token expired") {
       await refresh();
@@ -146,25 +148,43 @@ class _ResultItemState extends State<ResultItem> {
                       fontSize: 15,
                     ),
                   ),
-                  OutlinedButton(
-                    onPressed: () async {
-                      print(widget.uri);
-                      await launch(widget.uri);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(FontAwesomeIcons.download, size: 12),
-                        SizedBox(width: 10),
-                        Text(
-                          "MARKSHEET",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
+                  Row(
+                  children:[
+                    OutlinedButton(
+                      onPressed: () async {
+                        print(widget.uri);
+                        await launch(widget.uri);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(FontAwesomeIcons.download, size: 12),
+                          SizedBox(width: 10),
+                          Text(
+                            "MARKSHEET",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  )
+                    if(GlobalHelper.userRole== "teacher")
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.deepOrange,
+                        ),
+                        splashColor: Colors.white54,
+                        onPressed: () {
+                          setState(() {
+                            GlobalHelper.loading  = true;
+                          });
+                          deleteResult();
+                        },
+                        iconSize: 25,
+                      ),
+                    ])
                 ],
               ))
         ],
