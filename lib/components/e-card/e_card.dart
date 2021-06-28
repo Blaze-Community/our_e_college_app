@@ -4,20 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:our_e_college_app/global-helper.dart';
 class Ecard extends StatefulWidget {
   @override
   _EcardState createState() => _EcardState();
 }
 
 class _EcardState extends State<Ecard>{
-  Future getImage() async {
-    User user = FirebaseAuth.instance.currentUser;
-    var uid = user.uid;
-    return await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .get();
-  }
   @override
   Widget build(BuildContext context) {
 
@@ -36,10 +29,10 @@ class _EcardState extends State<Ecard>{
                 direction: FlipDirection.HORIZONTAL, // default
                 front: Container(
                   child: FutureBuilder(
-                    future: getImage(),
+                    future: GlobalHelper.shared.fetchCurrentUser(),
                     builder:(context,snapshot){
                       if (snapshot.connectionState == ConnectionState.done) {
-                        print(snapshot.data["e_card"]);
+                        print(snapshot.data);
                         return Image.network(snapshot.data["e_card"],
                           fit: BoxFit.cover,);
                       }
@@ -49,10 +42,9 @@ class _EcardState extends State<Ecard>{
                 ),
                 back: Container(
                   child: FutureBuilder(
-                    future: getImage(),
+                    future: GlobalHelper.shared.fetchCurrentUser(),
                     builder:(context,snapshot){
                       if (snapshot.connectionState == ConnectionState.done) {
-                        print(snapshot.data["e_card"]);
                         return Image.network(snapshot.data["e_card"],
                           fit: BoxFit.cover,);
                       }

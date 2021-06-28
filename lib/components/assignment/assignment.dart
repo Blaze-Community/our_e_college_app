@@ -5,7 +5,7 @@ import 'package:our_e_college_app/components/assignment/newAssignment.dart';
 import 'package:our_e_college_app/components/assignment/assignmentItem.dart';
 import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 import 'package:our_e_college_app/components/classroom/create_join/create_class.dart';
-import 'package:our_e_college_app/global.dart' as Global;
+import 'package:our_e_college_app/global-helper.dart';
 import 'package:simple_moment/simple_moment.dart';
 
 class Assignment extends StatefulWidget {
@@ -40,9 +40,9 @@ class _AssignmentState extends State<Assignment> {
                 StreamBuilder(
                   stream: ClassRoomStreamControllerHelper.shared.classInfostream,
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active) {
+                    if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
                       if (snapshot.hasData) {
-                        final List items = snapshot.data["classInfo"]["assignments"];
+                        final List items = snapshot.data["assignments"];
                         return ListView.builder(
                           itemCount: items.length,
                           itemBuilder: (BuildContext ctxt, int i) {
@@ -61,7 +61,7 @@ class _AssignmentState extends State<Assignment> {
                     );
                   },
                 ),
-                if(Global.user == "Teacher")Padding(
+                if( GlobalHelper.userRole == "teacher")Padding(
                   // bottom: 10,
                     padding: EdgeInsets.only(bottom: 10),
                     child: Align(

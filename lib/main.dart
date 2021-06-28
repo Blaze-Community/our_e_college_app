@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:our_e_college_app/LoginScreen.dart';
 import 'package:our_e_college_app/app.dart';
+import 'package:our_e_college_app/global-helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-String finalEmail;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -37,25 +41,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  var isloggedIn = false;
+
+  getValidationData() async {
+    final storage = new FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    //   final accessToken = GlobalHelper.accessToken;
+    print("access token $accessToken");
+    if(accessToken != null){
+        setState(() {
+          isloggedIn = true;
+        });
+    }
+  }
   @override
-  void initState() {
+  Future<void> initState() {
+    // TODO: implement initState
     getValidationData();
     super.initState();
   }
-
-  Future getValidationData() async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-    var hasLoggedIn = sharedPreferences.getString('email');
-    setState(() {
-      finalEmail = hasLoggedIn;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: finalEmail == null ? LoginScreen() : App(),
+      body: (isloggedIn != false)? App():LoginScreen()
     );
   }
 }

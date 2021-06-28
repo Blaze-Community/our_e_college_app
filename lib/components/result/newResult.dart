@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:date_field/date_field.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../global-helper.dart';
 
 class NewResult extends StatefulWidget {
   final classDetails;
@@ -19,6 +21,7 @@ class NewResult extends StatefulWidget {
 class _NewResultState extends State<NewResult> {
   final Title = TextEditingController();
   String ResultUri;
+  var loading = false;
 
   Future getResult() async {
     FilePickerResult pickedFile = await FilePicker.platform.pickFiles();
@@ -26,30 +29,88 @@ class _NewResultState extends State<NewResult> {
       ResultUri = pickedFile.files.single.path;
     });
   }
-  uploadResult() async {
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+      await storage.write(key: "accessToken", value: accessToken);
+      // GlobalHelper.accessToken = accessToken;
+    }
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
+  }
+
+  Future<dynamic> checkAccessToken() async {
     try {
-      await FirebaseStorage.instance
-          .ref('Temporary-Storage')
+      var uuid = Uuid().v1();
+      return await FirebaseStorage.instance
+          .ref('Temporary-Storage/${uuid}')
           .putFile(File(ResultUri))
           .then((snapshot) async {
-              var uri = await snapshot.ref.getDownloadURL();
-              var url = Uri.parse('http://localhost:5000/api/uploadResult');
-              Map body = {
-                "classId":widget.classDetails["_id"],
-                "result":{
-                  "title":Title.text,
-                  "uri":uri,
-                }
-              };
-              await http.post(url,body:json.encode(body),headers:{'content-type':'application/json'}).then((response){
-                Navigator.pop(context);
-                ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
-              });
+        var uri = await snapshot.ref.getDownloadURL();
+        final storage = new FlutterSecureStorage();
+        final accessToken = await storage.read(key: "accessToken");
+        //   final accessToken = GlobalHelper.accessToken;
+        var url = 'https://college-app-backend.herokuapp.com/api/uploadResult';
+        Map body = {
+          "classId":widget.classDetails["_id"],
+          "result":{
+            "title":Title.text,
+            "uri":uri,
+          }
+        };
+        final response = await http.post(Uri.parse(url),
+            headers: {
+              "Authorization": "Bearer $accessToken",
+              "Content-Type": "application/json",
+            },
+            body: json.encode(body));
+        try{
+          if(response.statusCode == 200){
+            return json.decode(response.body);
+          }
+          else{
+            print(json.decode(response.body));
+          }
+        }
+        catch(err){
+          print(err);
+        }
       });
     } on FirebaseException catch (e) {
-  // e.g, e.code == 'canceled'
-  print(e.code);
+      // e.g, e.code == 'canceled'
+      print(e.code);
+    }
   }
+
+  uploadResult() async {
+    var responseJson = await checkAccessToken();
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken();
+    }
+    if (responseJson['success'] == true) {
+      setState(() {
+        GlobalHelper.loading = true;
+      });
+      Navigator.pop(context);
+      ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -113,13 +174,13 @@ class _NewResultState extends State<NewResult> {
                     ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            ClassRoomHelper.loading = true;
+                            loading = true;
                           });
                           uploadResult();
                         },
                         child: Padding(
                           padding: EdgeInsets.all(15),
-                          child: (ClassRoomHelper.loading==true)?
+                          child: (loading == true)?
                           CircularProgressIndicator(
                             color: Colors.white,
                           ):Row(

@@ -5,9 +5,12 @@ import 'package:date_field/date_field.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
+import 'package:our_e_college_app/global-helper.dart';
 import 'package:simple_moment/simple_moment.dart';
+import 'package:uuid/uuid.dart';
 
 class NewAssignment extends StatefulWidget {
   final classDetails;
@@ -21,40 +24,97 @@ class _NewAssignmentState extends State<NewAssignment> {
   final Title = TextEditingController();
   String SubmissionDate ;
   String AssignmentUri;
+  var loading = false;
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+      await storage.write(key: "accessToken", value: accessToken);
+      // GlobalHelper.accessToken = accessToken;
+    }
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
+  }
+
+  Future<dynamic> checkAccessToken() async {
+    try {
+      var uuid = Uuid().v1();
+      return await FirebaseStorage.instance
+          .ref('Temporary-Storage/${uuid}')
+          .putFile(File(AssignmentUri))
+          .then((snapshot) async {
+        var uri = await snapshot.ref.getDownloadURL();
+        final storage = new FlutterSecureStorage();
+        final accessToken = await storage.read(key: "accessToken");
+         //final accessToken = GlobalHelper.accessToken;
+
+        var url = 'https://college-app-backend.herokuapp.com/api/uploadAssignment';
+        Map body = {
+          "classId": widget.classDetails["_id"],
+          "assignment":{
+            "title":Title.text,
+            "uri":uri,
+            "submissionDate":SubmissionDate
+
+          }
+        };
+        final response = await http.post(Uri.parse(url),
+            headers: {
+              "Authorization": "Bearer $accessToken",
+              "Content-Type": "application/json",
+            },
+            body: json.encode(body));
+        try{
+          if(response.statusCode == 200){
+            return json.decode(response.body);
+          }
+          else{
+            print(json.decode(response.body)["msg"]);
+          }
+        }
+        catch(err){
+          print(err);
+        }
+      });
+    } on FirebaseException catch (e) {
+      // e.g, e.code == 'canceled'
+      print(e.code);
+    }
+  }
 
   Future getAssignment() async {
     FilePickerResult pickedFile = await FilePicker.platform.pickFiles();
     setState(() {
       AssignmentUri = pickedFile.files.single.path;
     });
-    //print("upload file ${await uploadFile(pickedFile.path)}");
-    //uploadFile(pickedFile.path);
   }
   uploadAssignment() async {
-    try {
-      await FirebaseStorage.instance
-          .ref('Temporary-Storage')
-          .putFile(File(AssignmentUri))
-          .then((snapshot) async {
-              var uri = await snapshot.ref.getDownloadURL();
-              var url = Uri.parse('http://localhost:5000/api/uploadAssignment');
-              Map body = {
-                "classId": widget.classDetails["_id"],
-                "assignment":{
-                  "title":Title.text,
-                  "uri":uri,
-                  "submissionDate":SubmissionDate
-
-                }
-              };
-              await http.post(url,body:json.encode(body),headers:{'content-type':'application/json'}).then((response){
-                Navigator.pop(context);
-                ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
-              });
+    var responseJson = await checkAccessToken();
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken();
+    }
+    if (responseJson['success'] == true) {
+      setState(() {
+        GlobalHelper.loading = true;
       });
-    } on FirebaseException catch (e) {
-      // e.g, e.code == 'canceled'
-      print(e.code);
+      Navigator.pop(context);
+      ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
     }
   }
   @override
@@ -144,13 +204,13 @@ class _NewAssignmentState extends State<NewAssignment> {
                 ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        ClassRoomHelper.loading = true;
+                        loading = true;
                       });
                       uploadAssignment();
                     },
                     child: Padding(
                       padding: EdgeInsets.all(15),
-                      child: (ClassRoomHelper.loading==true)?
+                      child: (loading ==true)?
                       CircularProgressIndicator(
                         color: Colors.white,
                       ):

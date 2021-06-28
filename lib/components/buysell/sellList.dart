@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:our_e_college_app/components/buysell/buySellDetails.dart';
+import 'package:our_e_college_app/components/buysell/buysell-helper.dart';
 import 'package:our_e_college_app/components/buysell/newPostSell.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import '../../global-helper.dart';
 
 class SellList extends StatefulWidget {
   @override
@@ -13,23 +17,83 @@ class SellList extends StatefulWidget {
 
 class _SellListState extends State<SellList> {
   List items;
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+       await storage.write(key: "accessToken", value: accessToken);
+      //GlobalHelper.accessToken = accessToken;
+    }
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
+  }
 
+  Future<dynamic> checkAccessToken(String id) async {
+        String url = "https://college-app-backend.herokuapp.com/api/college-olx/deleteItem";
+
+        final storage = new FlutterSecureStorage();
+        final accessToken = await storage.read(key: "accessToken");
+        // final  accessToken = GlobalHelper.accessToken;
+
+        final body = json.encode({
+          "id": id});
+        final response = await http.delete(Uri.parse(url),
+            headers: {
+              "Authorization": "Bearer $accessToken",
+              "Content-Type": "application/json",
+            },
+            body: body);
+        try{
+          if(response.statusCode == 200){
+            return json.decode(response.body);
+          }
+          else{
+            print(json.decode(response.body)["msg"]);
+          }
+        }
+        catch(err){
+          print(err);
+        }
+  }
   Future<void> deleteItem(String id) async {
-    String url = "http://localhost:5000/api/deleteitem";
-    final response = await http.post((Uri.parse(url)), body: {"id": id});
-    final responseJson = json.decode(response.body);
+    var responseJson = await checkAccessToken(id);
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken(id);
+    }
+
+    if (responseJson['success'] == true) {
+      setState(() {
+        GlobalHelper.loading = true;
+      });
+      BuySellHelper.shared.fetchSellItemsList();
+    }
+    else{
+      print(responseJson['msg']);
+    }
     // print(responseJson);
   }
-
-  Future fetchSellItemsList() async {
-    String url = "http://localhost:5000/api/myitem";
-    final response = await http
-        .get((Uri.parse(url)), headers: {"email": "bt19cse005@gmail.com"});
-    final responseJson = json.decode(response.body);
-    // print(responseJson);
-    return responseJson;
+  @override
+  void initState() {
+    // TODO: implement initState
+    BuySellHelper.shared.fetchSellItemsList();
+    super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,9 +114,10 @@ class _SellListState extends State<SellList> {
                     child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: StreamBuilder(
-                    stream: fetchSellItemsList().asStream(),
+                    stream: BuySellStreamControllerHelper.shared.sellListStream,
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
+                      print(snapshot);
+                      if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
                         if (snapshot.hasData) {
                           items = snapshot.data;
                           return ListView.builder(
@@ -153,6 +218,9 @@ class _SellListState extends State<SellList> {
                         icon: Icon(Icons.delete),
                         color: Colors.grey,
                         onPressed: () {
+                          setState(() {
+                            GlobalHelper.loading == false;
+                          });
                           deleteItem(docId);
                         })
                   ],

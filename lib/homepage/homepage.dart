@@ -5,13 +5,9 @@ import 'package:our_e_college_app/components/attendence/attendence.dart';
 import 'package:our_e_college_app/components/e-card/e_card.dart';
 import 'package:our_e_college_app/components/ebooks/ebooks.dart';
 import 'package:our_e_college_app/components/exam/exam.dart';
-import 'package:our_e_college_app/components/fees/fees.dart';
 import 'package:our_e_college_app/components/classroom/classroom.dart';
-import 'package:our_e_college_app/global.dart' as Global;
 import 'package:our_e_college_app/homepage/Theme.dart' as AppTheme;
 import 'package:our_e_college_app/components/timetable/timetable.dart';
-import 'package:our_e_college_app/components/result/results.dart';
-import 'package:our_e_college_app/components/assignment/assignment.dart';
 import 'package:our_e_college_app/components/buysell/buySell.dart';
 
 import 'homeCategoryItem.dart';

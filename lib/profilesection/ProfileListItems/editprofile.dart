@@ -9,6 +9,9 @@ import 'package:our_e_college_app/bottombar/bottomBarScreens.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../global-helper.dart';
 
 class EditProfile extends StatefulWidget {
   String profileImageUri;
@@ -30,29 +33,49 @@ class _EditProfileState extends State<EditProfile> {
     String url = 'https://college-app-backend.herokuapp.com/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
     final body = json.encode({"token": refreshToken});
     final response = await http.post(Uri.parse(url),
         headers: {
           "Content-Type": "application/json",
         },
         body: body);
-    final responseJson = json.decode(response.body);
-    if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
-      // refresh token expired, show dailogue that says user to login again.
-      print("Refresh token expired, please login again");
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+      await storage.write(key: "accessToken", value: accessToken);
+      //GlobalHelper.accessToken = accessToken;
     }
-    final accessToken = responseJson['accessToken'];
-    await storage.write(key: "accessToken", value: accessToken);
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
   }
 
   Future<dynamic> checkAccessToken() async {
+    if(editProfileUri!=null){
+      try {
+        var uuid = Uuid().v1();
+        await FirebaseStorage.instance
+            .ref('Temporary-Storage/${uuid}')
+            .putFile(File(editProfileUri))
+            .then((snapshot) async {
+            updateProfileUri = await snapshot.ref.getDownloadURL();
+        });
+      } on FirebaseException catch (e) {
+        // e.g, e.code == 'canceled'
+        print(e.code);
+      }
+    }
     String url = 'https://college-app-backend.herokuapp.com/api/editprofile';
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
-
+        //final accessToken = GlobalHelper.accessToken;
     final body = json.encode({
-      "profilePhotoUri":
-          (editProfileUri != null) ? editProfileUri : widget.profileImageUri,
+      "profilePhotoUri": (updateProfileUri  != null) ? updateProfileUri  : widget.profileImageUri,
       "profileName": myController.text
     });
 
@@ -62,9 +85,17 @@ class _EditProfileState extends State<EditProfile> {
           "Content-Type": "application/json",
         },
         body: body);
-
-    final responseJson = json.decode(response.body);
-    return responseJson;
+    try{
+      if(response.statusCode == 200){
+        return json.decode(response.body);
+      }
+      else{
+        print(json.decode(response.body)["msg"]);
+      }
+    }
+    catch(err){
+      print(err);
+    }
   }
 
   Future saveFile() async {
@@ -73,8 +104,6 @@ class _EditProfileState extends State<EditProfile> {
       await refresh();
       responseJson = await checkAccessToken();
     }
-
-    print(responseJson);
     if (responseJson['success'] == true) {
       Navigator.pushAndRemoveUntil(
           context,
@@ -88,18 +117,15 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       editProfileUri = pickedFile.path;
     });
-    //print("upload file ${await uploadFile(pickedFile.path)}");
-    //uploadFile(pickedFile.path);
+
   }
 
   bool showPassword = false;
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    //getProfileImageFromDatabase();
     myController..text = widget.profileName;
-    print("profileImage ${widget.profileImageUri}");
+    super.initState();
   }
 
   @override
