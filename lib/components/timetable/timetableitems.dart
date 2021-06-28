@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class TimeTableItems extends StatelessWidget {
-  String subject;
-  String time;
-  String room;
+  final String subject;
+  final String time;
+  final String room;
 
   TimeTableItems({this.subject, this.time, this.room});
 
   factory TimeTableItems.fromJson(Map<String, dynamic> json) => TimeTableItems(
-    subject: json["Subject"],
-    time: json["Time"],
-    room: json["Room"],
-  );
+        subject: json["Subject"],
+        time: json["Time"],
+        room: json["Room"],
+      );
 
   @override
   Widget build(BuildContext context) {
