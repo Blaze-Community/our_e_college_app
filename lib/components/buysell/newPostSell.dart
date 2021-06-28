@@ -1,8 +1,15 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:our_e_college_app/components/buysell/buysell-helper.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../global-helper.dart';
 
 class NewPostSell extends StatefulWidget {
   @override
@@ -18,28 +25,101 @@ class _NewPostSellState extends State<NewPostSell> {
   final sellerContact = TextEditingController();
   String itemImageUri;
   bool loading = false;
+
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+       await storage.write(key: "accessToken", value: accessToken);
+      // GlobalHelper.accessToken = accessToken;
+    }
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
+  }
+
+  Future<dynamic> checkAccessToken() async {
+    try {
+      var uuid = Uuid().v1();
+      return await FirebaseStorage.instance
+          .ref('Temporary-Storage/${uuid}')
+          .putFile(File(itemImageUri))
+          .then((snapshot) async {
+          var uri = await snapshot.ref.getDownloadURL();
+          String url = 'https://college-app-backend.herokuapp.com/api/additem';
+
+          final storage = new FlutterSecureStorage();
+          final accessToken = await storage.read(key: "accessToken");
+          //final accessToken = GlobalHelper.accessToken;
+
+          final body = json.encode({
+            "itemName": itemName.text,
+            "itemPrice": itemPrice.text,
+            "itemImageUri": uri,
+            "sellerName": sellerName.text,
+            "sellerRoom": sellerRoom.text,
+            "sellerContact": sellerContact.text
+          });
+
+          final response = await http.post(Uri.parse(url),
+              headers: {
+                "Authorization": "Bearer $accessToken",
+                "Content-Type": "application/json",
+              },
+              body: body);
+          try{
+            if(response.statusCode == 200){
+              return json.decode(response.body);
+            }
+            else{
+              print(json.decode(response.body)["msg"]);
+            }
+          }
+          catch(err){
+            print(err);
+          }
+      });
+    } on FirebaseException catch (e) {
+      // e.g, e.code == 'canceled'
+      print(e.code);
+    }
+  }
+
   Future getItemImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
       itemImageUri = pickedFile.path;
     });
-    //print("upload file ${await uploadFile(pickedFile.path)}");
-    //uploadFile(pickedFile.path);
   }
 
   Future<void> uploadItem() async {
-    String url = "http://localhost:5000/api/additem";
-    final response = await http.post((Uri.parse(url)), body: {
-      "itemName": itemName.text,
-      "itemPrice": itemPrice.text,
-      "itemImageUri": "https://images5.alphacoders.com/106/1062290.jpg",
-      "sellerName": sellerName.text,
-      "sellerRoom": sellerRoom.text,
-      "sellerContact": sellerContact.text,
-      "email": "bt19cse005@gmail.com"
-    });
-    final responseJson = json.decode(response.body);
-    print(responseJson);
+    var responseJson = await checkAccessToken();
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken();
+    }
+    if (responseJson['success'] == true) {
+      setState(() {
+        GlobalHelper.loading = true;
+      });
+      Navigator.pop(context);
+      BuySellHelper.shared.fetchSellItemsList();
+    }
+
   }
 
   @override
@@ -198,7 +278,6 @@ class _NewPostSellState extends State<NewPostSell> {
                             loading = true;
                           });
                           uploadItem();
-                          Navigator.of(context).pop();
                         },
                         child: Padding(
                           padding: EdgeInsets.all(15),

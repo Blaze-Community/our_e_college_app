@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../global-helper.dart';
 import '../classroom_helper.dart';
 
 class joinclass extends StatefulWidget {
@@ -11,17 +13,78 @@ class joinclass extends StatefulWidget {
 }
 class _joinclass extends State<joinclass> {
   final EnrolKey = TextEditingController();
+  var loading = false;
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    // final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+      await storage.write(key: "accessToken", value: accessToken);
+      // GlobalHelper.accessToken = accessToken;
+    }
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
+  }
 
-  joinClass(enrolkey,studentId) async {
-    var url = Uri.parse('http://localhost:5000/api/joinClass');
+  Future<dynamic> checkAccessToken(enrolkey) async {
+
+    String url = 'https://college-app-backend.herokuapp.com/api/joinClass';
+    final storage = new FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    //final accessToken = GlobalHelper.accessToken;
+
     Map body = {
       "enrolKey":enrolkey,
-      "studentId":studentId
     };
-    await http.post(url,body:json.encode(body),headers:{'content-type':'application/json'}).then((response){
+
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $accessToken",
+          "Content-Type": "application/json",
+        },
+        body: json.encode(body));
+    try{
+      if(response.statusCode == 200){
+        return json.decode(response.body);
+      }
+      else{
+        print(json.decode(response.body));
+      }
+    }
+    catch(err){
+      print(err);
+    }
+  }
+
+  joinClass(enrolkey) async {
+
+    var responseJson = await checkAccessToken(enrolkey);
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken(enrolkey);
+    }
+
+    if (responseJson['success'] == true) {
+      setState(() {
+        GlobalHelper.loading = true;
+      });
       Navigator.pop(context);
-      ClassRoomHelper.shared.fetchClassRoomlist("60d01593c1f3a30047498cac");
-    });
+      ClassRoomHelper.shared.fetchClassRoomlist();
+    }
   }
 
   @override
@@ -52,12 +115,18 @@ class _joinclass extends State<joinclass> {
             SizedBox(height:45.0),
             ElevatedButton(
               onPressed: () {
-                print(EnrolKey.text);
-                //joinClass(EnrolKey.text,"60d01516c1f3a30047498ca8");
+                setState(() {
+                  loading = true;
+                });
+                joinClass(EnrolKey.text);
               },
               child: Padding(
                 padding: EdgeInsets.all(15),
-                child: Row(
+                child: (loading == true)?
+                CircularProgressIndicator(
+                  color: Colors.white,
+                ):
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

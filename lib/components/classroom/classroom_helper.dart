@@ -1,33 +1,84 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:our_e_college_app/global.dart' as Global;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:our_e_college_app/global-helper.dart';
 import 'package:http/http.dart' as http;
 
 class ClassRoomHelper {
 
   static final shared = ClassRoomHelper();
-  static var loading = false;
-  Future fetchClassRoomlist(collegeUserId) async {
-    if(Global.user == "Teacher"){
-      var url = Uri.parse('http://localhost:5000/api/teacherClasses/${collegeUserId}');
-      var response = await http.get(url);
-      print(json.decode(response.body));
-      ClassRoomStreamControllerHelper.shared._classListStreamController.add(json.decode(response.body));
+
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    // final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+      await storage.write(key: "accessToken", value: accessToken);
+      //GlobalHelper.accessToken = accessToken;
     }
     else{
-      var url = Uri.parse('http://localhost:5000/api/studentClasses/${collegeUserId}');
-      var response = await http.get(url);
-      ClassRoomStreamControllerHelper.shared._classListStreamController.add(json.decode(response.body));
+      print(json.decode(response.body)["msg"]);
     }
-    loading = false;
+  }
+
+  Future fetchClassRoomlist() async {
+      var url = 'https://college-app-backend.herokuapp.com/api/classes';
+      final storage = new FlutterSecureStorage();
+      final accessToken = await storage.read(key: "accessToken");
+       //final accessToken = GlobalHelper.accessToken;
+      final response = await http.get(Uri.parse(url), headers: {
+        "Authorization": "Bearer $accessToken",
+      });
+      var responseJson = json.decode(response.body);
+
+      if (responseJson['msg'] == "Access token expired") {
+        await refresh();
+        responseJson = await fetchClassRoomlist();
+      }
+      if(responseJson['success'] == true){
+        ClassRoomStreamControllerHelper.shared._classListStreamController.add(responseJson);
+      }
+      else{
+        print(responseJson["msg"]);
+      }
+      GlobalHelper.loading = false;
   }
 
   Future fetchClassInfo(classId) async {
-      var url = Uri.parse('http://localhost:5000/api/classInfo/${classId}');
-      var response = await http.get(url);
-      ClassRoomStreamControllerHelper.shared._classInfoStreamController.add(json.decode(response.body));
-      loading = false;
+      var url = 'https://college-app-backend.herokuapp.com/api/classInfo/${classId}';
+      final storage = new FlutterSecureStorage();
+      final accessToken = await storage.read(key: "accessToken");
+      //  final accessToken = GlobalHelper.accessToken;
+      final response = await http.get(Uri.parse(url), headers: {
+        "Authorization": "Bearer $accessToken",
+      });
+      var responseJson = json.decode(response.body);
+
+      if (responseJson['msg'] == "Access token expired") {
+        await refresh();
+        responseJson = await fetchClassInfo(classId);
+      }
+      if(responseJson['success'] == true){
+        ClassRoomStreamControllerHelper.shared._classInfoStreamController.add(responseJson["classInfo"]);
+      }
+      else{
+        print(responseJson["msg"]);
+      }
+      GlobalHelper.loading = false;
   }
 }
 

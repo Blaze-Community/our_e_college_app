@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'dart:html';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
+
+import '../../../global-helper.dart';
 
 class createclass extends StatefulWidget {
   @override
@@ -15,30 +16,83 @@ class _createclass extends State<createclass> {
   final Batch = TextEditingController();
   final Section = TextEditingController();
   final Branch = TextEditingController();
+  var loading = false;
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+       await storage.write(key: "accessToken", value: accessToken);
+      //GlobalHelper.accessToken = accessToken;
+    }
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
+  }
 
-  createClass() async {
-    setState(() {
-      ClassRoomHelper.loading = true;
-    });
-    var url = Uri.parse('http://localhost:5000/api/createClass');
+  Future<dynamic> checkAccessToken() async {
+
+    String url = 'https://college-app-backend.herokuapp.com/api/createClass';
+    final storage = new FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+     //final accessToken = GlobalHelper.accessToken;
+
     Map body =  {
       "clas": {
         "branch":Branch.text,
         "section": Section.text,
         "subject": Subject.text,
         "batch": Batch.text,
-        "createdBy": "60d01593c1f3a30047498cac"
       }
     };
-    await http.post(url,body:json.encode(body),headers:{'content-type':'application/json'}).then((response){
-      if(response.statusCode == 200) {
-        Navigator.pop(context);
-        ClassRoomHelper.shared.fetchClassRoomlist("60d01593c1f3a30047498cac");
+
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $accessToken",
+          "Content-Type": "application/json",
+        },
+        body: json.encode(body));
+    try{
+      if(response.statusCode == 200){
+        return json.decode(response.body);
       }
-      else {
-        print(json.encode(response.body));
+      else{
+        print(json.decode(response.body)["msg"]);
       }
-    });
+    }
+    catch(err){
+      print(err);
+    }
+  }
+
+  createClass() async {
+    var responseJson = await checkAccessToken();
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken();
+    }
+
+    print(responseJson);
+    if (responseJson['success'] == true) {
+      setState(() {
+        GlobalHelper.loading = true;
+      });
+      Navigator.pop(context);
+      ClassRoomHelper.shared.fetchClassRoomlist();
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -111,24 +165,25 @@ class _createclass extends State<createclass> {
               ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      ClassRoomHelper.loading = true;
+                      loading  = true;
                     });
                     createClass();
                   },
                   child: Padding(
                     padding: EdgeInsets.all(15),
-                    child: Row(
+                    child:  (loading ==true)?
+                    CircularProgressIndicator(
+                      color: Colors.white,
+                    ):
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.publish, size: 25),
                         SizedBox(width: 10),
-                        Text(
-                          "Create",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
+                        Text("Create",
+                              style: TextStyle(fontSize: 14),
+                            ),
                       ],
                     ),
                   ),),

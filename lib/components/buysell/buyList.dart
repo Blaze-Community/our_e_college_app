@@ -4,20 +4,23 @@ import 'package:our_e_college_app/components/buysell/buySellDetails.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:our_e_college_app/components/buysell/buysell-helper.dart';
+
+import '../../global-helper.dart';
+
 class BuyList extends StatefulWidget {
   @override
   _BuyListState createState() => _BuyListState();
 }
 
 class _BuyListState extends State<BuyList> {
-  Future fetchBuyItemsList() async {
-    String url = "http://localhost:5000/api/allitems";
-    final response = await http.get(Uri.parse(url));
-    final responseJson = json.decode(response.body);
-    // print(responseJson);
-    return responseJson;
-  }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    BuySellHelper.shared.fetchBuyItemsList();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,10 +39,9 @@ class _BuyListState extends State<BuyList> {
                 child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: StreamBuilder(
-                stream: fetchBuyItemsList().asStream(),
+                stream: BuySellStreamControllerHelper.shared.buyListStream,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    // print(snapshot);
+                  if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
                     if (snapshot.hasData) {
                       final List items = snapshot.data;
                       return ListView.builder(

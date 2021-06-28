@@ -1,10 +1,7 @@
 import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'global.dart' as global;
+import 'global-helper.dart';
 import 'app.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -15,14 +12,7 @@ class LoginScreen extends StatelessWidget {
 
   Future<String> _authUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
-    global.email = data.name;
-    global.password = data.password;
-    if (data.name == "teacher@gmail.com") {
-      global.user = "Teacher";
-    } else {
-      global.user = "Student";
-    }
-
+    
     return Future.delayed(loginTime).then((_) async {
       try {
         String url = 'https://college-app-backend.herokuapp.com/api/login';
@@ -41,8 +31,10 @@ class LoginScreen extends StatelessWidget {
           final storage = new FlutterSecureStorage();
           await storage.write(key: "accessToken", value: accessToken);
           await storage.write(key: "refreshToken", value: refreshToken);
+          // GlobalHelper.accessToken = accessToken;
+          // GlobalHelper.refreshToken = refreshToken;
         }
-        print('response ${response.statusCode} ${response.body}');
+        print(response.statusCode);
         if (response.statusCode != 200) {
           if (responseJson['msg'] == null) {
             if (responseJson['error'] == null) {
@@ -79,9 +71,6 @@ class LoginScreen extends StatelessWidget {
       onSignup: null,
       onLogin: _authUser,
       onSubmitAnimationCompleted: () async {
-        final SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-        sharedPreferences.setString('email', global.email);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => App(),
         ));

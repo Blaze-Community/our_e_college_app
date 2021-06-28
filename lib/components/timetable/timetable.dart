@@ -6,9 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:our_e_college_app/components/timetable/timetableitems.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
 
 class TimeTable extends StatefulWidget {
   @override
@@ -35,44 +32,8 @@ class _TimeTableState extends State<TimeTable> {
   ];
   String clas = "";
 
-  Future<String> getTimetable() async {
-    User user = FirebaseAuth.instance.currentUser;
-    var uid = user.uid;
-    var student;
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        student = documentSnapshot.data();
-        setState(() {
-          clas = student["branch"] + " " + student["section"];
-        });
-        // print(clas);
-      } else {
-        print('Document does not exist on the user database');
-      }
-    });
-    return await FirebaseFirestore.instance
-        .collection('Batch')
-        .doc(student["batch"])
-        .collection('Branch')
-        .doc(student["branch"])
-        .collection('Section')
-        .doc(student["section"])
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        return documentSnapshot["timetable"];
-      } else {
-        print('Document does not exist on the timetable database');
-      }
-    });
-  }
-
   Future fetchTimetable(http.Client client) async {
-    String url = "http://localhost:5000/api/timtable";
+    String url = "http://localhost:5000/api/timetable";
     final response = await http.get(Uri.parse(url));
     final responseJson = json.decode(response.body);
     // print(responseJson);

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:our_e_college_app/LoginScreen.dart';
 import 'package:our_e_college_app/profilesection/ProfileListItems/changepassword.dart';
@@ -10,6 +8,8 @@ import '../app.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../global-helper.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Profile extends StatefulWidget {
@@ -25,32 +25,47 @@ class _ProfileState extends State<Profile> {
     String url = 'https://college-app-backend.herokuapp.com/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
     final body = json.encode({"token": refreshToken});
     final response = await http.post(Uri.parse(url),
         headers: {
           "Content-Type": "application/json",
         },
         body: body);
-    final responseJson = json.decode(response.body);
-    if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
-      // refresh token expired, show dailogue that says user to login again.
-      print("Refresh token expired, please login again");
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+       await storage.write(key: "accessToken", value: accessToken);
+      //GlobalHelper.accessToken = accessToken;
     }
-    final accessToken = responseJson['accessToken'];
-    await storage.write(key: "accessToken", value: accessToken);
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
   }
 
   Future<dynamic> checkAccessToken() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/getinfo';
+    String url = 'https://college-app-backend.herokuapp.com/api/userInfo';
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
-
+    //final accessToken = GlobalHelper.accessToken;
     final response = await http.get(Uri.parse(url), headers: {
       "Authorization": "Bearer $accessToken",
     });
-
-    final responseJson = json.decode(response.body);
-    return responseJson;
+    try{
+      if(response.statusCode == 200){
+        return json.decode(response.body);
+      }
+      else{
+        print(json.decode(response.body)["msg"]);
+      }
+    }
+    catch(err){
+      print(err);
+    }
   }
 
   Future getProfileImageFromDatabase() async {
@@ -59,7 +74,6 @@ class _ProfileState extends State<Profile> {
       await refresh();
       responseJson = await checkAccessToken();
     }
-
     print(responseJson);
     return responseJson;
   }
@@ -79,8 +93,8 @@ class _ProfileState extends State<Profile> {
   }
 
   void initState() {
+    //acadmicCalendar();
     super.initState();
-    acadmicCalendar();
   }
 
   @override
@@ -99,7 +113,6 @@ class _ProfileState extends State<Profile> {
                 future: getProfileImageFromDatabase(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    print(snapshot.data);
                     if (snapshot.hasData) {
                       profileImageUri = snapshot.data["profilePhotoUri"];
                       profileName = snapshot.data["profileName"];
@@ -220,12 +233,11 @@ class _ProfileState extends State<Profile> {
                         text: 'Logout',
                         onPressed: () async {
                           // await FirebaseAuth.instance.signOut();
-                          final SharedPreferences sharedPreferences =
-                              await SharedPreferences.getInstance();
-                          sharedPreferences.remove('email');
                           final storage = new FlutterSecureStorage();
                           await storage.delete(key: "accessToken");
                           await storage.delete(key: "refreshToken");
+                          // GlobalHelper.accessToken = "";
+                          // GlobalHelper.refreshToken = "";
 
                           Navigator.pushReplacement(
                               ContextKeeper.buildContext,

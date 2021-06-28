@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 import 'package:our_e_college_app/components/classroom/create_join/create_class.dart';
 import 'package:our_e_college_app/components/classroom/create_join/join_class.dart';
 import 'package:our_e_college_app/components/classroom/data/classrooms.dart';
-import 'package:our_e_college_app/global.dart' as Global;
+import 'package:our_e_college_app/global-helper.dart';
 import 'class_room_page.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,18 +17,79 @@ class ClassRoomHomePage extends StatefulWidget {
 }
 
 class _ClassRoomHomePageState extends State<ClassRoomHomePage> {
-
-  deleteClass(classId) async {
-    var url = Uri.parse('http://localhost:5000/api/deleteClass');
-    await http.delete(url,body: {"classId":classId}).then((response){
-        print(json.decode(response.body));
-        ClassRoomHelper.shared.fetchClassRoomlist("60d01593c1f3a30047498cac");
-    });
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+      await storage.write(key: "accessToken", value: accessToken);
+      //GlobalHelper.accessToken = accessToken;
+    }
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
   }
+
+  Future<dynamic> checkAccessToken(classId) async {
+    String url = "https://college-app-backend.herokuapp.com/api/deleteClass";
+
+    final storage = new FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    // final accessToken = GlobalHelper.accessToken;
+
+    final body = json.encode({
+      "classId": classId});
+    final response = await http.delete(Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $accessToken",
+          "Content-Type": "application/json",
+        },
+        body: body);
+    try{
+      if(response.statusCode == 200){
+        return json.decode(response.body);
+      }
+      else{
+        print(json.decode(response.body)["msg"]);
+      }
+    }
+    catch(err){
+      print(err);
+    }
+  }
+  Future<void> deleteClass(classId) async {
+    var responseJson = await checkAccessToken(classId);
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken(classId);
+    }
+
+    if (responseJson['success'] == true) {
+      ClassRoomHelper.shared.fetchClassRoomlist();
+    }
+    else{
+      print(responseJson['msg']);
+    }
+    // print(responseJson);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    ClassRoomHelper.shared.fetchClassRoomlist("60d01593c1f3a30047498cac");
+    ClassRoomHelper.shared.fetchClassRoomlist();
     super.initState();
   }
   @override
@@ -38,7 +100,7 @@ class _ClassRoomHomePageState extends State<ClassRoomHomePage> {
             StreamBuilder(
               stream: ClassRoomStreamControllerHelper.shared.classListStream,
               builder: (context,snapshot){
-                if(snapshot.connectionState == ConnectionState.active && ClassRoomHelper.loading == false){
+                if(snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false){
                   if(snapshot.hasData){
                     List classRoomList = snapshot.data["classes"];
                     return  ListView.builder(
@@ -98,7 +160,7 @@ class _ClassRoomHomePageState extends State<ClassRoomHomePage> {
                                                       },
                                                       iconSize: 25,
                                                     ),
-                                                    if(Global.user == "Teacher")
+                                                    if(GlobalHelper.userRole== "teacher")
                                                       IconButton(
                                                         icon: Icon(
                                                           Icons.delete,
@@ -107,7 +169,7 @@ class _ClassRoomHomePageState extends State<ClassRoomHomePage> {
                                                         splashColor: Colors.white54,
                                                         onPressed: () {
                                                           setState(() {
-                                                            ClassRoomHelper.loading = true;
+                                                            GlobalHelper.loading  = true;
                                                           });
                                                           deleteClass(classRoomList[index]["_id"]);
                                                         },
@@ -178,14 +240,14 @@ class _ClassRoomHomePageState extends State<ClassRoomHomePage> {
                           context,
                           MaterialPageRoute(
                               builder: (BuildContext context){
-                                if (Global.user == "Student") {
+                                if (GlobalHelper.userRole == "student") {
                                   return joinclass();
                                 } else {
                                   return createclass();
                                 }
                               }));
                     },
-                    label: (Global.user == "Student")?Text('Join Class'):Text('Create Class'),
+                    label: (GlobalHelper.userRole == "student")?Text('Join Class'):Text('Create Class'),
                     icon: Icon(Icons.add),
                   ),
                 )),

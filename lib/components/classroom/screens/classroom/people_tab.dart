@@ -4,6 +4,8 @@ import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 import 'package:our_e_college_app/components/classroom/data/comments.dart';
 import 'package:our_e_college_app/components/classroom/widgets/profile_tile.dart';
 
+import '../../../../global-helper.dart';
+
 class PeopleTab extends StatefulWidget {
   final classDetails;
   PeopleTab({this.classDetails});
@@ -42,9 +44,9 @@ class _PeopleTabState extends State<PeopleTab> {
         StreamBuilder(
             stream: ClassRoomStreamControllerHelper.shared.classInfostream,
             builder:(context,snapshot){
-              if(snapshot.connectionState == ConnectionState.active){
+              if(snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false){
                 if(snapshot.hasData){
-                  var item = snapshot.data["classInfo"]["createdBy"];
+                  var item = snapshot.data["createdBy"];
                   print(item);
                   return Profile(
                           name: item["profileName"],
@@ -72,9 +74,9 @@ class _PeopleTabState extends State<PeopleTab> {
         StreamBuilder(
             stream: ClassRoomStreamControllerHelper.shared.classInfostream,
             builder:(context,snapshot){
-              if(snapshot.connectionState == ConnectionState.active){
+              if(snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false){
                 if(snapshot.hasData){
-                  var item = snapshot.data["classInfo"]["enrollStudents"];
+                  var item = snapshot.data["enrollStudents"];
                   print(item);
                   return Expanded(
                       child: ListView.builder(
