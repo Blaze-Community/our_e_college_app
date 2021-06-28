@@ -79,9 +79,6 @@ class _joinclass extends State<joinclass> {
     }
 
     if (responseJson['success'] == true) {
-      setState(() {
-        GlobalHelper.loading = true;
-      });
       Navigator.pop(context);
       ClassRoomHelper.shared.fetchClassRoomlist();
     }
@@ -117,6 +114,7 @@ class _joinclass extends State<joinclass> {
               onPressed: () {
                 setState(() {
                   loading = true;
+                  GlobalHelper.loading = true;
                 });
                 joinClass(EnrolKey.text);
               },

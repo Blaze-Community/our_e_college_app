@@ -23,7 +23,6 @@ class GlobalHelper {
           "Content-Type": "application/json",
         },
         body: body);
-    print("responsejson ${response.statusCode}");
     if(response.statusCode == 200){
       final responseJson = json.decode(response.body);
       if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
@@ -32,7 +31,6 @@ class GlobalHelper {
       }
       final accessToken = responseJson['accessToken'];
       await storage.write(key: "accessToken", value: accessToken);
-      print("new token on refresh ${accessToken}");
       // GlobalHelper.accessToken = accessToken;
     }
     else{
@@ -44,7 +42,6 @@ class GlobalHelper {
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
       //final accessToken = GlobalHelper.accessToken;
-    print("new Token ${accessToken}");
     final response = await http.get(Uri.parse(url), headers: {
       "Authorization": "Bearer $accessToken",
     });
@@ -66,7 +63,7 @@ class GlobalHelper {
       await refresh();
       responseJson = await checkAccessToken();
     }
-    print("fetchuser ${responseJson}");
+
     userRole = responseJson["role"];
     return responseJson;
   }

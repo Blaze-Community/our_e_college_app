@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:our_e_college_app/components/classroom/classroom_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 class AssignmentList extends StatefulWidget {
+  String classId;
+  String id;
   String title;
   // String submissionTime;
   String submissionDate;
@@ -10,6 +17,8 @@ class AssignmentList extends StatefulWidget {
   String uri;
 
   AssignmentList({
+    this.classId,
+    this.id,
     this.title,
     // this.submissionTime,
     this.uploadDate,
@@ -22,6 +31,68 @@ class AssignmentList extends StatefulWidget {
 }
 
 class _AssignmentListState extends State<AssignmentList> {
+  Future refresh() async {
+    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    final storage = new FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    //final refreshToken = GlobalHelper.refreshToken;
+    final body = json.encode({"token": refreshToken});
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body);
+    if(response.statusCode == 200){
+      final responseJson = json.decode(response.body);
+      if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        // refresh token expired, show dailogue that says user to login again.
+        print("Refresh token expired, please login again");
+      }
+      final accessToken = responseJson['accessToken'];
+      await storage.write(key: "accessToken", value: accessToken);
+      // GlobalHelper.accessToken = accessToken;
+    }
+    else{
+      print(json.decode(response.body)["msg"]);
+    }
+  }
+
+  Future<dynamic> checkAccessToken() async {
+    final storage = new FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    //final accessToken = GlobalHelper.accessToken;
+
+    var url = 'https://college-app-backend.herokuapp.com/api/deleteAssignment';
+    Map body = {"classId": widget.classId, "assignmentId": widget.id};
+    final response = await http.delete(Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $accessToken",
+          "Content-Type": "application/json",
+        },
+        body: json.encode(body));
+    try{
+      if(response.statusCode == 200){
+        return json.decode(response.body);
+      }
+      else{
+        print(json.decode(response.body)["msg"]);
+      }
+    }
+    catch(err){
+      print(err);
+    }
+  }
+  deleteMessage() async {
+    var responseJson = await checkAccessToken();
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await checkAccessToken();
+    }
+    if (responseJson['success'] == true) {
+      ClassRoomHelper.shared.fetchClassInfo(widget.classId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -117,7 +188,6 @@ class _AssignmentListState extends State<AssignmentList> {
                   ),
                   OutlinedButton(
                     onPressed: () async {
-                        print(widget.uri);
                         await launch(widget.uri);
                     },
                     child: Row(

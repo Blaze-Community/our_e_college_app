@@ -105,9 +105,6 @@ class _NewResultState extends State<NewResult> {
       responseJson = await checkAccessToken();
     }
     if (responseJson['success'] == true) {
-      setState(() {
-        GlobalHelper.loading = true;
-      });
       Navigator.pop(context);
       ClassRoomHelper.shared.fetchClassInfo(widget.classDetails["_id"]);
     }
@@ -175,6 +172,7 @@ class _NewResultState extends State<NewResult> {
                         onPressed: () {
                           setState(() {
                             loading = true;
+                             GlobalHelper.loading = true;
                           });
                           uploadResult();
                         },

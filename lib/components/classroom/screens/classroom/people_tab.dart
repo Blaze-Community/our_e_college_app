@@ -47,7 +47,6 @@ class _PeopleTabState extends State<PeopleTab> {
               if(snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false){
                 if(snapshot.hasData){
                   var item = snapshot.data["createdBy"];
-                  print(item);
                   return Profile(
                           name: item["profileName"],
                           uri: item["profilePhotoUri"],
@@ -77,7 +76,6 @@ class _PeopleTabState extends State<PeopleTab> {
               if(snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false){
                 if(snapshot.hasData){
                   var item = snapshot.data["enrollStudents"];
-                  print(item);
                   return Expanded(
                       child: ListView.builder(
                           itemCount: item.length,

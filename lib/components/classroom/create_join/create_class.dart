@@ -87,9 +87,6 @@ class _createclass extends State<createclass> {
 
     print(responseJson);
     if (responseJson['success'] == true) {
-      setState(() {
-        GlobalHelper.loading = true;
-      });
       Navigator.pop(context);
       ClassRoomHelper.shared.fetchClassRoomlist();
     }
@@ -166,6 +163,7 @@ class _createclass extends State<createclass> {
                   onPressed: () {
                     setState(() {
                       loading  = true;
+                      GlobalHelper.loading = true;
                     });
                     createClass();
                   },

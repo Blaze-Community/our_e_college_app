@@ -42,10 +42,8 @@ class _SellListState extends State<SellList> {
       print(json.decode(response.body)["msg"]);
     }
   }
-
   Future<dynamic> checkAccessToken(String id) async {
         String url = "https://college-app-backend.herokuapp.com/api/college-olx/deleteItem";
-
         final storage = new FlutterSecureStorage();
         final accessToken = await storage.read(key: "accessToken");
         // final  accessToken = GlobalHelper.accessToken;
@@ -76,11 +74,7 @@ class _SellListState extends State<SellList> {
       await refresh();
       responseJson = await checkAccessToken(id);
     }
-
     if (responseJson['success'] == true) {
-      setState(() {
-        GlobalHelper.loading = true;
-      });
       BuySellHelper.shared.fetchSellItemsList();
     }
     else{
@@ -116,7 +110,6 @@ class _SellListState extends State<SellList> {
                   child: StreamBuilder(
                     stream: BuySellStreamControllerHelper.shared.sellListStream,
                     builder: (context, snapshot) {
-                      print(snapshot);
                       if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
                         if (snapshot.hasData) {
                           items = snapshot.data;
@@ -219,7 +212,7 @@ class _SellListState extends State<SellList> {
                         color: Colors.grey,
                         onPressed: () {
                           setState(() {
-                            GlobalHelper.loading == false;
+                            GlobalHelper.loading = true;
                           });
                           deleteItem(docId);
                         })
