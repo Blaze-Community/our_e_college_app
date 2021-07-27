@@ -6,6 +6,7 @@ import 'app.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
@@ -36,6 +37,15 @@ class LoginScreen extends StatelessWidget {
         }
         print(response.statusCode);
         if (response.statusCode != 200) {
+          Fluttertoast.showToast(
+              msg: "ERROR!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
           if (responseJson['msg'] == null) {
             if (responseJson['error'] == null) {
               return "Unexpected error";
@@ -43,6 +53,16 @@ class LoginScreen extends StatelessWidget {
             return responseJson['error'];
           }
           return responseJson['msg'];
+        }else{
+          Fluttertoast.showToast(
+              msg: "Login Successful!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
         }
       } on SocketException catch (e) {
         return "Unexpected error";

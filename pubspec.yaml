@@ -49,6 +49,7 @@ dependencies:
   simple_moment: ^1.1.1
   file_picker: ^3.0.3
   flutter_secure_storage: ^4.0.0
+  fluttertoast: ^7.1.8
 
 dev_dependencies:
     flutter_test:

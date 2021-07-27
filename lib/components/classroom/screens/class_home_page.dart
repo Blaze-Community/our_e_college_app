@@ -10,6 +10,7 @@ import 'package:our_e_college_app/components/classroom/data/classrooms.dart';
 import 'package:our_e_college_app/global-helper.dart';
 import 'class_room_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ClassRoomHomePage extends StatefulWidget {
   @override
@@ -31,6 +32,15 @@ class _ClassRoomHomePageState extends State<ClassRoomHomePage> {
     if(response.statusCode == 200){
       final responseJson = json.decode(response.body);
       if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        Fluttertoast.showToast(
+            msg: "Refresh token expired, Please Login again!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         // refresh token expired, show dailogue that says user to login again.
         print("Refresh token expired, please login again");
       }
@@ -60,9 +70,27 @@ class _ClassRoomHomePageState extends State<ClassRoomHomePage> {
         body: body);
     try{
       if(response.statusCode == 200){
+        Fluttertoast.showToast(
+            msg: "Success!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         return json.decode(response.body);
       }
       else{
+        Fluttertoast.showToast(
+            msg: "ERROR!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         print(json.decode(response.body)["msg"]);
       }
     }

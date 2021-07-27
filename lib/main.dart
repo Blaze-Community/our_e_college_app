@@ -10,6 +10,8 @@ import 'package:our_e_college_app/app.dart';
 import 'package:our_e_college_app/global-helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
