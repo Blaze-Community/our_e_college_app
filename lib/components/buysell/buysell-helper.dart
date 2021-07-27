@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../global-helper.dart';
-
+import 'package:flutter/material.dart';
 class BuySellHelper {
 
   static final shared = BuySellHelper();
@@ -23,6 +23,15 @@ class BuySellHelper {
     if(response.statusCode == 200){
       final responseJson = json.decode(response.body);
       if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        Fluttertoast.showToast(
+            msg: "Refresh token expired, Please Login again!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         // refresh token expired, show dailogue that says user to login again.
         print("Refresh token expired, please login again");
       }

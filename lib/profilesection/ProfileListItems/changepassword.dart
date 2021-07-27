@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:toast/toast.dart';
+//import 'package:toast/toast.dart';
 import '/global-helper.dart' as global;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ChangePassword extends StatefulWidget {
   @override
@@ -13,29 +14,57 @@ class _ChangePasswordState extends State<ChangePassword> {
   String newPassword;
   String reEnterNewPassword;
 
-  // void _changePassword(String password) async {
-  //   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  //   User currentUser = firebaseAuth.currentUser;
-  //   if (oldPassword != global.password) {
-  //     Toast.show("Old Password you entered is incorrect!", context,
-  //         duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-  //   } else if (newPassword != reEnterNewPassword) {
-  //     Toast.show("Passwords do not match!", context,
-  //         duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-  //   } else {
-  //     currentUser.updatePassword(password).then((value) {
-  //       global.password = password;
-  //       Toast.show("Password changed successfully.", context,
-  //           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-  //
-  //       Navigator.of(context).pop();
-  //     }).catchError((err) {
-  //       Toast.show("Error!", context,
-  //           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-  //       print(err.toString());
-  //     });
-  //   }
-  // }
+   void _changePassword(String password) async {
+     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+     User currentUser = firebaseAuth.currentUser;
+     if (oldPassword != global.password) {
+       Fluttertoast.showToast(
+           msg: "Old password incorrect!",
+           toastLength: Toast.LENGTH_SHORT,
+           gravity: ToastGravity.CENTER,
+           timeInSecForIosWeb: 1,
+           backgroundColor: Colors.red,
+           textColor: Colors.white,
+           fontSize: 16.0
+       );
+     } else if (newPassword != reEnterNewPassword) {
+       Fluttertoast.showToast(
+           msg: "Passwords do not match!",
+           toastLength: Toast.LENGTH_SHORT,
+           gravity: ToastGravity.CENTER,
+           timeInSecForIosWeb: 1,
+           backgroundColor: Colors.red,
+           textColor: Colors.white,
+           fontSize: 16.0
+       );
+     } else {
+       currentUser.updatePassword(password).then((value) {
+         global.password = password;
+         Fluttertoast.showToast(
+             msg: "Password changed successfully!",
+             toastLength: Toast.LENGTH_SHORT,
+             gravity: ToastGravity.CENTER,
+             timeInSecForIosWeb: 1,
+             backgroundColor: Colors.red,
+             textColor: Colors.white,
+             fontSize: 16.0
+         );
+
+         Navigator.of(context).pop();
+       }).catchError((err) {
+         Fluttertoast.showToast(
+             msg: "ERROR!",
+             toastLength: Toast.LENGTH_SHORT,
+             gravity: ToastGravity.CENTER,
+             timeInSecForIosWeb: 1,
+             backgroundColor: Colors.red,
+             textColor: Colors.white,
+             fontSize: 16.0
+         );
+         print(err.toString());
+       });
+     }
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +161,15 @@ class _ChangePasswordState extends State<ChangePassword> {
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       ElevatedButton(
                         onPressed: () {
+                          /*Fluttertoast.showToast(
+                              msg: "Password changed successfully!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );*/
                           // _changePassword(newPassword);
                         },
                         style: ButtonStyle(

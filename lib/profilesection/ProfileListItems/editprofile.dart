@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:uuid/uuid.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../global-helper.dart';
 
@@ -43,6 +44,15 @@ class _EditProfileState extends State<EditProfile> {
     if(response.statusCode == 200){
       final responseJson = json.decode(response.body);
       if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        Fluttertoast.showToast(
+            msg: "Refresh token expired, Please Login again!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         // refresh token expired, show dailogue that says user to login again.
         print("Refresh token expired, please login again");
       }
@@ -87,6 +97,15 @@ class _EditProfileState extends State<EditProfile> {
         body: body);
     try{
       if(response.statusCode == 200){
+        Fluttertoast.showToast(
+            msg: "Success!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         return json.decode(response.body);
       }
       else{

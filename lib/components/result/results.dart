@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -38,6 +38,15 @@ class _ResultState extends State<Result> {
     if(response.statusCode == 200){
       final responseJson = json.decode(response.body);
       if (responseJson['msg'] == "Refresh token expired, Please Login again!") {
+        Fluttertoast.showToast(
+            msg: "Refresh token expired, Please Login again!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         // refresh token expired, show dailogue that says user to login again.
         print("Refresh token expired, please login again");
       }
@@ -64,9 +73,27 @@ class _ResultState extends State<Result> {
         body: json.encode(body));
     try{
       if(response.statusCode == 200){
+        Fluttertoast.showToast(
+            msg: "Success!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         return json.decode(response.body);
       }
       else{
+        Fluttertoast.showToast(
+            msg: "ERROR!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
         print(json.decode(response.body)["msg"]);
       }
     }
