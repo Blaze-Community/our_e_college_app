@@ -233,11 +233,12 @@ class _ProfileState extends State<Profile> {
                       icon: Icons.password,
                       text: 'Change Password',
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    ChangePassword()));
+                        print("password change");
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (BuildContext context) =>
+                        //             ChangePassword()));
                       },
                     ),
                     ProfileListItems(
