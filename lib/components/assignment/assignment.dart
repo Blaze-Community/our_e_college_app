@@ -128,7 +128,7 @@ class _AssignmentState extends State<Assignment> {
             child: Stack(
               children: [
                 StreamBuilder(
-                  stream: ClassRoomStreamControllerHelper.shared.classInfostream,
+                  stream: ClassRoomStreamControllerHelper.shared.classInfoStream,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
                       if (snapshot.hasData) {

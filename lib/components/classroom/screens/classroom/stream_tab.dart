@@ -123,86 +123,91 @@ class _StreamTabState extends State<StreamTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 120,
-          child: Stack(
-            children: [
-              Container(
-                margin: EdgeInsets.all(10),
-                child: Image(
-                  image: widget.bannerImg,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Container(
-                width: 200,
-                alignment: Alignment.bottomLeft,
-                margin: EdgeInsets.only(bottom: 40, left: 30),
-                child: Text(
-                  widget.className,
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-              )
-            ],
-          ),
-        ),
-        if (GlobalHelper.userRole != "student")
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Stream"),
+      ),
+      body: Column(
+        children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
+            height: 120,
+            child: Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: Image(
+                    image: widget.bannerImg,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                  width: 200,
+                  alignment: Alignment.bottomLeft,
+                  margin: EdgeInsets.only(bottom: 40, left: 30),
+                  child: Text(
+                    widget.className,
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                )
+              ],
             ),
-            child: TextFormField(
-                controller: message_for_class,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Send Message",
-                  suffixIcon: InkWell(
-                      child: Icon(
-                        Icons.send,
-                        color: Colors.deepOrange,
-                      ),
-                      onTap: () {
-                        print("send message");
-                        setState(() {
-                          GlobalHelper.loading = true;
-                        });
-                        uploadMessage();
-                      }),
-                )),
           ),
-        Expanded(
-          child: StreamBuilder(
-            stream: ClassRoomStreamControllerHelper.shared.classInfostream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
-                if (snapshot.hasData) {
-                  final List items = snapshot.data["messages"];
-                  return ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (BuildContext ctxt, int i) {
-                      return CommentComposer(
-                        classId: widget.classDetails["_id"],
-                        id: items[i]["_id"],
-                        date: Moment.parse(items[i]["createdAt"])
-                            .format('dd-MM-yyyy'),
-                        message: items[i]["message"],
-                      );
-                    },
-                  );
+          if (GlobalHelper.userRole != "student")
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15),
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: TextFormField(
+                  controller: message_for_class,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Send Message",
+                    suffixIcon: InkWell(
+                        child: Icon(
+                          Icons.send,
+                          color: Colors.deepOrange,
+                        ),
+                        onTap: () {
+                          print("send message");
+                          setState(() {
+                            GlobalHelper.loading = true;
+                          });
+                          uploadMessage();
+                        }),
+                  )),
+            ),
+          Expanded(
+            child: StreamBuilder(
+              stream: ClassRoomStreamControllerHelper.shared.classInfoStream,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
+                  if (snapshot.hasData) {
+                    final List items = snapshot.data["messages"];
+                    return ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (BuildContext ctxt, int i) {
+                        return CommentComposer(
+                          classId: widget.classDetails["_id"],
+                          id: items[i]["_id"],
+                          date: Moment.parse(items[i]["createdAt"])
+                              .format('dd-MM-yyyy'),
+                          message: items[i]["message"],
+                        );
+                      },
+                    );
+                  }
                 }
-              }
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-          ),
-        )
-      ],
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 }
