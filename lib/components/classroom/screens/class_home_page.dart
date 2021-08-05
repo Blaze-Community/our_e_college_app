@@ -8,9 +8,10 @@ import 'package:our_e_college_app/components/classroom/create_join/create_class.
 import 'package:our_e_college_app/components/classroom/create_join/join_class.dart';
 import 'package:our_e_college_app/components/classroom/data/classrooms.dart';
 import 'package:our_e_college_app/global-helper.dart';
-import 'class_room_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'class_room_page.dart';
 
 class ClassRoomHomePage extends StatefulWidget {
   @override
@@ -136,7 +137,7 @@ class _ClassRoomHomePageState extends State<ClassRoomHomePage> {
                         itemBuilder: (context, int index) {
                             return GestureDetector(
                               onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => ClassRoomPage(
+                                  builder: (_) => ClassRoomPage1(
                                     classDetails:classRoomList[index],
                                     className: classRoomList[index]["subject"],
                                     bannerImg: classRoomDesingList[index]["bannerImg"],

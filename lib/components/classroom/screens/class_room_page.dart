@@ -1,77 +1,229 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:our_e_college_app/components/classroom/screens/classroom/people_tab.dart';
-
+import 'package:our_e_college_app/components/classroom/screens/classroom/attendence_tab.dart';
 import 'classroom/classwork_tab.dart';
+import 'classroom/people_tab.dart';
 import 'classroom/stream_tab.dart';
 
-class ClassRoomPage extends StatefulWidget {
+class ClassRoomPage1 extends StatefulWidget {
   AssetImage bannerImg;
   String className;
   final classDetails;
   //Color uiColor;
 
-  ClassRoomPage({this.className, this.bannerImg,this.classDetails});
+  ClassRoomPage1({this.className, this.bannerImg,this.classDetails});
 
   @override
-  _ClassRoomPageState createState() => _ClassRoomPageState();
+  _ClassRoomPage1State createState() => _ClassRoomPage1State();
 }
 
-class _ClassRoomPageState extends State<ClassRoomPage> {
-
+class _ClassRoomPage1State extends State<ClassRoomPage1> {
   @override
   Widget build(BuildContext context) {
-    String className = widget.className;
-    AssetImage bannerImg = widget.bannerImg;
-    final classDetails = widget.classDetails;
-    final tabs = [
-      StreamTab(
-        bannerImg: bannerImg,
-        className: className,
-        classDetails : classDetails
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Classroom"),
       ),
-      ClassWork(classDetails: classDetails),
-      PeopleTab(classDetails: classDetails)
-    ];
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Classroom",
-          style: TextStyle(
-            color: Colors.deepOrange
-          ),),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.arrow_back),
-            color: Colors.deepOrange,
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          bottom: TabBar(
-            unselectedLabelColor: Colors.grey,
-            labelColor: Colors.deepOrange,
-            tabs: [
-              Tab(
-                icon: Icon(Icons.chat),
-                text: "Stream",
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                StreamTab(
+                                    bannerImg: widget.bannerImg,
+                                    className: widget.className,
+                                    classDetails : widget.classDetails
+                                )));
+                  },
+                  child: Container(
+                    width: 140,
+                    height: 140,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0.0,0.0),
+                          spreadRadius: 1,
+                          blurRadius: 4
+                        )
+                      ]
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: Image.asset("assets/stream.png")
+                          ),
+                          Text("Stream",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white
+                          ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              Tab(
-                icon: Icon(Icons.book),
-                text: "Classwork",
-              ),
-              Tab(
-                icon: Icon(Icons.people),
-                text: "People",
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ClassWork(classDetails: widget.classDetails)));
+                  },
+                  child: Container(
+                    width: 140,
+                    height: 140,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0,0.0),
+                              spreadRadius: 1,
+                              blurRadius: 4
+                          )
+                        ]
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: Image.asset("assets/assignment.png")
+                          ),
+                          Text("ClassWork",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
-        ),
-        // backgroundColor: Colors.deepPurple,
-        body: TabBarView(
-        children:tabs,)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                Attendence(classDetails: widget.classDetails)));
+                  },
+                  child: Container(
+                    width: 140,
+                    height: 140,
+                    decoration: BoxDecoration(
+                        color: Colors.deepPurpleAccent,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0,0.0),
+                              spreadRadius: 1,
+                              blurRadius: 4
+                          )
+                        ]
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: Image.asset("assets/attendence.png")
+                          ),
+                          Text("Attendence",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PeopleTab(classDetails: widget.classDetails)));
+                  },
+                  child: Container(
+                    width: 140,
+                    height: 140,
+                    decoration: BoxDecoration(
+                        color: Colors.indigo,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0,0.0),
+                              spreadRadius: 1,
+                              blurRadius: 4
+                          )
+                        ]
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: Image.asset("assets/people.png")
+                          ),
+                          Text("People",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
+
 }

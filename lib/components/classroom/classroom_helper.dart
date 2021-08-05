@@ -89,6 +89,53 @@ class ClassRoomHelper {
       }
       GlobalHelper.loading = false;
   }
+
+  Future fetchClassAttendence(classId,date) async {
+    var url = 'https://college-app-backend.herokuapp.com/api/getAttendence/${classId}/${date}';
+    final storage = new FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    //  final accessToken = GlobalHelper.accessToken;
+    final response = await http.get(Uri.parse(url), headers: {
+      "Authorization": "Bearer $accessToken",
+    });
+    var responseJson = json.decode(response.body);
+
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await fetchClassAttendence(classId,date);
+    }
+    if(responseJson['success'] == true){
+      ClassRoomStreamControllerHelper.shared._classAttendenceStreamController.add(responseJson["attendence"]);
+    }
+    else{
+      print(responseJson["msg"]);
+    }
+    GlobalHelper.loading = false;
+  }
+
+  Future fetchClassStudentAttendence(classId) async {
+    var url = 'https://college-app-backend.herokuapp.com/api/getStudentAttendence/${classId}';
+    final storage = new FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    //  final accessToken = GlobalHelper.accessToken;
+    final response = await http.get(Uri.parse(url), headers: {
+      "Authorization": "Bearer $accessToken",
+    });
+    var responseJson = json.decode(response.body);
+
+    if (responseJson['msg'] == "Access token expired") {
+      await refresh();
+      responseJson = await fetchClassStudentAttendence(classId);
+    }
+    if(responseJson['success'] == true){
+      ClassRoomStreamControllerHelper.shared._classStudentAttendenceStreamController.add(responseJson["attendence"]);
+    }
+    else{
+      print(responseJson["msg"]);
+    }
+    GlobalHelper.loading = false;
+  }
+
 }
 
 class ClassRoomStreamControllerHelper{
@@ -97,9 +144,13 @@ class ClassRoomStreamControllerHelper{
 
   StreamController _classListStreamController = StreamController.broadcast();
   StreamController _classInfoStreamController = StreamController.broadcast();
+  StreamController _classAttendenceStreamController = StreamController.broadcast();
+  StreamController _classStudentAttendenceStreamController = StreamController.broadcast();
 
   Stream get classListStream => _classListStreamController.stream;
-  Stream get classInfostream => _classInfoStreamController.stream;
+  Stream get classInfoStream => _classInfoStreamController.stream;
+  Stream get classAttendenceStream => _classAttendenceStreamController.stream;
+  Stream get classStudentAttendenceStream => _classStudentAttendenceStreamController.stream;
 
 
 }
