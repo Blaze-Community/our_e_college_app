@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:our_e_college_app/global-helper.dart';
+import 'package:photo_view/photo_view.dart';
+
 class Ecard extends StatefulWidget {
   @override
   _EcardState createState() => _EcardState();
@@ -30,8 +32,12 @@ class _EcardState extends State<Ecard>{
                     builder:(context,snapshot){
                       if (snapshot.connectionState == ConnectionState.done) {
                         print(snapshot.data);
-                        return Image.network(snapshot.data["e_card"],
-                          fit: BoxFit.cover,);
+                        return Container(
+                          child: PhotoView(
+                            imageProvider: NetworkImage(snapshot.data["e_card"]),
+                            backgroundDecoration: BoxDecoration(color: Colors.white),
+                          ),
+                        );
                       }
                       return CircularProgressIndicator();
                     },
@@ -42,8 +48,13 @@ class _EcardState extends State<Ecard>{
                     future: GlobalHelper.shared.fetchCurrentUser(),
                     builder:(context,snapshot){
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return Image.network(snapshot.data["e_card"],
-                          fit: BoxFit.cover,);
+                        print("E-Card" + snapshot.data["e_card"]);
+                        return Container(
+                          child: PhotoView(
+                            imageProvider: NetworkImage(snapshot.data["e_card"]),
+                            backgroundDecoration: BoxDecoration(color: Colors.white),
+                          ),
+                        );
                       }
                       return CircularProgressIndicator();
                     },
