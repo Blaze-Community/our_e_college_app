@@ -30,8 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'College App',
       theme: ThemeData(
-          primarySwatch: Colors.deepOrange,
-          textTheme: TextTheme(title: TextStyle(fontFamily: "Nunito"))),
+          primarySwatch: Colors.deepOrange,),
       home: MyHomePage(),
     );
   }
