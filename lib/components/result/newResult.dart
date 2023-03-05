@@ -30,7 +30,7 @@ class _NewResultState extends State<NewResult> {
     });
   }
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     //final refreshToken = GlobalHelper.refreshToken;
@@ -75,7 +75,7 @@ class _NewResultState extends State<NewResult> {
         final storage = new FlutterSecureStorage();
         final accessToken = await storage.read(key: "accessToken");
         //   final accessToken = GlobalHelper.accessToken;
-        var url = 'https://college-app-backend.herokuapp.com/api/uploadResult';
+        var url = 'https://college-app-backend-production.up.railway.app/api/uploadResult';
         Map body = {
           "classId":widget.classDetails["_id"],
           "result":{

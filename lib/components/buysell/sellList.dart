@@ -18,7 +18,7 @@ class SellList extends StatefulWidget {
 class _SellListState extends State<SellList> {
   List items;
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     //final refreshToken = GlobalHelper.refreshToken;
@@ -52,7 +52,7 @@ class _SellListState extends State<SellList> {
     }
   }
   Future<dynamic> checkAccessToken(String id) async {
-        String url = "https://college-app-backend.herokuapp.com/api/college-olx/deleteItem";
+        String url = "https://college-app-backend-production.up.railway.app/api/college-olx/deleteItem";
         final storage = new FlutterSecureStorage();
         final accessToken = await storage.read(key: "accessToken");
         // final  accessToken = GlobalHelper.accessToken;

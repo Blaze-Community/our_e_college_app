@@ -22,7 +22,7 @@ class StreamTab extends StatefulWidget {
 class _StreamTabState extends State<StreamTab> {
   final message_for_class = TextEditingController();
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     //final refreshToken = GlobalHelper.refreshToken;
@@ -61,7 +61,7 @@ class _StreamTabState extends State<StreamTab> {
     final accessToken = await storage.read(key: "accessToken");
     //final accessToken = GlobalHelper.accessToken;
 
-    var url = 'https://college-app-backend.herokuapp.com/api/uploadMessage';
+    var url = 'https://college-app-backend-production.up.railway.app/api/uploadMessage';
     Map body =  {
       "classId": widget.classDetails["_id"],
       "message": message_for_class.text

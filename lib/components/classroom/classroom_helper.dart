@@ -10,7 +10,7 @@ class ClassRoomHelper {
   static final shared = ClassRoomHelper();
 
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     // final refreshToken = GlobalHelper.refreshToken;
@@ -45,7 +45,7 @@ class ClassRoomHelper {
   }
 
   Future fetchClassRoomlist() async {
-      var url = 'https://college-app-backend.herokuapp.com/api/classes';
+      var url = 'https://college-app-backend-production.up.railway.app/api/classes';
       final storage = new FlutterSecureStorage();
       final accessToken = await storage.read(key: "accessToken");
        //final accessToken = GlobalHelper.accessToken;
@@ -68,7 +68,7 @@ class ClassRoomHelper {
   }
 
   Future fetchClassInfo(classId) async {
-      var url = 'https://college-app-backend.herokuapp.com/api/classInfo/${classId}';
+      var url = 'https://college-app-backend-production.up.railway.app/api/classInfo/${classId}';
       final storage = new FlutterSecureStorage();
       final accessToken = await storage.read(key: "accessToken");
       //  final accessToken = GlobalHelper.accessToken;
@@ -91,7 +91,7 @@ class ClassRoomHelper {
   }
 
   Future fetchClassAttendence(classId,date) async {
-    var url = 'https://college-app-backend.herokuapp.com/api/getAttendence/${classId}/${date}';
+    var url = 'https://college-app-backend-production.up.railway.app/api/getAttendence/${classId}/${date}';
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
     //  final accessToken = GlobalHelper.accessToken;
@@ -114,7 +114,7 @@ class ClassRoomHelper {
   }
 
   Future fetchClassStudentAttendence(classId) async {
-    var url = 'https://college-app-backend.herokuapp.com/api/getStudentAttendence/${classId}';
+    var url = 'https://college-app-backend-production.up.railway.app/api/getStudentAttendence/${classId}';
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
     //  final accessToken = GlobalHelper.accessToken;

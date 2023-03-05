@@ -13,7 +13,7 @@ class GlobalHelper {
   static var userRole = "";
 
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     // final refreshToken = GlobalHelper.refreshToken;
@@ -48,7 +48,7 @@ class GlobalHelper {
     }
   }
   Future<dynamic> checkAccessToken() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/userInfo';
+    String url = 'https://college-app-backend-production.up.railway.app/api/userInfo';
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
       //final accessToken = GlobalHelper.accessToken;

@@ -30,7 +30,7 @@ class _TimeTableState extends State<TimeTable> {
   String clas = "";
 
   Future fetchTimetable(http.Client client) async {
-    String url = "https://college-app-backend.herokuapp.com/api/timetable";
+    String url = "https://college-app-backend-production.up.railway.app/api/timetable";
     final response = await http.get(Uri.parse(url));
     final responseJson = json.decode(response.body);
     // print(responseJson);

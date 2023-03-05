@@ -15,7 +15,7 @@ class _joinclass extends State<joinclass> {
   final EnrolKey = TextEditingController();
   var loading = false;
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     // final refreshToken = GlobalHelper.refreshToken;
@@ -51,7 +51,7 @@ class _joinclass extends State<joinclass> {
 
   Future<dynamic> checkAccessToken(enrolkey) async {
 
-    String url = 'https://college-app-backend.herokuapp.com/api/joinClass';
+    String url = 'https://college-app-backend-production.up.railway.app/api/joinClass';
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
     //final accessToken = GlobalHelper.accessToken;

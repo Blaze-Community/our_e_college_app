@@ -31,7 +31,7 @@ class _EditProfileState extends State<EditProfile> {
   final myController = TextEditingController();
 
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     //final refreshToken = GlobalHelper.refreshToken;
@@ -80,7 +80,7 @@ class _EditProfileState extends State<EditProfile> {
         print(e.code);
       }
     }
-    String url = 'https://college-app-backend.herokuapp.com/api/editprofile';
+    String url = 'https://college-app-backend-production.up.railway.app/api/editprofile';
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
         //final accessToken = GlobalHelper.accessToken;

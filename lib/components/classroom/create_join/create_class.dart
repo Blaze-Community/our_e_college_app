@@ -18,7 +18,7 @@ class _createclass extends State<createclass> {
   final Branch = TextEditingController();
   var loading = false;
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     //final refreshToken = GlobalHelper.refreshToken;
@@ -54,7 +54,7 @@ class _createclass extends State<createclass> {
 
   Future<dynamic> checkAccessToken() async {
 
-    String url = 'https://college-app-backend.herokuapp.com/api/createClass';
+    String url = 'https://college-app-backend-production.up.railway.app/api/createClass';
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
      //final accessToken = GlobalHelper.accessToken;

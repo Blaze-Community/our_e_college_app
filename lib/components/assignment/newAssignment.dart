@@ -26,7 +26,7 @@ class _NewAssignmentState extends State<NewAssignment> {
   String AssignmentUri;
   var loading = false;
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     //final refreshToken = GlobalHelper.refreshToken;
@@ -72,7 +72,7 @@ class _NewAssignmentState extends State<NewAssignment> {
         final accessToken = await storage.read(key: "accessToken");
          //final accessToken = GlobalHelper.accessToken;
 
-        var url = 'https://college-app-backend.herokuapp.com/api/uploadAssignment';
+        var url = 'https://college-app-backend-production.up.railway.app/api/uploadAssignment';
         Map body = {
           "classId": widget.classDetails["_id"],
           "assignment":{

@@ -10,7 +10,7 @@ class BuySellHelper {
   static final shared = BuySellHelper();
 
   Future refresh() async {
-    String url = 'https://college-app-backend.herokuapp.com/api/refresh';
+    String url = 'https://college-app-backend-production.up.railway.app/api/refresh';
     final storage = new FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     //final refreshToken = GlobalHelper.refreshToken;
@@ -45,7 +45,7 @@ class BuySellHelper {
   }
 
   Future fetchBuyItemsList() async {
-    String url = "https://college-app-backend.herokuapp.com/api/college-olx/allItems";
+    String url = "https://college-app-backend-production.up.railway.app/api/college-olx/allItems";
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
     //final accessToken = GlobalHelper.accessToken;
@@ -68,7 +68,7 @@ class BuySellHelper {
   }
 
   Future fetchSellItemsList() async {
-    String url = "https://college-app-backend.herokuapp.com/api/college-olx/myItem";
+    String url = "https://college-app-backend-production.up.railway.app/api/college-olx/myItem";
     final storage = new FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
     // final accessToken = GlobalHelper.accessToken;

@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
     
     return Future.delayed(loginTime).then((_) async {
       try {
-        String url = 'https://college-app-backend.herokuapp.com/api/login';
+        String url = 'https://college-app-backend-production.up.railway.app/api/login';
         final body = json.encode({
           "user": {"email": data.name, "password": data.password}
         });
