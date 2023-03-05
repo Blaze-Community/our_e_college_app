@@ -108,7 +108,7 @@ class _ProfileState extends State<Profile> {
   var calendarLink;
 
   void acadmicCalendar() async {
-    String url = 'https://iiitn-web-crawler.herokuapp.com/acadmic-calendar';
+    String url = 'https://iiitn-web-crawler-production.up.railway.app/acadmic-calendar';
     final response = await http.get(Uri.parse(url)).then((value){
       print("resonsejson ${value}");
     });

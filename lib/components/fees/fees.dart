@@ -12,7 +12,7 @@ class _FeesState extends State<Fees> {
   List lis = [];
 
   void fees() async {
-    String url = 'https://iiitn-web-crawler.herokuapp.com/fees';
+    String url = 'https://iiitn-web-crawler-production.up.railway.app/fees';
     final response = await http.get(Uri.parse(url));
 
     final responseJson = json.decode(response.body);

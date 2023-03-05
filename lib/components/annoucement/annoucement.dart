@@ -29,7 +29,7 @@ class _Annoucement extends State<Annoucement> {
   
 
   void facultyNotices() async {
-    String url = 'https://iiitn-web-crawler.herokuapp.com/faculty-notices';
+    String url = 'https://iiitn-web-crawler-production.up.railway.app/faculty-notices';
     final response = await http.get(Uri.parse(url));
 
     final responseJson = json.decode(response.body);
@@ -48,7 +48,7 @@ class _Annoucement extends State<Annoucement> {
     // return response;
   }
   void studentNotices() async {
-    String url = 'https://iiitn-web-crawler.herokuapp.com/student-notices';
+    String url = 'https://iiitn-web-crawler-production.up.railway.app/student-notices';
     final response = await http.get(Uri.parse(url));
     print(response.body);
     final responseJson = json.decode(response.body);
@@ -65,7 +65,7 @@ class _Annoucement extends State<Annoucement> {
     // return response;
   }
   void facultyAchievements() async {
-    String url = 'https://iiitn-web-crawler.herokuapp.com/faculty-achievements';
+    String url = 'https://iiitn-web-crawler-production.up.railway.app/faculty-achievements';
     final response = await http.get(Uri.parse(url));
 
     final responseJson = json.decode(response.body);
@@ -82,7 +82,7 @@ class _Annoucement extends State<Annoucement> {
     // return response;
   }
   void studentAchievements() async {
-    String url = 'https://iiitn-web-crawler.herokuapp.com/student-achievements';
+    String url = 'https://iiitn-web-crawler-production.up.railway.app/student-achievements';
     final response = await http.get(Uri.parse(url));
 
     final responseJson = json.decode(response.body);
