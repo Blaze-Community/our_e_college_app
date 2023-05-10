@@ -5,19 +5,19 @@ import 'classroom/classwork_tab.dart';
 import 'classroom/people_tab.dart';
 import 'classroom/stream_tab.dart';
 
-class ClassRoomPage1 extends StatefulWidget {
+class ClassRoomPage extends StatefulWidget {
   AssetImage bannerImg;
   String className;
   final classDetails;
   //Color uiColor;
 
-  ClassRoomPage1({this.className, this.bannerImg,this.classDetails});
+  ClassRoomPage({this.className, this.bannerImg,this.classDetails});
 
   @override
   _ClassRoomPage1State createState() => _ClassRoomPage1State();
 }
 
-class _ClassRoomPage1State extends State<ClassRoomPage1> {
+class _ClassRoomPage1State extends State<ClassRoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

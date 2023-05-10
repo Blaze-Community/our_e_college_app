@@ -10,6 +10,7 @@ import 'package:our_e_college_app/homepage/Theme.dart' as AppTheme;
 import 'package:our_e_college_app/components/timetable/timetable.dart';
 import 'package:our_e_college_app/components/buysell/buySell.dart';
 
+import '../components/report_bully/report_bully.dart';
 import 'homeCategoryItem.dart';
 
 class HomePage extends StatefulWidget {
@@ -226,6 +227,22 @@ class _HomePageState extends State<HomePage> {
                               },
                             ))),
                   ],
+                )),
+            Padding(
+                padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                child: HomeCategoryItem(
+                  primaryColor: AppTheme.Colors.flatPurple,
+                  primaryIcon: Icons.dangerous,
+                  primaryTitle: "Report Bully",
+                  secondaryColor: AppTheme.Colors.flatDeepPurple,
+                  secondaryIcon: Icons.dangerous,
+                  secondaryIconHeight: 30,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => ReportBully()));
+                  },
                 )),
             Padding(
                 padding: const EdgeInsets.all(16.0),

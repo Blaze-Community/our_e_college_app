@@ -137,7 +137,7 @@ class _ClassRoomHomePageState extends State<ClassRoomHomePage> {
                         itemBuilder: (context, int index) {
                             return GestureDetector(
                               onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => ClassRoomPage1(
+                                  builder: (_) => ClassRoomPage(
                                     classDetails:classRoomList[index],
                                     className: classRoomList[index]["subject"],
                                     bannerImg: classRoomDesingList[index]["bannerImg"],
