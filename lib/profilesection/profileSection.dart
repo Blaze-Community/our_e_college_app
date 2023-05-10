@@ -112,12 +112,13 @@ class _ProfileState extends State<Profile> {
     final response = await http.get(Uri.parse(url)).then((value){
       print("resonsejson ${value}");
     });
-
-    final responseJson = json.decode(response.body);
-    setState(() {
-      calendarLink = responseJson[1];
-      // print(lis);
-    });
+    if(response){
+      final responseJson = json.decode(response.body);
+      setState(() {
+        calendarLink = responseJson[1];
+        // print(lis);
+      });
+    }
   }
 
   void initState() {
