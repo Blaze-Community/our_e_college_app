@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:our_e_college_app/components/report_bully/reportbully-helper.dart';
+import 'package:simple_moment/simple_moment.dart';
+
+import '../../global-helper.dart';
 
 class Result extends StatefulWidget {
   @override
@@ -7,20 +11,40 @@ class Result extends StatefulWidget {
 }
 
 class _ResultState extends State<Result> {
+
+  List items;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    ReportBullyHelper.shared.fetchBullyItemsList();
+    super.initState();
+  }
+
     @override
     Widget build(BuildContext context) {
       return Scaffold(
           body: Container(
             padding: EdgeInsets.symmetric(vertical: 16),
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (BuildContext ctxt, int i) {
-                return _buildListItems(
-                    "1",
-                    "Title",
-                    "22-04-2001",
-                    "90%"
-                );
+            child: StreamBuilder(
+              stream: ReportBullyStreamControllerHelper.shared.bullyListStream,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active && GlobalHelper.loading == false) {
+                  if (snapshot.hasData) {
+                    items = snapshot.data;
+                    return ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (BuildContext ctxt, int i) {
+                          return _buildListItems(
+                              items[i]["_id"],
+                              items[i]["result"] != null ? items[i]["result"] : "Not Yet Analysed",
+                              Moment.parse(items[i]["createdAt"]).format('dd-MM-yyyy'),
+                              items[i]["percentage"] != null ? items[i]["percentage"].toString() + "%": "NULL"
+                          );
+                        });
+                  }
+                }
+                return Center(child: CircularProgressIndicator());
               },
             ),
           ));
@@ -107,7 +131,7 @@ class _ResultState extends State<Result> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "Submission Result: ",
+                              "Bully Result: ",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,

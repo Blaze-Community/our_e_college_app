@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_uploader/flutter_uploader.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:our_e_college_app/LoginScreen.dart';
 import 'package:our_e_college_app/app.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -18,6 +19,7 @@ void backGroundHandler() {
   final notifications = FlutterLocalNotificationsPlugin();
   if (Platform.isAndroid) {
     BackgroundUploader.uploader.progress.listen((progress) {
+      print("PROGRESS ${progress}");
       notifications.show(
         progress.taskId.hashCode,
         'DemoApp',
@@ -46,10 +48,40 @@ void backGroundHandler() {
     final successful = result.status == UploadTaskStatus.complete;
 
     String title = 'Upload Complete';
+
+    if(successful) {
+      Fluttertoast.showToast(
+          msg: "Success!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
     if (result.status == UploadTaskStatus.failed) {
       title = 'Upload Failed';
+      Fluttertoast.showToast(
+          msg: "Failed!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
     } else if (result.status == UploadTaskStatus.canceled) {
       title = 'Upload Canceled';
+      Fluttertoast.showToast(
+          msg: "Cancel!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
     }
 
     notifications

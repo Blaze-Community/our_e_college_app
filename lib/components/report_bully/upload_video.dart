@@ -35,7 +35,7 @@ class _UploadVideoState extends State<UploadVideo> {
   }
 
   pickFile() async {
-    FilePickerResult result = await FilePicker.platform.pickFiles();
+    FilePickerResult result = await FilePicker.platform.pickFiles(type: FileType.video);
     if (result != null) {
       setState(() {
         file = File(result.files.single.path);
@@ -47,6 +47,7 @@ class _UploadVideoState extends State<UploadVideo> {
     if(file != null){
       _prepareMediaUploadListener();
       String taskId = await BackgroundUploader.uploadEnqueue(file);
+      print("TaskID ${taskId}");
       if (taskId != null) {
       } else {
         BackgroundUploader.uploader.cancelAll();
